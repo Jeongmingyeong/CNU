@@ -40,7 +40,7 @@ if __name__ == '__main__':
     cv2.imshow('original_darken', src)
     cv2.imwrite('result_image/original_darken.png', src)
     binX = np.arange(len(hist))
-    plt.title('my histogram')
+    plt.title('my_darken_histogram')
     plt.bar(binX, hist, width=0.5, color='g')
     plt.show()
 
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     cv2.imshow('202102699_darken', dst)
     cv2.imwrite('result_image/202102699_darken.png', dst)
     binX = np.arange(len(hist_equal))
-    plt.title('my histogram equalization')
+    plt.title('my_darken_histogram equalization')
     plt.bar(binX, hist_equal, width=0.5, color='g')
     plt.show()
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     cv2.imshow('original_lighten', src)
     cv2.imwrite('result_image/original_lighten.png', src)
     binX = np.arange(len(hist))
-    plt.title('my histogram')
+    plt.title('my_lighten_histogram')
     plt.bar(binX, hist, width=0.5, color='g')
     plt.show()
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     cv2.imshow('202102699_lighten', dst)
     cv2.imwrite('result_image/202102699_lighten.png', dst)
     binX = np.arange(len(hist_equal))
-    plt.title('my histogram equalization')
+    plt.title('my_lighten_histogram equalization')
     plt.bar(binX, hist_equal, width=0.5, color='g')
     plt.show()
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     cv2.imshow('original_lower_contrast', src)
     cv2.imwrite('result_image/original_lower_contrast.png', src)
     binX = np.arange(len(hist))
-    plt.title('my histogram')
+    plt.title('my_lower_contrast_histogram')
     plt.bar(binX, hist, width=0.5, color='g')
     plt.show()
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     cv2.imshow('202102699_lower_contrast', dst)
     cv2.imwrite('result_image/202102699_lower_contrast.png', dst)
     binX = np.arange(len(hist_equal))
-    plt.title('my histogram equalization')
+    plt.title('my_lower_contrast_histogram equalization')
     plt.bar(binX, hist_equal, width=0.5, color='g')
     plt.show()
 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     cv2.imshow('original_raise_contrast', src)
     cv2.imwrite('result_image/original_raise_contrast.png', src)
     binX = np.arange(len(hist))
-    plt.title('my histogram')
+    plt.title('my_raise_contrast_histogram')
     plt.bar(binX, hist, width=0.5, color='g')
     plt.show()
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     cv2.imshow('202102699_raise_contrast', dst)
     cv2.imwrite('result_image/202102699_raise_contrast.png', dst)
     binX = np.arange(len(hist_equal))
-    plt.title('my histogram equalization')
+    plt.title('my_raise_contrast_histogram equalization')
     plt.bar(binX, hist_equal, width=0.5, color='g')
     plt.show()
 
