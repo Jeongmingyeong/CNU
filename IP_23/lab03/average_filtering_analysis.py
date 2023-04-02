@@ -13,7 +13,7 @@ def generate_average_filter(ksize):
     # average filter 구현
     #########################################################
 
-    kernel = np.ones((ksize*ksize))/ksize**2
+    kernel = np.full([ksize, ksize], 1/ksize**2)
     return kernel
 
 def my_padding(src,ksize,pad_type ='zero'):
@@ -41,7 +41,7 @@ def my_padding(src,ksize,pad_type ='zero'):
         pad_img[p_h + h:, p_w:p_w + w] = src[h-1,:]
 
         #left
-        pad_img[:s,:p_w] = pad_img[:,p_w:p_w + 1]
+        pad_img[:,:p_w] = pad_img[:,p_w:p_w + 1]
 
         #right
         pad_img[:,p_w + w :] = pad_img[:,p_w + w -1 : p_w + w]

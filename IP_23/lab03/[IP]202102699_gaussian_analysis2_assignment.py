@@ -12,23 +12,24 @@ def my_padding(src, mask, pad_type = 'zero'):
     # default - zero padding으로 셋팅
     (h,w) = src.shape
     (f_h, f_w) = mask.shape
-    p_h = ???
-    p_w = ???
-    pad_img = ???
+    p_h = f_h // 2
+    p_w = f_w // 2
+    pad_img = np.zeros((h + p_h * 2, w + p_w * 2))
+    pad_img[p_h:h + p_h, p_w: w + p_w] = src
 
     if pad_type == 'repetition':
         print('repetition padding')
-        #up
-        pad_img = ???
+        # up
+        pad_img[:p_h, p_w:p_w + w] = src[0, :]
 
-        #down
-        pad_img = ???
+        # down
+        pad_img[p_h + h:, p_w:p_w + w] = src[h - 1, :]
 
-        #left
-        pad_img = ???
+        # left
+        pad_img[:, :p_w] = pad_img[:, p_w:p_w + 1]
 
-        #right
-        pad_img = ???
+        # right
+        pad_img[:, p_w + w:] = pad_img[:, p_w + w - 1: p_w + w]
 
     else:
         # else is zero padding
@@ -46,17 +47,18 @@ def my_filtering(src, mask, pad_type='zero'):
     # TODO 3. Filtering 2중 for문 구현
     #########################################
 
-    # 4중 for 문
     for row in range(h):
         for col in range(w):
-            dst = ???
-    dst = np.round(dst).astype(np.uint8)
+            img_filter = pad_img[row: row + f_h, col: col + f_w]
+            dst[row][col] = np.sum(np.multiply(mask, img_filter))
+    dst = np.round(dst).astype(np.uint8)  # 반올림을 해준다.
     return dst
 
 
 def my_get_Gaussian_filter(fshape, sigma=1):
 
     (f_h, f_w) = fshape
+
     ############################################################################
     # TODO 2 2D Gaussian filter 구현
     # TODO 2 np.mrid를 사용하면 y, x 모두 구할 수 있음
@@ -70,10 +72,10 @@ def my_get_Gaussian_filter(fshape, sigma=1):
     #           [-1, 0, 1]]
     ############################################################################
 
-    y, x = ???
+    y, x = np.mgrid[-(f_h // 2): (f_h // 2) + 1, -(f_w // 2): (f_w // 2) + 1]
 
     # 2차 gaussian mask 생성
-    gaussian_filter = ???
+    gaussian_filter = np.exp((-((x * x) + (y * y))) / (2 * sigma * sigma))
 
     # mask 총합 1 : 평균 밝기의 변화가 없도록 하기 위함
     gaussian_filter = gaussian_filter / np.sum(gaussian_filter)
@@ -117,7 +119,7 @@ if __name__ == '__main__':
     filter1 = np.clip(filter1, 0, 255)
     filter1 = np.round(filter1).astype(np.uint8)
 
-    plt.title('fsize=5, sigma=1')
+    plt.title('fsize=5, sigma=1, 202102699')
     plt.imshow(filter1, cmap='gray')
     plt.show()
 
@@ -135,7 +137,7 @@ if __name__ == '__main__':
     filter2 = np.clip(filter2, 0, 255)
     filter2 = np.round(filter2).astype(np.uint8)
 
-    plt.title('fsize=5, sigma=3')
+    plt.title('fsize=5, sigma=3, 202102699')
     plt.imshow(filter2, cmap='gray')
     plt.show()
 
@@ -151,7 +153,7 @@ if __name__ == '__main__':
     filter3 = np.clip(filter3, 0, 255)
     filter3 = np.round(filter3).astype(np.uint8)
 
-    plt.title('fsize=5, sigma=0.1')
+    plt.title('fsize=5, sigma=0.1, 202102699')
     plt.imshow(filter3, cmap='gray')
     plt.show()
 
@@ -167,7 +169,7 @@ if __name__ == '__main__':
     filter4 = np.clip(filter4, 0, 255)
     filter4 = np.round(filter4).astype(np.uint8)
 
-    plt.title('fsize=7, sigma=3')
+    plt.title('fsize=7, sigma=3, 202102699')
     plt.imshow(filter4, cmap='gray')
     plt.show()
 
@@ -183,7 +185,7 @@ if __name__ == '__main__':
     filter5 = np.clip(filter5, 0, 255)
     filter5 = np.round(filter5).astype(np.uint8)
 
-    plt.title('fsize=11, sigma=3')
+    plt.title('fsize=11, sigma=3, 202102699')
     plt.imshow(filter5, cmap='gray')
     plt.show()
 
@@ -199,17 +201,17 @@ if __name__ == '__main__':
     filter6 = np.clip(filter6, 0, 255)
     filter6 = np.round(filter6).astype(np.uint8)
 
-    plt.title('fsize=15, sigma=3')
+    plt.title('fsize=15, sigma=3, 202102699')
     plt.imshow(filter6, cmap='gray')
     plt.show()
 
     cv2.imshow('original', src.astype(np.uint8))
-    cv2.imshow('Case 1 Gaussian 2D image', dst_gaussian_2D_1)
-    cv2.imshow('Case 2 Gaussian 2D image', dst_gaussian_2D_2)
-    cv2.imshow('Case 3 Gaussian 2D image', dst_gaussian_2D_3)
-    cv2.imshow('Case 4 Gaussian 2D image', dst_gaussian_2D_4)
-    cv2.imshow('Case 5 Gaussian 2D image', dst_gaussian_2D_5)
-    cv2.imshow('Case 6 Gaussian 2D image', dst_gaussian_2D_6)
+    cv2.imshow('Case 1 Gaussian 2D image 202102699', dst_gaussian_2D_1)
+    cv2.imshow('Case 2 Gaussian 2D image 202102699', dst_gaussian_2D_2)
+    cv2.imshow('Case 3 Gaussian 2D image 202102699', dst_gaussian_2D_3)
+    cv2.imshow('Case 4 Gaussian 2D image 202102699', dst_gaussian_2D_4)
+    cv2.imshow('Case 5 Gaussian 2D image 202102699', dst_gaussian_2D_5)
+    cv2.imshow('Case 6 Gaussian 2D image 202102699', dst_gaussian_2D_6)
 
     cv2.waitKey()
     cv2.destroyAllWindows()
