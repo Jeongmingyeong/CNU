@@ -59,7 +59,7 @@ let lex_to_expr (s : string) : expr =
 	    | hd::"+"::tl -> E(ADD, V(Int (i2s hd)), (lex_to_expr' tl))
 	    | hd::"-"::tl -> E(SUB, V(Int (i2s hd)), (lex_to_expr' tl))
 	    | hd::"*"::tl -> E(MUL, V(Int (i2s hd)), (lex_to_expr' tl))
-	    | hd::"/"::tl -> E(MUL, V(Int (i2s hd)), (lex_to_expr' tl))
+	    | hd::"/"::tl -> E(DIV, V(Int (i2s hd)), (lex_to_expr' tl))
 	    | hd::_ -> V(Int (i2s hd))
         | [] -> failwith "rejected"
 	in lex_to_expr' token_list
