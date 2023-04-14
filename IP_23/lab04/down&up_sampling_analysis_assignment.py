@@ -289,12 +289,12 @@ def main():
 
 
     # 보고서 출력용 이미지
-    cv2.imwrite('nearest+residual_202102699.png',near_output)
-    cv2.imwrite('nearest+no+residual_202102699.png', no_res_near_output)
-    cv2.imwrite('nearest_naive_202102699.png', naive_output)
-    cv2.imwrite('bilinear+residual_202102699.png',bilinear_output)
-    cv2.imwrite('bilinear+no+residual_202102699.png',no_res_bilinear_output)
-    cv2.imwrite('bilinear_navie_202102699.png', naive_bilinear_output)
+    cv2.imwrite('result_img/nearest+residual_202102699.png',near_output)
+    cv2.imwrite('result_img/nearest+no+residual_202102699.png', no_res_near_output)
+    cv2.imwrite('result_img/nearest_naive_202102699.png', naive_output)
+    cv2.imwrite('result_img/bilinear+residual_202102699.png',bilinear_output)
+    cv2.imwrite('result_img/bilinear+no+residual_202102699.png',no_res_bilinear_output)
+    cv2.imwrite('result_img/bilinear_navie_202102699.png', naive_bilinear_output)
 
     return
 
