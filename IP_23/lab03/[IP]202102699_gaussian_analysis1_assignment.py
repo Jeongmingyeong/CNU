@@ -52,7 +52,7 @@ def my_filtering(src, mask, pad_type='zero'):
     for row in range(h):
         for col in range(w):
             img_filter = pad_img[row : row + f_h, col : col + f_w]
-            dst[row][col] = np.sum(np.multiply(mask, img_filter))
+            dst[row, col] = np.sum(np.multiply(mask, img_filter))
     dst = np.round(dst).astype(np.uint8) # 반올림을 해준다.
     return dst
 

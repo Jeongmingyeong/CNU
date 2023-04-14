@@ -15,10 +15,28 @@ def my_bilinear(src, scale):
 
     for row in range(h_dst):
         for col in range(w_dst):
+            # 스케일링 되기 전 original 좌표
+            y = row / scale
+            x = col / scale
 
+            # bilinear interpolation
+            # 1.(y,x)를 기준으로 좌측위, 좌측아래, 우측아래, 우측위 좌표를 구함.
+            # 2. bilinear interplation 식에 따라 해당 row,col좌표에 값을 대입
+            y_up = int(y)  # 버림
+            y_down = min(int(y + 1), h - 1)  # 반올림 단 src의 최대 좌표값보다는 같거나 작게
+            x_left = int(x)  # 버림
+            x_right = min(int(x + 1), w - 1)  # 반올림 단 src의 최대 좌표값보다는 같거나 작게
 
-            dst[row, col] = ???
+            t = y - y_up
+            s = x - x_left
 
+            intensity = ((1 - s) * (1 - t) * src[y_up, x_left]) \
+                        + (s * (1 - t) * src[y_up, x_right]) \
+                        + ((1 - s) * t * src[y_down, x_left]) \
+                        + (s * t * src[y_down, x_right])
+            dst[row, col] = intensity
+
+    dst = np.round(dst).astype(np.uint8)
     return dst
 
 
@@ -48,8 +66,11 @@ def my_nearest_neighbor(src, scale=None, scale_shape=None):
     dst = np.zeros((h_dst, w_dst), dtype=np.float32)
     for row in range(h_dst):
         for col in range(w_dst):
-
-            dst[row, col] = ???
+            # int(): 소수점 이하를 버림
+            r = min(int(row / h_scale), h - 1)
+            c = min(int(col / w_scale), w - 1)
+            dst[row, col] = src[r, c]
+        dst = np.round(dst).astype(np.float32)
 
     return dst
 
@@ -82,13 +103,13 @@ def my_upsampling_laplacian(src, ratio, residuals=None, upsampling_type='bilinea
             x = my_bilinear(x, scale=ratio)
 
         if residuals is not None:
-            x = ???
+            x = x + laplacian_residuals[i]
 
     x = np.clip(x, 0, 255)
     x = np.round(x).astype(np.uint8)
     return x
 
-def my_downsampling_pyramid(src, ratio, pyramid_lvl, filter_size, sigma, interpolation_type='nearest'):
+def my_downsampling_pyramid(src, ratio, pyramid_lvl, filter_size, sigma, interpolation_type='bilinear'):
 
     """
     인자 정보
@@ -129,14 +150,17 @@ def my_downsampling_pyramid(src, ratio, pyramid_lvl, filter_size, sigma, interpo
 
             # 1. filtering
             filtered_img = cv2.filter2D(gaussian_pyramid[-1], -1, gaussian_filter)
-            # 2. residual 계산 및 저장
 
-            residual = ???
+            # 2. residual 계산 및 저장
+            downsampling_img = np.floor(filtered_img[::ratio, ::ratio])
+            upsampling_img = my_upsampling_laplacian(downsampling_img, ratio=2, residuals=None, upsampling_type=interpolation_type,
+                            pyramid_level=1)
+            laplacian_residual = gaussian_pyramid[level] - upsampling_img
             laplacian_residuals.append(laplacian_residual)
 
 
             # 3. 2.1에서 downsampling한 이미지를 다음 피라미드의 입력으로 설정
-            gaussian_pyramid.append(???)
+            gaussian_pyramid.append(downsampling_img)
 
         return laplacian_residuals, gaussian_pyramid[-1]
 
@@ -151,9 +175,8 @@ def my_downsampling_pyramid(src, ratio, pyramid_lvl, filter_size, sigma, interpo
             # TODO interpolation_type 변수를 활용
             ###########################################################################
 
-            ???
-
-            gaussian_pyramid.append(???)
+            out_img = gaussian_pyramid[-1][::ratio, ::ratio]
+            gaussian_pyramid.append(out_img)
 
         return gaussian_pyramid[-1]
 
@@ -253,25 +276,25 @@ def main():
                                                  upsampling_type='bilinear',
                                                     pyramid_level=pyramid_level)
 
-    cv2.imshow('original', src)
-    cv2.imshow('nearest', near_output)
-    cv2.imshow('no residual nearest', no_res_near_output)
-    cv2.imshow('naive nearest output', naive_output)
+    cv2.imshow('original_202102699', src)
+    cv2.imshow('nearest_202102699', near_output)
+    cv2.imshow('no residual nearest_202102699', no_res_near_output)
+    cv2.imshow('naive nearest output_202102699', naive_output)
 
-    cv2.imshow('bilinear + residual', bilinear_output)
-    cv2.imshow('no_res_bilinear_output', no_res_bilinear_output)
-    cv2.imshow('naive_bilinear_output', naive_bilinear_output)
+    cv2.imshow('bilinear + residual_202102699', bilinear_output)
+    cv2.imshow('no_res_bilinear_output_202102699', no_res_bilinear_output)
+    cv2.imshow('naive_bilinear_output_202102699', naive_bilinear_output)
     cv2.waitKey()
     cv2.destroyAllWindows()
 
 
     # 보고서 출력용 이미지
-    cv2.imwrite('nearest+residual.png',near_output)
-    cv2.imwrite('nearest+no+residual.png', no_res_near_output)
-    cv2.imwrite('nearest_naive.png', naive_output)
-    cv2.imwrite('bilinear+residual.png',bilinear_output)
-    cv2.imwrite('bilinear+no+residual.png',no_res_bilinear_output)
-    cv2.imwrite('bilinear_navie.png', naive_bilinear_output)
+    cv2.imwrite('nearest+residual_202102699.png',near_output)
+    cv2.imwrite('nearest+no+residual_202102699.png', no_res_near_output)
+    cv2.imwrite('nearest_naive_202102699.png', naive_output)
+    cv2.imwrite('bilinear+residual_202102699.png',bilinear_output)
+    cv2.imwrite('bilinear+no+residual_202102699.png',no_res_bilinear_output)
+    cv2.imwrite('bilinear_navie_202102699.png', naive_bilinear_output)
 
     return
 
