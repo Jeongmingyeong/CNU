@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def my_padding(src, filter):
+def my_padding(src, filter): # zero padding
     (h, w) = src.shape
     (h_pad, w_pad) = filter.shape
     h_pad = h_pad // 2
@@ -38,14 +38,14 @@ def get_DoG_filter():
 
     return DoG_x, DoG_y
 
-def calcMagnitude(Ix, Iy):
+def calcMagnitude(Ix, Iy): # 한줄로 구현 가능
     ###########################################
     # TODO                                    #
     # calcMagnitude 완성                      #
     # magnitude : ix와 iy의 magnitude         #
     ###########################################
     # Ix와 Iy의 magnitude를 계산
-    magnitude = None
+    magnitude = np.sqrt(Ix ** 2 + Iy ** 2)
     return magnitude
 
 def calcAngle(Ix, Iy):
@@ -221,7 +221,7 @@ def double_thresholding(src, high_threshold):
 
     return dst
 
-def search_weak_edge(dst, edges, high_threshold_value, low_threshold_value):
+def search_weak_edge(dst, edges, high_threshold_value, low_threshold_value): # 재귀로 해도 되고, 알고리즘사용해 해결가능, 4가지 인자 모두 사용
     ####################################################################################
     # TODO
     # search_weak_edge 함수

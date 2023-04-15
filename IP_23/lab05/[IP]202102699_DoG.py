@@ -30,6 +30,42 @@ def my_get_Gaussian_filter(fshape, sigma=1):
     # gaussian_filter = gaussian_filter / np.sum(gaussian_filter)
     return gaussian_filter
 
+# test 해보고 지울것
+def my_padding(src,ksize,pad_type ='zero'):
+
+    # default - zero padding으로 셋팅
+    (h,w) = src.shape
+
+    #########################################################
+    # TODO                                                  #
+    # padding 구현
+    #########################################################
+
+    (f_h, f_w) = ksize.shape
+    p_h = f_h // 2
+    p_w = f_w // 2
+    pad_img = np.zeros((h + p_h * 2, w + p_w * 2))
+    pad_img[p_h:h + p_h, p_w : w + p_w] = src
+
+    if pad_type == 'repetition':
+        print('repetition padding')
+        #up
+        pad_img[:p_h, p_w:p_w + w] = src[0,:]
+
+        #down
+        pad_img[p_h + h:, p_w:p_w + w] = src[h-1,:]
+
+        #left
+        pad_img[:,:p_w] = pad_img[:,p_w:p_w + 1]
+
+        #right
+        pad_img[:,p_w + w :] = pad_img[:,p_w + w -1 : p_w + w]
+
+    else:
+        # else is zero padding
+        print('zero padding')
+    return pad_img
+
 def first_DoG_filter_mask(fsize, sigma):
     ############################################################################
     # TODO 2 가우시안 마스크와 미분 필터를 이용한 DoG 필터 마스크 구현
@@ -42,11 +78,25 @@ def first_DoG_filter_mask(fsize, sigma):
     ############################################################################
 
     gaussian_filter = my_get_Gaussian_filter((fsize, fsize), sigma)
-    derivative_filter_x = np.array([[-1, 0, 1]])
-    derivative_filter_y = np.array([[-1], [0], [1]])
+    derivative_filter_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    derivative_filter_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
-    gaussianfilter_x = cv2.filter2D(gaussian_filter, -1, derivative_filter_x)
-    gaussianfilter_y = cv2.filter2D(gaussian_filter, -1, derivative_filter_y)
+    test_filter = my_padding(gaussian_filter, derivative_filter_y, pad_type='zero')
+
+    (h, w) = gaussian_filter.shape
+    (x_h, x_w) = derivative_filter_x.shape # (3, 3)
+    (y_h, y_w) = derivative_filter_y.shape # (3, 3)
+
+    gaussianfilter_x = np.zeros(gaussian_filter.shape)
+    gaussianfilter_y = np.zeros(gaussian_filter.shape)
+
+    for row in range(h):
+        for col in range(w):
+            gx_filter = test_filter[row: row + x_h, col: col + x_w]
+            gaussianfilter_x[row, col] = np.sum(np.multiply(gx_filter, derivative_filter_x))
+
+            gy_filter = test_filter[row: row + y_h, col: col + y_w]
+            gaussianfilter_y[row, col] = np.sum(np.multiply(gy_filter, derivative_filter_y))
 
     return gaussianfilter_x, gaussianfilter_y
 
@@ -67,12 +117,9 @@ def second_DoG_filter_mask(fsize, sigma):
 
     y, x = np.mgrid[-(fsize // 2):(fsize // 2) + 1, -(fsize // 2):(fsize // 2) + 1]
 
-    # DoG_x = (-x / (sigma * sigma)) * np.exp(-((x * x) + (y * y)) / (2 * sigma * sigma))
-    # DoG_y = (-y / (sigma * sigma)) * np.exp(-((x * x) + (y * y)) / (2 * sigma * sigma))
-
-    # 이론상은 아래가 맞는거같은데..... 검정화면밖에 안나옴...
-    DoG_x = (-x / (sigma * sigma)) * np.exp(-(x * x) / (2 * sigma * sigma))
-    DoG_y = (-y / (sigma * sigma)) * np.exp(-(y * y) / (2 * sigma * sigma))
+    # 이게 정답 코드
+    DoG_x = (-x / (sigma ** 2)) * (np.exp(-((x ** 2) + (y ** 2)) / (2 * sigma ** 2)))
+    DoG_y = (-y / (sigma ** 2)) * (np.exp(-((x ** 2) + (y ** 2)) / (2 * sigma ** 2)))
 
     return DoG_x, DoG_y
 
@@ -99,25 +146,25 @@ if __name__ == "__main__":
     image = cv2.imread('Lena.png', cv2.IMREAD_GRAYSCALE)
 
     noise_image = make_noise(10, image)
-    cv2.imshow('noise_image', noise_image / 255)
+    cv2.imshow('noise_image_202102699', noise_image / 255)
     sobX, sobY = generate_sobel_filter_cv2(noise_image)
     sobel_x_filter, sobel_y_filter = generate_sobel_filter_2D()
     sobel_x_image = filtering(noise_image, sobel_x_filter)
     sobel_y_image = filtering(noise_image, sobel_y_filter)
 
-    cv2.imshow('Sobel_magnitude', calculate_magnitude(sobel_x_image / 255., sobel_y_image / 255.))
+    cv2.imshow('Sobel_magnitude_202102699', calculate_magnitude(sobel_x_image / 255., sobel_y_image / 255.))
 
     dog_2_y, dog_2_x = second_DoG_filter_mask(5, 1)
     dog_x_image = cv2.filter2D(noise_image, -1, dog_2_x, borderType=cv2.BORDER_CONSTANT)
     dog_y_image = cv2.filter2D(noise_image, -1, dog_2_y, borderType=cv2.BORDER_CONSTANT)
-    cv2.imshow('Dog_Magnitude', calculate_magnitude(dog_x_image / 255., dog_y_image / 255.))
+    cv2.imshow('Dog_Magnitude_202102699', calculate_magnitude(dog_x_image / 255., dog_y_image / 255.))
 
     ############################################################################
     # TODO 2 첫번째 DoG 필터 마스크 구현
     ############################################################################
     image = cv2.imread('Lena.png', cv2.IMREAD_GRAYSCALE)
-    dog_2_y, dog_2_x = second_DoG_filter_mask(5, 1)
     dog_1_x, dog_1_y = first_DoG_filter_mask(5, 1)
+    dog_2_x, dog_2_y = second_DoG_filter_mask(5, 1)
 
     rate = dog_2_y.mean() / dog_1_y.mean()
     print(rate)
@@ -129,8 +176,8 @@ if __name__ == "__main__":
     dog_x_image2 = cv2.filter2D(image, -1, dog_1_x_renew, borderType=cv2.BORDER_CONSTANT)
     dog_y_image2 = cv2.filter2D(image, -1, dog_1_y_renew, borderType=cv2.BORDER_CONSTANT)
 
-    cv2.imshow('TODO_1_Dog_Magnitude', calculate_magnitude(dog_x_image / 255., dog_y_image / 255.))
-    cv2.imshow('TODO_2_Dog_Magnitude', calculate_magnitude(dog_x_image2 / 255., dog_y_image2 / 255.))
+    cv2.imshow('TODO_1_Dog_Magnitude_202102699', calculate_magnitude(dog_x_image / 255., dog_y_image / 255.))
+    cv2.imshow('TODO_2_Dog_Magnitude_202102699', calculate_magnitude(dog_x_image2 / 255., dog_y_image2 / 255.))
     cv2.waitKey()
 
 
