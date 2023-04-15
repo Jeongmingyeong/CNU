@@ -30,42 +30,6 @@ def my_get_Gaussian_filter(fshape, sigma=1):
     # gaussian_filter = gaussian_filter / np.sum(gaussian_filter)
     return gaussian_filter
 
-# test 해보고 지울것
-def my_padding(src,ksize,pad_type ='zero'):
-
-    # default - zero padding으로 셋팅
-    (h,w) = src.shape
-
-    #########################################################
-    # TODO                                                  #
-    # padding 구현
-    #########################################################
-
-    (f_h, f_w) = ksize.shape
-    p_h = f_h // 2
-    p_w = f_w // 2
-    pad_img = np.zeros((h + p_h * 2, w + p_w * 2))
-    pad_img[p_h:h + p_h, p_w : w + p_w] = src
-
-    if pad_type == 'repetition':
-        print('repetition padding')
-        #up
-        pad_img[:p_h, p_w:p_w + w] = src[0,:]
-
-        #down
-        pad_img[p_h + h:, p_w:p_w + w] = src[h-1,:]
-
-        #left
-        pad_img[:,:p_w] = pad_img[:,p_w:p_w + 1]
-
-        #right
-        pad_img[:,p_w + w :] = pad_img[:,p_w + w -1 : p_w + w]
-
-    else:
-        # else is zero padding
-        print('zero padding')
-    return pad_img
-
 def first_DoG_filter_mask(fsize, sigma):
     ############################################################################
     # TODO 2 가우시안 마스크와 미분 필터를 이용한 DoG 필터 마스크 구현
@@ -77,25 +41,22 @@ def first_DoG_filter_mask(fsize, sigma):
     # TODO 수식은 이론 및 실습 ppt를 참고하여 구현.
     ############################################################################
 
-    gaussian_filter = my_get_Gaussian_filter((fsize, fsize), sigma)
+    gaussian_filter = my_get_Gaussian_filter((fsize+2, fsize+2), sigma)
     derivative_filter_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
     derivative_filter_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
-    test_filter = my_padding(gaussian_filter, derivative_filter_y, pad_type='zero')
-
-    (h, w) = gaussian_filter.shape
     (x_h, x_w) = derivative_filter_x.shape # (3, 3)
     (y_h, y_w) = derivative_filter_y.shape # (3, 3)
 
-    gaussianfilter_x = np.zeros(gaussian_filter.shape)
-    gaussianfilter_y = np.zeros(gaussian_filter.shape)
+    gaussianfilter_x = np.zeros((fsize, fsize))
+    gaussianfilter_y = np.zeros((fsize, fsize))
 
-    for row in range(h):
-        for col in range(w):
-            gx_filter = test_filter[row: row + x_h, col: col + x_w]
+    for row in range(fsize):
+        for col in range(fsize):
+            gx_filter = gaussian_filter[row: row + x_h, col: col + x_w]
             gaussianfilter_x[row, col] = np.sum(np.multiply(gx_filter, derivative_filter_x))
 
-            gy_filter = test_filter[row: row + y_h, col: col + y_w]
+            gy_filter = gaussian_filter[row: row + y_h, col: col + y_w]
             gaussianfilter_y[row, col] = np.sum(np.multiply(gy_filter, derivative_filter_y))
 
     return gaussianfilter_x, gaussianfilter_y
