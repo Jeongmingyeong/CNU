@@ -7,7 +7,7 @@ def get_threshold_by_within_variance(intensity, p):
 
     """
     :param intensity: pixel 값 0 ~ 255 범위를 갖는 배열
-    :param p: 상대도수 값
+    :param p: 상대도수 값 ( 이론자료 수식에서의 p와 동일 )
     :return: k: 최적의 threshold 값
     """
 
@@ -15,17 +15,54 @@ def get_threshold_by_within_variance(intensity, p):
     # TODO
     # TODO otsu_method 완성
     # TODO  1. within-class variance를 이용한 방법
-    # TODO  교수님 이론 PPT 22 page 참고
+    # TODO  교수님 이론 PPT 22 page 참고 (수식을 이용해서 구현)
     ########################################################
 
-    ???
+    q1, q2 = 0       # 전체에서의 비율 ( 이론자료에서의 q와 동일 )
+    m1, m2 = 0       # 평균 (m)
+    sum1, sum2 = 0   # pixel 값 * 그에 해당하는 pixel 의 개수
+    s1, s2 = 0       # 분산 (sigma^2)
+    w_s = 0          # within-class variance
+
+    # q 값 구하기
+    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+        for j in range(i+1):
+            q1[i] += p[j]
+            for k in range(j+1, 256):
+                q2[i] += p[k]
+
+    # 평균 구하기
+    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+        for j in range(i+1):
+            sum1 += j * p[j]
+            m1[i] = sum1 / p[j]
+            for k in range(j+1, 256):
+                sum2 += k * p[k]
+                m2[i] = sum2 / p[k]
+
+    # 분산 구하기
+    sum1, sum2 = 0  # (각각 pixel 값 - 평균)^2 * pixel 의 개수(p(i))
+    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+        for j in range(i+1):
+            sum1 += (((j - m1[j]) ** 2) * p[j])
+            s1[i] = sum1 / q1[j]
+            for k in range(j+1, 256):
+                sum2 += (((k - m1[k]) ** 2) * p[k])
+                s2[i] = sum2 / q1[k]
+
+    # within-class variance
+    for k in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+        w_s[k] = (p[k] * s1[k]) + ((1-p[k]) * s2[k])
+
+    # k 구하기 ( = w_s 의 최솟값 찾기 )
+    k = np.amin(w_s)
 
     return k
 
 def get_threshold_by_inter_variance(p):
 
     """
-    :param p: 상대도수 값
+    :param p: 상대도수 값 ( 이론자료 수식에서의 p와 동일 )
     :return: k: 최적의 threshold 값
     """
 
@@ -34,12 +71,27 @@ def get_threshold_by_inter_variance(p):
     # TODO otsu_method 완성
     # TODO  2. inter-class variance를 이용한 방법
     # TODO  Moving average를 이용하여 구현
-    # TODO  교수님 이론 PPT 26 page 참고
+    # TODO  교수님 이론 PPT 26 page 참고 (수식을 이용해서 구현)
     ########################################################
 
     p += 1e-7  # q1과 q2가 0일때 나눗셈을 진행할 경우 오류를 막기 위함
 
-    ???
+    q1 = []
+    m1, m2 = []  # 평균 (m)
+    b_s = 0  # between-class variance
+    q1[0] = 0
+    m1[0] = 0
+    m2[0] = 0
+
+    for k in range(1, 256):
+        q1[k] = q1[k-1] + p[k]
+        m1[k] = ((q1[k-1] * m1[k-1]) + (k * p[k])) / q1[k]
+        m2[k] = (((1 - q1[k - 1]) * m2[k - 1]) - (k * p[k])) / (1 - q1[k])
+
+    for k in range(256):
+        b_s[k] = q1[k] * (1 - q1[k]) * ((m1[k] - m2[k]) ** 2)
+
+    k = np.amax(b_s)
 
     return k
 
@@ -113,7 +165,7 @@ def otsu_method(src, mask):
     # TODO 상대도수 p 구하기
     # TODO 교수님 이론 PPT 17 page -> p_{i}에 해당
     ########################################################
-    p = ???
+    p = hist / hist.size
 
     ########################################################
     # TODO otsu_method 완성
