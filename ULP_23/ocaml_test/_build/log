@@ -1,9 +1,9 @@
-# dune build type_test.exe
+# dune exec ./main.exe
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Workspace root: /Users/jeongmingyeong/CNU/ULP_23/ocaml_test
 # Auto-detected concurrency: 8
-$ /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlc.opt -config > /var/folders/k_/vv8794696sn5kqh5xvzpb94r0000gn/T/dune_f305cb_output
+$ /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlc.opt -config > /var/folders/k_/vv8794696sn5kqh5xvzpb94r0000gn/T/dune_922b7c_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -116,7 +116,3 @@ $ /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlc.opt -config > /var/folders/k_/vv
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default && /Users/jeongmingyeong/.opam/4.13.0/bin/ocamldep.opt -modules -impl type_test.ml) > _build/default/.type_test.eobjs/dune__exe__Type_test.impl.d
-$ (cd _build/default && /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .type_test.eobjs/byte -no-alias-deps -opaque -open Dune__exe -o .type_test.eobjs/byte/dune__exe__Type_test.cmo -c -impl type_test.ml)
-$ (cd _build/default && /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .type_test.eobjs/byte -I .type_test.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .type_test.eobjs/native/dune__exe__Type_test.cmx -c -impl type_test.ml)
-$ (cd _build/default && /Users/jeongmingyeong/.opam/4.13.0/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o type_test.exe .type_test.eobjs/native/dune__exe.cmx .type_test.eobjs/native/dune__exe__Type_test.cmx)
