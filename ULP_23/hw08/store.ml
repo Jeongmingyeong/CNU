@@ -14,5 +14,5 @@ let rec find (s : string) (m : t) : value =
 
 let add (s : string) (v : value) (m : t) : t =
 	let tup = (s, v) in
-	tup::(List.filter (fun s -> s = (List.hd m)) m) 
+	tup::(List.filter (fun (str, _) -> str <> s) m) 
 
