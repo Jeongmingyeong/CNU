@@ -18,44 +18,79 @@ def get_threshold_by_within_variance(intensity, p):
     # TODO  교수님 이론 PPT 22 page 참고 (수식을 이용해서 구현)
     ########################################################
 
-    q1, q2 = 0       # 전체에서의 비율 ( 이론자료에서의 q와 동일 )
-    m1, m2 = 0       # 평균 (m)
-    sum1, sum2 = 0   # pixel 값 * 그에 해당하는 pixel 의 개수
-    s1, s2 = 0       # 분산 (sigma^2)
-    w_s = 0          # within-class variance
+    size = len(p) # 256
+    q1 = np.zeros(size)  # 전체에서의 비율 ( 이론자료에서의 q와 동일 ) p.shape == 256
+    q2 = np.zeros(size)  # 전체에서의 비율 ( 이론자료에서의 q와 동일 ) p.shape == 256
+    m1 = np.zeros(size)  # 평균 (m)
+    m2 = np.zeros(size)  # 평균 (m)
+    v1 = np.zeros(size)  # 분산 (sigma^2)
+    v2 = np.zeros(size)  # 분산 (sigma^2)
+    w_v = np.zeros(size) # within-class variance
 
-    # q 값 구하기
-    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+    # q1, q2 구하기
+    q1[0] = p[0]
+    q2[0] = 1 - q1[0]
+    for i in range(1, size):
+        q1[i] = q1[i-1] + p[i]
+        q2[i] = 1 - q1[i]
+
+    # m1, m2 구하기
+    m1[0] = 0
+    for i in range(1, size):
+        temp = 0
         for j in range(i+1):
-            q1[i] += p[j]
-            for k in range(j+1, 256):
-                q2[i] += p[k]
+            temp += (intensity[j] * p[j])
+        if (q1[i] == 0):
+            continue
+        else:
+            m1[i] = temp / q1[i]
 
-    # 평균 구하기
-    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
+    # m2 초기화
+    if (q2[size-1] == 0):
+        m2[size-1] = 0
+    else:
+        m2[size-1] = (intensity[size-1] * p[size-1]) / q2[size-1]
+
+    for i in range(size-2, -1, -1): # size-2 부터 0까지 -1씩 줄여나가며 for 문 진행
+        temp = 0
+        for j in range(size-2, i, -1):
+            temp += (intensity[j] * p[j])
+        if (q2[i] == 0):
+            continue
+        else:
+            m2[i] = temp / q2[i]
+
+    # v1, v2 구하기
+    v1[0] = 0
+    for i in range(1, size):
+        temp = 0
         for j in range(i+1):
-            sum1 += j * p[j]
-            m1[i] = sum1 / p[j]
-            for k in range(j+1, 256):
-                sum2 += k * p[k]
-                m2[i] = sum2 / p[k]
+            temp += (((intensity[j] - m1[i]) ** 2) * p[j])
+        if (q1[i] == 0):
+            continue
+        else:
+            v1[i] = temp / q1[i]
 
-    # 분산 구하기
-    sum1, sum2 = 0  # (각각 pixel 값 - 평균)^2 * pixel 의 개수(p(i))
-    for i in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
-        for j in range(i+1):
-            sum1 += (((j - m1[j]) ** 2) * p[j])
-            s1[i] = sum1 / q1[j]
-            for k in range(j+1, 256):
-                sum2 += (((k - m1[k]) ** 2) * p[k])
-                s2[i] = sum2 / q1[k]
+    # v2 초기화
+    if (q2[size - 1] == 0):
+        v2[size - 1] = 0
+    else:
+        v2[size - 1] = (((intensity[size-1] - m1[size-1]) ** 2) * p[size-1]) / q2[size - 1]
 
-    # within-class variance
-    for k in range(256): # threshold 값을 1부터 255 까지 바꿔가며 값 저장
-        w_s[k] = (p[k] * s1[k]) + ((1-p[k]) * s2[k])
+    for i in range(size-2, -1, -1): # size-2 부터 0까지 -1씩 줄여나가며 for 문 진행
+        temp = 0
+        for j in range(size-2, i, -1):
+            temp += (((intensity[j] - m2[i]) ** 2) * p[j])
+        if (q2[i] == 0):
+            continue
+        else:
+            v2[i] = temp / q2[i]
 
-    # k 구하기 ( = w_s 의 최솟값 찾기 )
-    k = np.amin(w_s)
+    # within-class variance 계산
+    for k in range(size):
+        w_v[k] = (q1[k] * v1[k]) + (q2[k] * v2[k])
+
+    k = np.argmin(w_v)
 
     return k
 
@@ -76,25 +111,33 @@ def get_threshold_by_inter_variance(p):
 
     p += 1e-7  # q1과 q2가 0일때 나눗셈을 진행할 경우 오류를 막기 위함
 
-    q1 = []
-    m1, m2 = []  # 평균 (m)
-    b_s = 0  # between-class variance
-    q1[0] = 0
+    # print(p)
+    size = len(p)
+    q1 = np.zeros(size)
+    m1 = np.zeros(size)
+    m2 = np.zeros(size)   # 평균 (m)
+    b_s = np.zeros(size)  # between-class variance
+    q1[0] = p[0]
     m1[0] = 0
-    m2[0] = 0
 
-    for k in range(1, 256):
+    # m2 초깃값 설정
+    temp = 0
+    for i in range(size):
+        temp += i * p[i]
+    m2[0] = temp / (1 - q1[0])
+
+    for k in range(1, size):
         q1[k] = q1[k-1] + p[k]
         m1[k] = ((q1[k-1] * m1[k-1]) + (k * p[k])) / q1[k]
         m2[k] = (((1 - q1[k - 1]) * m2[k - 1]) - (k * p[k])) / (1 - q1[k])
 
-    for k in range(256):
+    for k in range(size):
         b_s[k] = q1[k] * (1 - q1[k]) * ((m1[k] - m2[k]) ** 2)
 
-    k = np.amax(b_s)
+    k = np.argmax(b_s)
 
+    # print("k: ", k)
     return k
-
 
 def get_hist(src, mask):
 
@@ -111,10 +154,22 @@ def get_hist(src, mask):
     #######################################################################
     hist = np.zeros((256,))
 
-    ???
+    h, w = src.shape
+    # print(h) 432
+    # print(w) 512
 
+    # count = 0
+    # ???
+    for row in range(h):
+        for col in range(w):
+            if (mask[row][col] == 0):
+                continue
+            else:
+                hist[src[row][col]] = hist[src[row][col]] + 1
+                # count += 1
+
+    # print("count : ", count)
     return hist
-
 
 def threshold(src, threshold, mask):
     """
@@ -135,10 +190,17 @@ def threshold(src, threshold, mask):
     h, w = src.shape
     dst = np.zeros((h, w), dtype=np.uint8)
 
-    ???
+    # ???
+    for row in range(h):
+        for col in range(w):
+            if (mask[row][col] != 0) :
+                # 0 < src <= threshold 인 경우
+                if(0 < src[row][col] and src[row][col] <= threshold):
+                    dst[row][col] = 255
+            else: # mask 의 값이 0 인 경우
+                dst[row][col] = 0
 
     return dst
-
 
 def otsu_method(src, mask):
 
@@ -165,7 +227,7 @@ def otsu_method(src, mask):
     # TODO 상대도수 p 구하기
     # TODO 교수님 이론 PPT 17 page -> p_{i}에 해당
     ########################################################
-    p = hist / hist.size
+    p = hist / np.sum(hist[np.nonzero(hist)[0]]) # p = hist / 103397
 
     ########################################################
     # TODO otsu_method 완성
@@ -180,6 +242,9 @@ def otsu_method(src, mask):
 
     # k1과 k2가 같아야 한다.
     # 같지 않으면 실행 종료
+    # print(k1)
+    # print(k2)
+
     assert k1 == k2
 
     dst1 = threshold(src, k1, mask)
@@ -192,15 +257,14 @@ def otsu_method(src, mask):
     ########################################################
     # Bi-modal Distribution
     plt.plot(intensity, hist)
-    plt.plot(???, ???, color='red', marker='o', markersize=6)
-    plt.plot(???, ???, color='red', marker='o', markersize=6)
+    plt.plot(np.argmax(hist[:k1]), hist[np.argmax(hist[:k1])], color='red', marker='o', markersize=6)
+    plt.plot(np.argmax(hist[k1:]) + k1, hist[np.argmax(hist[k2:]) + k1], color='red', marker='o', markersize=6)
     plt.xlabel('Pixel value')
     plt.ylabel('Frequency')
     plt.title('Interest region histogram')
     plt.show()
 
     return dst1, dst2
-
 
 def main():
     meat = cv2.imread('meat.png', cv2.IMREAD_GRAYSCALE)
@@ -227,10 +291,10 @@ def main():
     final2 = cv2.add(meat, dst1)
 
     # 본인 학번 적기
-    cv2.imshow('2021xxxx within_variance dst', dst1)
-    cv2.imshow('2021xxxx inter_variance dst', dst2)
-    cv2.imshow('2021xxxx final1', final1)
-    cv2.imshow('2021xxxx final2', final2)
+    cv2.imshow('202102699 within_variance dst', dst1)
+    cv2.imshow('202102699 inter_variance dst', dst2)
+    cv2.imshow('202102699 final1', final1)
+    cv2.imshow('202102699 final2', final2)
 
     cv2.waitKey()
     cv2.destroyAllWindows()
