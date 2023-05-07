@@ -2,8 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
 def my_padding(src, ksize, pad_type='zero'):
     # default - zero padding으로 셋팅
     (h, w) = src.shape
@@ -57,8 +55,9 @@ def Spatial2Frequency_mask(n=4):
             # TODO submask 마다 0 ~ 255의 범위를 갖도록 변환 (my_transform 함수 사용)
             # TODO full mask는 각 sub mask로 구성되어있음
             ##########################################################################
-            submask = ???
-
+            # submask = ???
+            submask = np.cos( (((2 * x) + 1) * u_ * np.pi) / (2 * n) ) * np.cos( (((2 * y) + 1) * v_ * np.pi) / (2 * n) )
+            full_mask[v_ * n : (v_ + 1) * n, u_ * n: (u_ + 1) * n] = my_transform(submask)
 
     return full_mask
 
@@ -75,7 +74,13 @@ def my_transform(src):
     # TODO my_normalize
     # TODO mask를 normalization(0 ~ 1)후 (0 ~ 255)의 값을 갖도록 변환
     ##############################################################################
-    ???
+
+    if( src.max() == src.min() ):
+        src_normalization = src  / 1
+    else:
+        src_normalization = (src - src.min()) / (src.max() - src.min())
+
+    dst = (src_normalization * 255)
 
     return dst
 
@@ -85,7 +90,7 @@ if __name__ == '__main__':
     block_size = 4
     src = np.ones((block_size, block_size), dtype=np.float32)
 
-    mask = Spatial2Frequency_mask(src, n=block_size)
+    mask = Spatial2Frequency_mask(n=block_size)
     mask = mask.astype(np.uint8)
 
     true_mask = np.load('mask.npy')
@@ -113,7 +118,7 @@ if __name__ == '__main__':
             mask_visualization[(row * 100):((row + 1) * 100),
             (col * 100):((col + 1) * 100)] = extended_sub
 
-    cv2.imshow('mask visual', mask_visualization)
+    cv2.imshow('mask visual_202102699', mask_visualization)
     cv2.waitKey()
     cv2.destroyAllWindows()
 
