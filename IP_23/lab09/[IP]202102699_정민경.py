@@ -261,7 +261,7 @@ def otsu_method(src, mask):
     plt.plot(np.argmax(hist[k1:]) + k1, hist[np.argmax(hist[k2:]) + k1], color='red', marker='o', markersize=6)
     plt.xlabel('Pixel value')
     plt.ylabel('Frequency')
-    plt.title('Interest region histogram')
+    plt.title('Interest region histogram_202102699')
     plt.show()
 
     return dst1, dst2
