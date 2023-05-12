@@ -271,7 +271,7 @@ def double_thresholding(src, high_threshold):
                 #                 weak Edge들을 Strong으로 변경
                 #                 만약 Weak Edge 주변에 Strong이 없으면 Weak Edge를 버림.
                 weak_edge = []
-                weak_edge.append((row, col))
+                # weak_edge.append((row, col))
                 # weak_edge list 를 weak_edge 들의 list 로 갱신 (search_weak_edge 함수를 사용해서)
                 search_weak_edge(dst, weak_edge, high_threshold_value, low_threshold_value, (row, col))
 
