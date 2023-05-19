@@ -1,0 +1,39 @@
+let add (e1 : Store.value) (e2 : Store.value) : Store.value =
+	match e1, e2 with
+	| Store.NumV n1, Store.NumV n2 -> Store.NumV (n1 + n2)
+	| _, _ -> failwith "unreachable"
+
+let sub (e1 : Store.value) (e2 : Store.value) : Store.value =
+	match e1, e2 with
+	| Store.NumV n1, Store.NumV n2 -> Store.NumV (n1 - n2)
+	| _, _ -> failwith "unreachable"
+
+let rec interp (e : Ast.expr) (s : Store.t) : Store.value = 
+	match e with
+	| Ast.Num n -> Store.NumV n
+	| Ast.Id str -> Store.find str s
+	| Ast.Add (e1, e2) ->
+		begin 
+			match (interp e1 s), (interp e2 s) with
+			| (Store.NumV n1), (Store.NumV n2) -> add (Store.NumV n1) (Store.NumV n2)
+			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a" Ast.pp e)
+		end
+	| Ast.Sub (e1, e2) ->
+		begin
+			match (interp e1 s), (interp e2 s) with
+			| (Store.NumV n1), (Store.NumV n2) -> sub (Store.NumV n1) (Store.NumV n2)
+			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a" Ast.pp e)
+		end
+	| Ast.LetIn (str, e1, e2) -> 
+		let m = Store.add str (interp e1 s) s in
+		interp e2 m 
+	| Ast.Lambda (param, body) -> Store.ClosureV (param, body, s)
+	| Ast.App (e1, e2) ->
+		begin 
+			match (interp e1 s) with
+			| Store.ClosureV (str, e, mem) ->
+				let v = interp e2 s in
+				let new_mem = Store.add str v mem in
+				interp e new_mem
+			| _ -> failwith (Format.asprintf "[Error] Not a function: %a" Ast.pp e1)
+		end
