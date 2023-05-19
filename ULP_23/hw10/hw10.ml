@@ -1,13 +1,3 @@
-let add (e1 : Store.value) (e2 : Store.value) : Store.value =
-	match e1, e2 with
-	| Store.NumV n1, Store.NumV n2 -> Store.NumV (n1 + n2)
-	| _, _ -> failwith "unreachable"
-
-let sub (e1 : Store.value) (e2 : Store.value) : Store.value =
-	match e1, e2 with
-	| Store.NumV n1, Store.NumV n2 -> Store.NumV (n1 - n2)
-	| _, _ -> failwith "unreachable"
-
 let rec interp (e : Ast.expr) (s : Store.t) : Store.value = 
 	match e with
 	| Ast.Num n -> Store.NumV n
@@ -15,13 +5,13 @@ let rec interp (e : Ast.expr) (s : Store.t) : Store.value =
 	| Ast.Add (e1, e2) ->
 		begin 
 			match (interp e1 s), (interp e2 s) with
-			| (Store.NumV n1), (Store.NumV n2) -> add (Store.NumV n1) (Store.NumV n2)
+			| (Store.NumV n1), (Store.NumV n2) -> Store.NumV (n1 + n2)
 			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a" Ast.pp e)
 		end
 	| Ast.Sub (e1, e2) ->
 		begin
 			match (interp e1 s), (interp e2 s) with
-			| (Store.NumV n1), (Store.NumV n2) -> sub (Store.NumV n1) (Store.NumV n2)
+			| (Store.NumV n1), (Store.NumV n2) -> Store.NumV (n1 - n2)
 			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a" Ast.pp e)
 		end
 	| Ast.LetIn (str, e1, e2) -> 

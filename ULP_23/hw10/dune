@@ -1,7 +1,12 @@
 (include_subdirs unqualified)
 (library
 (name hw10)
-(modules hw10 store)
+(modules hw10)
+(libraries ast store))
+
+(library
+(name store)
+(modules store)
 (libraries ast))
 
 (library
