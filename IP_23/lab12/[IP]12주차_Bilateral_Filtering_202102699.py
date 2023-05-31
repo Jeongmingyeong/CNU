@@ -101,7 +101,7 @@ def my_bilateral(src, msize, sigma_s, sigma_r,sigma_d, sigma_dog, pos_x, pos_y, 
     y, x = np.mgrid[-(msize // 2): (msize // 2) + 1, -(msize // 2): (msize // 2) + 1]
 
     # filte size만큼 padding 이미지 생성
-    img_pad = my_padding(src, (msize // 2, msize // 2), 'zero')
+    img_pad = my_padding(src, (msize // 2, msize // 2), pad_type)
     # padding 폭
     (p_h, p_w) = (msize // 2, msize // 2)
 
@@ -120,15 +120,20 @@ def my_bilateral(src, msize, sigma_s, sigma_r,sigma_d, sigma_dog, pos_x, pos_y, 
     for i in range(h):
         print('\r%d / %d ...' %(i, h), end="")
         for j in range(w):
-
             # 실습자료에 있는 exp 수식으로 구현
             # mask = ???
-            for k in range(len(x)):
-                for l in range(len(y)):
-                    gau_value = np.exp((-(((i-k)**2) / (2 * sigma_s))) - ((((j-l)**2) / (2 * sigma_s))))
-                    intensity_value = np.exp(-(((src[i, j] - src[k, l]) ** 2) / 2 * sigma_r))
-                    dog_value = np.exp(-(((dog_pad[i, j] - dog_pad[k, l]) ** 2) / 2 * sigma_d))
-                    mask[k, l] = (1 / msize) * gau_value * intensity_value * dog_value
+            if (is_dog):
+                gau_value = np.exp((-((x * x) + (y * y))) / (2 * sigma_s * sigma_s))
+                intensity_value = np.exp(-(((src[i, j] - img_pad[i:i + msize, j:j + msize]) ** 2) / (2 * (sigma_r ** 2))))
+                dog_value = np.exp(-(((dog_img[i, j] - dog_pad[i:i + msize, j:j + msize]) ** 2) / (2 * (sigma_d ** 2))))
+                mask = gau_value * intensity_value * dog_value
+            else:
+                gau_value = np.exp((-((x * x) + (y * y))) / (2 * sigma_s * sigma_s))
+                intensity_value = np.exp(-(((src[i, j] - img_pad[i:i + msize, j:j + msize]) ** 2) / (2 * (sigma_r ** 2))))
+                mask = gau_value * intensity_value
+
+            # 정규화 => 합을 1로 만들기 위함.
+            mask = (1 / np.sum(mask)) * mask
 
             if i == pos_x and j == pos_y:
                 import matplotlib.pyplot as plt
@@ -144,8 +149,8 @@ def my_bilateral(src, msize, sigma_s, sigma_r,sigma_d, sigma_dog, pos_x, pos_y, 
                 plt.show()
             # 한 픽셀에 대한 mask filtering 결과를 반영한다.
             dst[i, j] = np.sum(img_pad[i: i + msize, j: j + msize] * mask)
-
     return dst
+
 
 if __name__ == '__main__':
 
@@ -166,40 +171,40 @@ if __name__ == '__main__':
     # TODO my_bilateral, gaussian mask 채우기
     # TODO filter size, sigma, sigma_s, sigma_r 값 채우기
     # TODO DoG를 활용하는 부분도 채우기
-    # filter size 는 우리가 직접 실행하면서 찾으면 된다고 했던 것 같음.
-    # sigma 값은 어떻게 찾아야하는걸까...?
-    # sigma_s 는 0.1 이 맞는것같음. -> gaussian filter 에서 0.1 사용
-    # 그럼 sigma_r 은 뭘까?
+    # filter size와 sigma 값은 우리가 직접 실행하면서 찾으면 된다고 했던 것 같음.
+    # filter size 와 sigma_s 는 아래 190번 줄에서 my_get_Gaussian2D_mask 를 호출할 때 사용한 15, 5 인 것 같음.
+    # sigma_r 은 값을 넣어보며 찍었을 때 제일 비슷한 값임.
     ######################################################
+
     # dst = my_bilateral(src_noise, ??, sigma_s=??, sigma_r=??, sigma_d=0.08, sigma_dog=3, pos_x=pos_x, pos_y=pos_y)
-    dst = my_bilateral(src_noise, 14, sigma_s=0.1, sigma_r=0.1, sigma_d=0.08, sigma_dog=3, pos_x=pos_x, pos_y=pos_y)
+    dst = my_bilateral(src_noise, 15, sigma_s=5, sigma_r=0.25, sigma_d=0.08, sigma_dog=3, pos_x=pos_x, pos_y=pos_y)
     dst = my_normalize(dst)
 
     # dog_dst = my_bilateral(src_noise, ??, sigma_s=??, sigma_r=??, sigma_d=0.08, sigma_dog=3,pos_x=pos_x, pos_y=pos_y,
     #                        pad_type='zero', is_dog=True)
-    dog_dst = my_bilateral(src_noise, 14, sigma_s=0.1, sigma_r=0.1, sigma_d=0.08, sigma_dog=3,
+    dog_dst = my_bilateral(src_noise, 15, sigma_s=5, sigma_r=0.25, sigma_d=0.08, sigma_dog=3,
                           pos_x=pos_x, pos_y=pos_y, pad_type='zero', is_dog=True)
     dog_dst = my_normalize(dog_dst)
 
     import matplotlib.pyplot as plt
     gaus2D = my_get_Gaussian2D_mask(15, sigma=5)
-    plt.imshow(gaus2D,cmap='gray')
+    plt.imshow(gaus2D, cmap='gray')
     plt.show()
     dst_gaus2D = my_filtering(src_noise, gaus2D)
     dst_gaus2D = my_normalize(dst_gaus2D)
 
     # 보고서 출력용 - 주석 풀어서 확인해 볼 것
-    # cv2.imwrite('./baby_gaussian_noise.png', src_noise_uint8)
-    # cv2.imwrite('./baby_gaussian_filtering.png', dst_gaus2D)
-    # cv2.imwrite('./baby_my_bilateral.png', dst)
-    # cv2.imwrite('./baby_my_dog_bilateral.png', dog_dst)
+    cv2.imwrite('./save_image/baby_gaussian_noise.png', src_noise_uint8)
+    cv2.imwrite('./save_image/baby_gaussian_filtering.png', dst_gaus2D)
+    cv2.imwrite('./save_image/baby_my_bilateral.png', dst)
+    cv2.imwrite('./save_image/baby_my_dog_bilateral.png', dog_dst)
 
     # stretching difference image
-    image1 = cv2.imread('baby_my_bilateral.png', cv2.IMREAD_GRAYSCALE) / 255
-    image2 = cv2.imread('baby_my_dog_bilateral.png', cv2.IMREAD_GRAYSCALE) / 255
+    image1 = cv2.imread('./save_image/baby_my_bilateral.png', cv2.IMREAD_GRAYSCALE) / 255
+    image2 = cv2.imread('./save_image/baby_my_dog_bilateral.png', cv2.IMREAD_GRAYSCALE) / 255
     diff_image = image2 - image1
     diff_image = diff_image / diff_image.max()
-    cv2.imshow('image', diff_image)
+    cv2.imshow('image_202102699', diff_image)
     cv2.waitKey()
     cv2.destroyAllWindows()
 
