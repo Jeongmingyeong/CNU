@@ -12,7 +12,7 @@ let rec interp (e : Ast.expr) (s : Store.t) : Store.value =
 		begin
 			match (interp e1 s), (interp e2 s) with
 			| (Store.NumV n1), (Store.NumV n2) -> Store.NumV (n1 - n2)
-			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a + %a" Ast.pp e1 Ast.pp e2)
+			| _, _ -> failwith (Format.asprintf "[Error] Not a number: %a - %a" Ast.pp e1 Ast.pp e2)
 		end
 	| Ast.LetIn (str, e1, e2) -> 
 		let m = Store.add str (interp e1 s) s in
