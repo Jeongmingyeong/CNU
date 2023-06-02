@@ -29,7 +29,7 @@ let rec interp (e : Ast.expr) (s : Store.t) : Store.value =
 			| Store.ClosureV (str', expr, s') ->
 			  let rec s'' = (str, Store.ClosureV (str', expr, s'')) :: s' in
 			  interp e2 s''
-			| _ -> failwith (Format.asprintf "ClosureV required: %a" Ast.pp e1) 
+			| _ -> failwith (Format.asprintf "[Error] Not a function: %a" Ast.pp e1) 
 		end  
 	| Ast.Lambda (param, body) -> Store.ClosureV (param, body, s)
 	| Ast.App (e1, e2) ->
