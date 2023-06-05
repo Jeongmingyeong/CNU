@@ -78,11 +78,6 @@ def get_roi_coordinates(src):
     if ((len(temp) - 1) == (h - 1)):
         coordinates_list.append(temp[len(temp) - 1])
 
-    # coordinates_list[0] = (0, 0) # 왼쪽 위 좌표
-    # coordinates_list[1] = (0, w) # 오른쪽 위 좌표
-    # coordinates_list[2] = (h, 0) # 왼쪽 아래 좌표
-    # coordinates_list[3] = (h, w) # 오른쪽 아래 좌표
-
     return coordinates_list
 
 def get_max_min_coordinates(roi_coordinates, M):
@@ -130,7 +125,6 @@ def get_max_min_coordinates(roi_coordinates, M):
     col_max = int(np.ceil(max_value[1]))
     col_min = int(np.floor(min_value[1]))
 
-
     return row_max, row_min, col_max, col_min
 
 def backward(src, M):
@@ -166,8 +160,6 @@ def backward(src, M):
     # 중복 제거
     roi_coordinates = list(set(get_roi_coordinates(src)))
 
-
-    # (row_max, row_min, col_max, col_min) = get_max_min_coordinates(roi_coordinates, M)
     (col_max, col_min , row_max, row_min) = get_max_min_coordinates(roi_coordinates, M)
 
 
@@ -196,9 +188,7 @@ def backward(src, M):
             ##################################################################
 
             P_dst = np.array([
-                    # [col + col_min + 1],
                     [col + col_min],
-                    # [row + row_min - 1],
                     [row + row_min],
                     [1]
                 ])
