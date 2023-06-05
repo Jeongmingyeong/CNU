@@ -15,6 +15,9 @@ def get_roi_coordinates(src):
     # TODO 보정한 이미지의 4개의 꼭짓점(이미지의 틀)이 아님.
     # TODO ROI 좌표가 4개 이상으로 나와도 상관 없음.
     # TODO 실습 PPT 참고
+    # 이미지에서 4개의 꼭짓점좌표는 언제나 이미지 틀에 맞닿아있는 값이므로 이미지 틀만 탐색하면서 좌표 저장?
+    # 이미지 틀을 탐색하면서 0이 아닌 값, 즉 이미지가 있는 값의 좌표를 저장.
+    # 값을 저장할때는 col, row 순으로 저장 (?)
     #####################################################
 
     h, w = src.shape
@@ -22,6 +25,63 @@ def get_roi_coordinates(src):
     coordinates_list = []
 
     # 4개의 좌표값을 도출해야 함.
+
+    # 위쪽 모서리 탐색
+    temp = []
+    for i in range(h):
+        for j in range(w):
+            if (src[i][j] != 0):
+                temp.append((i, j))
+        if (len(temp) != 0):
+            break
+
+    coordinates_list.append(temp[0])
+    if ((len(temp) - 1) == (w - 1)):
+        coordinates_list.append(temp[len(temp)-1])
+
+    # 오른쪽 모서리 탐색
+    temp = []
+    for i in range(w-1, -1, -1):
+        for j in range(h):
+            if (src[j][i] != 0):
+                temp.append((j, i))
+        if (len(temp) != 0):
+            break
+
+    coordinates_list.append(temp[0])
+    if ((len(temp) - 1) == (h - 1)):
+        coordinates_list.append(temp[len(temp) - 1])
+
+    # 아래쪽 모서리 탐색
+    temp = []
+    for i in range(h-1, -1, -1):
+        for j in range(w):
+            if (src[i][j] != 0):
+                temp.append((i, j))
+        if (len(temp) != 0):
+            break
+
+    coordinates_list.append(temp[0])
+    if((len(temp) - 1) == (w - 1)):
+        coordinates_list.append(temp[len(temp) - 1])
+
+    # 왼쪽 모서리 탐색
+    temp = []
+    for i in range(w):
+        for j in range(h):
+            if (src[j][i] != 0):
+                temp.append((j, i))
+        if (len(temp) != 0):
+            break
+
+    coordinates_list.append(temp[0])
+    if ((len(temp) - 1) == (h - 1)):
+        coordinates_list.append(temp[len(temp) - 1])
+
+    # coordinates_list[0] = (0, 0) # 왼쪽 위 좌표
+    # coordinates_list[1] = (0, w) # 오른쪽 위 좌표
+    # coordinates_list[2] = (h, 0) # 왼쪽 아래 좌표
+    # coordinates_list[3] = (h, w) # 오른쪽 아래 좌표
 
     return coordinates_list
 
@@ -43,15 +103,33 @@ def get_max_min_coordinates(roi_coordinates, M):
 
     # dst shape 구하기
     cor_transform = []
+
+    for i in range(len(roi_coordinates)):
+        row, col = roi_coordinates[i]
+        P = np.array([
+            [col],
+            [row],
+            [1]
+        ])
+        P_dst = np.dot(M, P)
+        cor_transform.append((P_dst[0][0], P_dst[1][0]))
     # Original에서 M에 의해 변환된 좌표의 최대 최소 범위 파악
 
     cor_transform = np.array(cor_transform)
 
-    # 추출한 좌표들을 기반으로 행의 최소, 최대값 열의 최소 최댓값을 추출
-    row_max = ???
-    row_min = ???
-    col_max = ???
-    col_min = ???
+    # 추출한 좌표들을 기반으로 행의 최소, 최대값 열의 최소, 최댓값을 추출
+    # row_max = ???
+    # row_min = ???
+    # col_max = ???
+    # col_min = ???
+
+    min_value = np.min(cor_transform, axis=0)
+    max_value = np.max(cor_transform, axis=0)
+    row_max = int(np.ceil(max_value[0]))
+    row_min = int(np.floor(min_value[0]))
+    col_max = int(np.ceil(max_value[1]))
+    col_min = int(np.floor(min_value[1]))
+
 
     return row_max, row_min, col_max, col_min
 
@@ -89,7 +167,8 @@ def backward(src, M):
     roi_coordinates = list(set(get_roi_coordinates(src)))
 
 
-    (row_max, row_min, col_max, col_min) = get_max_min_coordinates(roi_coordinates, M)
+    # (row_max, row_min, col_max, col_min) = get_max_min_coordinates(roi_coordinates, M)
+    (col_max, col_min , row_max, row_min) = get_max_min_coordinates(roi_coordinates, M)
 
 
     ############################################
@@ -97,8 +176,10 @@ def backward(src, M):
     # TODO 2.2 결과 이미지의 크기 구하기
     ############################################
 
-    h_ = ???
-    w_ = ???
+    # h_ = ???
+    # w_ = ???
+    h_ = row_max - row_min
+    w_ = col_max - col_min
     dst = np.zeros((h_, w_))
 
     for row in range(h_):
@@ -114,12 +195,20 @@ def backward(src, M):
             # TODO  src_row: 역변환(M의 inverse)에 의한 y좌표
             ##################################################################
 
-            P_dst = ???
+            P_dst = np.array([
+                    # [col + col_min + 1],
+                    [col + col_min],
+                    # [row + row_min - 1],
+                    [row + row_min],
+                    [1]
+                ])
 
             # original 좌표로 매핑
             P = np.dot(M_inv, P_dst)
-            src_col = ???
-            src_row = ???
+            # src_col = ???
+            # src_row = ???
+            src_col = P[0, 0]
+            src_row = P[1, 0]
             # bilinear interpolation
 
             src_col_right = int(np.ceil(src_col))
@@ -138,7 +227,14 @@ def backward(src, M):
             # TODO Bilinear interpolation 완성
             ##################################################################
 
-            intensity = ???
+            # intensity = ???
+            s = src_col - src_col_left
+            t = src_row - src_row_top
+
+            intensity = (1 - s) * (1 - t) * src[src_row_top, src_col_left] \
+                        + s * (1 - t) * src[src_row_top, src_col_right] \
+                        + (1 - s) * t * src[src_row_bottom, src_col_left] \
+                        + s * t * src[src_row_bottom, src_col_right]
 
             dst[row, col] = intensity
 
@@ -150,15 +246,29 @@ def backward(src, M):
     return dst
 
 def generate_rotation(degree):
-    M_ro = ???
+    # M_ro = ???
+    M_ro = np.array([
+        [np.cos(np.deg2rad(degree)), -np.sin(np.deg2rad(degree)), 0],
+        [np.sin(np.deg2rad(degree)), np.cos(np.deg2rad(degree)), 0],
+        [0, 0, 1]])
     return M_ro
 
 def generate_scaling(x_scaling, y_scaling):
-    M_sc = ???
+    # M_sc = ???
+    M_sc = np.array([
+        [x_scaling, 0, 0],
+        [0, y_scaling, 0],
+        [0, 0, 1]
+    ])
     return M_sc
 
 def generate_shearing(x, y):
-    M_sh = ???
+    # M_sh = ???
+    M_sh = np.array([
+        [1, x, 0],
+        [y, 1, 0],
+        [0, 0, 1]
+    ])
     return M_sh
 
 def display_image(image_list):
@@ -243,7 +353,7 @@ def display_image(image_list):
         template[25 + coord_1: 25 + final_image_shape[0] + coord_1,
         coord_2: final_image_shape[1] + coord_2] = final_image
 
-    cv2.imshow('image',template)
+    cv2.imshow('image_202102699',template)
     cv2.waitKey()
 
 def main():
