@@ -29,7 +29,7 @@ def BGR2YIQ(src):
     """
 
     :param src: BGR 이미지
-    :return:YIQ 이미지지
+    :return:YIQ 이미지
     """
     src = src.astype(np.float32)
 
@@ -49,7 +49,7 @@ def BGR2YIQ(src):
 def main():
 
     # BGR uint8 image
-    src = cv2.imread('Lena.png')
+    src = cv2.imread('canoe.png')
     yiq = BGR2YIQ(src)
     bgr = YIQ2BGR(yiq)
 

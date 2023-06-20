@@ -76,12 +76,27 @@ def my_median_filtering(src, msize):
             # TODO median filtering 구현 시 openCV, np.median 사용금지
             # TODO median filtering 구현 시 sorting 관련 내장 함수 사용 허용
             # TODO 이전 실습 코드 참고
+            # median filtering 은 mask 의 값들을 정렬해서 중간값 사용
             #########################################################
 
-            mask = ???
-            dst[row, col] = ???
+            r_start = np.clip(row - (msize // 2), 0, h)
+            r_end = np.clip(row + (msize // 2), 0, h)
 
-    return dst.astype(np.uint8)
+            c_start = np.clip(col - msize // 2, 0, w)
+            c_end = np.clip(col + msize // 2, 0, w)
+
+            mask = src[r_start:r_end, c_start:c_end]
+
+            mask_1D = np.array(mask).flatten()
+
+            # 1차원 배열을 정렬
+            sorted_array = np.sort(mask_1D)
+
+            # 중앙값 계산
+            median = sorted_array[len(sorted_array) // 2]
+            dst[row, col] = median
+
+    return dst
 
 
 if __name__ == '__main__':
@@ -103,9 +118,19 @@ if __name__ == '__main__':
 
     gaus2D = my_get_Gaussian2D_mask(msize=3, sigma=5)
 
-    rgb_gaussian_dst = ???
+    B = src_noise[:, :, 0]
+    G = src_noise[:, :, 1]
+    R = src_noise[:, :, 2]
 
-    rgb_median_dst = ???
+    B_ = my_filtering(B, gaus2D)
+    G_ = my_filtering(G, gaus2D)
+    R_ = my_filtering(R, gaus2D)
+    rgb_gaussian_dst = my_normalize(np.dstack((B_, G_, R_)))
+
+    B_ = my_median_filtering(B, 3)
+    G_ = my_median_filtering(G, 3)
+    R_ = my_median_filtering(R, 3)
+    rgb_median_dst = my_normalize(np.dstack((B_, G_, R_)))
 
     ######################################################
     # TODO
@@ -118,17 +143,27 @@ if __name__ == '__main__':
 
     gaus2D = my_get_Gaussian2D_mask(msize=3,  sigma=5)
     yuv_noise = cv2.cvtColor(noise_image, cv2.COLOR_BGR2YUV)
-    yuv_gaussian_dst = yuv_noise / 255
+    yuv_noise = yuv_noise / 255
 
-    yuv_gaussian_dst = ???
+    Y = yuv_noise[:, :, 0]
+    U = yuv_noise[:, :, 1]
+    V = yuv_noise[:, :, 2]
 
-    yuv_median_dst = ???
+    Y_ = my_filtering(Y, gaus2D)
+    yuv_gaussian_dst = my_normalize(np.dstack((Y_, U, V)))
 
-    cv2.imshow('original', src)
-    cv2.imshow('noise image', noise_image)
-    cv2.imshow('RGB + gaussain filtering', rgb_gaussian_dst)
-    cv2.imshow('RGB + medain filtering', rgb_median_dst)
-    cv2.imshow('YUV + gaussian filtering', cv2.cvtColor(yuv_gaussian_dst, cv2.COLOR_YUV2BGR))
-    cv2.imshow('YUV + median filtering', cv2.cvtColor(yuv_median_dst, cv2.COLOR_YUV2BGR))
+    Y = yuv_noise[:, :, 0]
+    U = yuv_noise[:, :, 1]
+    V = yuv_noise[:, :, 2]
+
+    Y_ = my_median_filtering(Y, 3)
+    yuv_median_dst = my_normalize(np.dstack((Y_, U, V)))
+
+    cv2.imshow('original_202102699', src)
+    cv2.imshow('noise image_202102699', noise_image)
+    cv2.imshow('RGB + gaussain filtering_202102699', rgb_gaussian_dst)
+    cv2.imshow('RGB + median filtering_202102699', rgb_median_dst)
+    cv2.imshow('YUV + gaussian filtering_202102699', cv2.cvtColor(yuv_gaussian_dst, cv2.COLOR_YUV2BGR))
+    cv2.imshow('YUV + median filtering_202102699', cv2.cvtColor(yuv_median_dst, cv2.COLOR_YUV2BGR))
     cv2.waitKey()
     cv2.destroyAllWindows()
