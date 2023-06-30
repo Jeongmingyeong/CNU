@@ -3,7 +3,7 @@
 (library
  (name hw13)
  (modules hw13)
- (libraries ParserMain AddrManager Env Memory Value Ast))
+ (libraries ParserMain AddrManager env Memory Value Ast))
 
 (library 
  (name ParserMain) 
@@ -14,14 +14,15 @@
  (name AddrManager) 
  (modules AddrManager))
 
-(library 
- (name Env) 
- (modules Env))
-
 (library
  (name Memory)
  (modules Memory)
- (libraries Env Value))
+ (libraries env Value))
+
+(library 
+ (name env) 
+ (modules env))
+
 
 (library
  (name Value)

@@ -1,0 +1,30 @@
+type token =
+    WHILE
+  | TRUE
+  | STAR
+  | SEMICOLON
+  | RIGHT_PARENTHESIS
+  | RIGHT_BRACE
+  | REF
+  | PLUS
+  | OR
+  | NUMBER of int
+  | MINUS
+  | LESSTHAN
+  | LEFT_PARENTHESIS
+  | LEFT_BRACE
+  | IF
+  | ID of string
+  | GREATERTHAN
+  | FALSE
+  | EQ
+  | EOF
+  | ELSE
+  | DEF
+  | AND
+val menhir_begin_marker : int
+val xv_stmt : Ast.stmt
+val xv_parse : Ast.prog
+val xv_list_stmt_ : Ast.stmt list
+val xv_expr : Ast.expr
+val menhir_end_marker : int
