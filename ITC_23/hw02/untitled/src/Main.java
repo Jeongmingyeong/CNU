@@ -13,11 +13,14 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        String phone_number = "[0-9]{3}-[0-9]{4}-[0-9]{4}";
-        String email = "[a-zA-Z_]+@([a-zA-Z_]+.)+[a-zA-Z_]+";
-        String phone = "(iPhone |Galaxy )[0-9]{1,3}";
-        String file = "[a-zA-Z_]+.(c|java|py|ml)";
 
+        // Write RE of Patterns
+        String phone_number = "[0-9]{3}-[0-9]{4}-[0-9]{4}";
+        String email = "[a-zA-Z_]+@([a-zA-Z_]+\\.)+[a-zA-Z_]+";
+        String phone = "(iPhone |Galaxy )[0-9]{1,3}";
+        String file = "[a-zA-Z_]+\\.(c|java|py|ml)";
+
+        // Create an object for each pattern
         Pattern p_phone_number = Pattern.compile(phone_number);
         Pattern p_email = Pattern.compile(email);
         Pattern p_phone = Pattern.compile(phone);
@@ -28,29 +31,29 @@ public class Main {
         BufferedReader br = new BufferedReader(reader);
 
         String s = "";
-        // 한줄씩 읽어오기
+        // read one line
         while ((s = br.readLine()) != null) {
             // phone number 와 match 되는지 확인
             if(p_phone_number.matcher(s).matches()) {
                 print_result(s, "Phone Number");
             }
 
-            // e-mail 과 match 되는지 확인
+            // check s matches email
             else if (p_email.matcher(s).matches()) {
                 print_result(s, "e-mail");
             }
 
-            // phone type 과 match 되는지 확인
+            // check s matches phone type
             else if (p_phone.matcher(s).matches()) {
                 print_result(s, "Phone Type");
             }
 
-            // source file 과 match 되는지 확인
+            // check s matches source file
             else if (p_file.matcher(s).matches()) {
                 print_result(s, "Source File");
             }
 
-            // match 가 되지 않는 경우
+            // check s does not match anything
             else {
                 print_result(s, "Nothing");
             }
