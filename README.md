@@ -11,3 +11,24 @@
 6. git push
   -> 이때 인증 요구할 수 있음.
   -> id는 github 아이디 적으면 되고 비밀번호는 token 입력
+
+ -----
+
+## repository name
+2022-1.
+1. CP03_2022 : Computer Programming 3
+<br></br>
+2022-2.
+1. OOP_22 : Object-Oriented Programming
+2. SYSP_22 : SYStem Programming
+<br></br>
+2023-1.
+1. DC_23 : Data Communication
+2. IP_23 : Image Processing
+3. OS_23 : Operating System
+4. ULP_23 : Universal Programming Language (UPL)
+<br></br>
+2023-2.
+1. CN_23 : Computer Network
+2. ITC_23 : Introduce To Compiler
+3. ML_23 : Machine Learning
