@@ -4,10 +4,11 @@
 #include <cstring>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <thread>
 
 #define PORT 8081
 #define ADDR " 127.0.0.1"
-#define LADDR "10.4.0.64"  // my ip
+#define LADDR "192.168.0.47"  // my ip
 
 // create socket
 int clientSocket;
@@ -37,19 +38,33 @@ int init_sock() {
 	return 0;
 }
 
+//void receiveMessages() {
+	//char message[1024];
+	//while(true) {
+	//	std::cin.getline(message, sizeof(message));
+	//	send(clientSocket, message, strlen(message), 0);
+	//}
+//	std::cout << "hello world" << std::endl;	
+//}
+
 int main() {
 
 	// initialize socket
-	init_sock();
-
-	// send msg
-	char message[] = "Hello, Server! My name is Mingyeong Jeong!";
-	if(send(clientSocket, message, strlen(message), 0) == -1) {
-		std::cerr << "Error sending data to server\n" << std::endl;
-	} else {
-		std::cout << "Message sent to server: " << message << std::endl;
+	if(init_sock() == -1) {
+		std::cerr << "Error init_socket() \n" << std::endl;
+		return -1;
 	}
 
+	// Thread
+	//std::thread t(receiveMessages, clientSocket);
+	//t.detach();
+
+	// Message
+	char message[1024];
+	while(true) {
+		std::cin.getline(message, sizeof(message));
+		send(clientSocket, message, strlen(message), 0);
+	}
 	
 	// close socket
 	close(clientSocket);
