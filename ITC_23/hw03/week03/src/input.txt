@@ -1,0 +1,18 @@
+OK:
+aadb
+aaeb
+aafb
+abdb
+abeb
+abfb
+acdb
+aceb
+acfb
+bd
+be
+bf
+
+------------------------------------------
+
+FAIL:
+위에서 넣은 것 빼고 전부
