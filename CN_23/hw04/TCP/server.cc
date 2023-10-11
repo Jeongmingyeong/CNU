@@ -110,52 +110,54 @@ int main(int argc, char **argv) {
         }
 
         // Handle data communication
-                for (int i = 0; i < nTotalSockets; i++) {
-                        SOCKETINFO *ptr = SocketInfoArray[i];
+        for (int i = 0; i < nTotalSockets; i++) {
+        	SOCKETINFO *ptr = SocketInfoArray[i];
 
-                        if (FD_ISSET(ptr->sock, &rset)) {
-                                // Receive data
-                                retval = recv(ptr->sock, ptr->buf, BUFSIZE, 0);
-                                if (retval == -1) {
-                                        perror("recv()");
-                                        RemoveSocketInfo(i);
-                                        continue;
-                                } else if (retval == 0) {
-                                        RemoveSocketInfo(i);
-                                        continue;
-                                }
-                                ptr->recvbytes = retval;
-
-                                // Print received data
-                                ptr->buf[retval] = '\0';
-                                std::cout << "Received from client " << i << ": " << ptr->buf << std::endl;
-
-                                // Broadcast the received message to all clients
-                                for (int j = 0; j < nTotalSockets; j++) {
-                                        if (i != j) {
-                                                send(SocketInfoArray[j]->sock, ptr->buf, retval, 0);
-                                        }
-                                }
-                        }
-                        
-                        // Check for data to send to the current client
-                        if (FD_ISSET(ptr->sock, &wset)) {
-                                // Send data
-                                retval = send(ptr->sock, ptr->buf + ptr->sendbytes, ptr->recvbytes - ptr->sendbytes, 0);
-                                if (retval == -1) {
-                                        perror("send()");
-                                        RemoveSocketInfo(i);
-                                        continue;
-                                }
-
-                                ptr->sendbytes += retval;
-                                if (ptr->recvbytes == ptr->sendbytes)
-                                        ptr->recvbytes = ptr->sendbytes = 0;
-                        }
+        	if (FD_ISSET(ptr->sock, &rset)) {
+            	// Receive data
+            	retval = recv(ptr->sock, ptr->buf, BUFSIZE, 0);
+            	
+				if (retval == -1) {
+                	perror("recv()");
+                    RemoveSocketInfo(i);
+                	continue;
+                } else if (retval == 0) {
+                	RemoveSocketInfo(i);
+                	continue;
                 }
+           		
+				ptr->recvbytes = retval;
 
+                // Print received data
+                ptr->buf[retval] = '\0';
+                std::cout << "Received from client " << i << ": " << ptr->buf << std::endl;
 
-    }
+                // Broadcast the received message to all clients
+                for (int j = 0; j < nTotalSockets; j++) {
+                	if (i != j) {
+                   		send(SocketInfoArray[j]->sock, ptr->buf, retval, 0);
+                    }
+                }
+        	}
+                        
+            // Check for data to send to the current client
+            if (FD_ISSET(ptr->sock, &wset)) {
+ 	           // Send data
+               retval = send(ptr->sock, ptr->buf + ptr->sendbytes, ptr->recvbytes - ptr->sendbytes, 0);
+        
+				if (retval == -1) {
+					perror("send()");
+                    RemoveSocketInfo(i);
+                    continue;
+				}
+
+				ptr->sendbytes += retval;
+				
+				if (ptr->recvbytes == ptr->sendbytes)
+					ptr->recvbytes = ptr->sendbytes = 0;
+			    }
+			}
+		}
 
     // Close all active sockets
     for (int sock : activeSockets) {
