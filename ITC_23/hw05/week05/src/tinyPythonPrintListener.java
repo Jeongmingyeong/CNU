@@ -10,7 +10,7 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
     int num_indent = 0; // use for check indent
     int else_indent = 0; // use for check "else" or "elif" indent
 
-    // indent number(int) to string function
+    // Use for add an indentation
     public String indent_string(int number) {
         return " ".repeat(number*4);
     }
@@ -54,6 +54,7 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
 
     @Override
     public void exitStmt(tinyPythonParser.StmtContext ctx) {
+        // add indentation before all stmt (both simple, compound stmt)
         String str = null;
 
         // case1 : simple_stmt
@@ -251,6 +252,9 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
 
     @Override
     public void enterSuite(tinyPythonParser.SuiteContext ctx) {
+        // this function is change indent level
+        // suite uses only compound stmt (if, def, while)
+        // indent level + 1 when entering suite
         num_indent++;
     }
 
@@ -277,7 +281,11 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
         // store string into result tree
         result.put(ctx, str);
 
+        // indent level + 1 when entering suite
         num_indent--;
+
+        // else_indent variable is used to handle the indent of [ else: ]
+        // [ else: ] handled in "exitIf_stmt" using else_indent
         else_indent = num_indent;
     }
 
