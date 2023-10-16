@@ -1,0 +1,11 @@
+if (a+b) == 5:
+    print "hello"
+
+if c == 0:
+    print "good"
+
+if (a+b) == 5:
+print "hello"
+
+if c == 0:
+print "good"

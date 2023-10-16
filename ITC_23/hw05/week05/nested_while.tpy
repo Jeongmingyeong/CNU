@@ -1,0 +1,25 @@
+while (true):
+    a = 3
+    b = 4
+    if a > 0:
+        return a + b
+        break
+
+if b > 0:
+    a = a + 4
+    return a
+
+print a
+
+while (true):
+a=3
+b=4
+if a>0:
+return a+b
+break
+
+if b>0:
+a=a+4
+return a
+
+print a

@@ -8,6 +8,7 @@ import java.util.Optional;
 public class tinyPythonPrintListener extends tinyPythonBaseListener {
     ParseTreeProperty<String> result = new ParseTreeProperty<>();
     int num_indent = 0; // use for check indent
+    int else_indent = 0; // use for check "else" or "elif" indent
 
     // indent number(int) to string function
     public String indent_string(int number) {
@@ -57,12 +58,12 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
 
         // case1 : simple_stmt
         if(ctx.simple_stmt() != null) {
-            str = result.get(ctx.simple_stmt());
+            str = indent_string(num_indent) + result.get(ctx.simple_stmt());
         }
 
         // case2 : compound_stmt
         else {
-            str = result.get(ctx.compound_stmt());
+            str = indent_string(num_indent) + result.get(ctx.compound_stmt());
         }
 
         // store string into result tree
@@ -165,6 +166,8 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
     }
 
     @Override
+    public void enterCompound_stmt(tinyPythonParser.Compound_stmtContext ctx) {}
+    @Override
     public void exitCompound_stmt(tinyPythonParser.Compound_stmtContext ctx) {
         String str = null;
 
@@ -193,38 +196,33 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
     public void exitIf_stmt(tinyPythonParser.If_stmtContext ctx) {
         int idx_test = 0;
         int idx_suite = 0;
+        int if_indent_level = 0;
+
         String str = "if " + result.get(ctx.test(idx_test++)) + ":";
-        num_indent++;
-        System.out.println("indent number: " + num_indent);
-        str += "\n" + indent_string(num_indent) + result.get(ctx.suite(idx_suite++));
-        num_indent--;
+        str += "\n" + result.get(ctx.suite(idx_suite++));
 
         // index : use for check exist "elif" or "else"
         int index = 4;
         while(true) {
+            // break case
+            if(index == ctx.getChildCount()) {
+                break;
+            }
+
             if(ctx.getChild(index) != null) {
                 // match "elif"
                 if(ctx.getChild(index).getText().equals("elif")) {
-                    str += "elif" + result.get(ctx.test(idx_test++)) + ":";
-                    num_indent++;
-                    str += "\n" + indent_string(num_indent) + result.get(ctx.suite(idx_suite++));
-                    num_indent--;
+                    str += indent_string(else_indent) + "elif" + result.get(ctx.test(idx_test++)) + ":";
+                    str += "\n" + result.get(ctx.suite(idx_suite++));
                     index += 4;
                 }
 
                 // match "else"
                 else {
-                    str += "else:";
-                    num_indent++;
-                    str += "\n" + indent_string(num_indent) + result.get(ctx.suite(idx_suite++));
-                    num_indent--;
+                    str += indent_string(else_indent) + "else:";
+                    str += "\n" + result.get(ctx.suite(idx_suite++));
                     index += 3;
                 }
-            }
-
-            if(index == ctx.getChildCount()) {
-                num_indent = 0;
-                break;
             }
         }
 
@@ -235,47 +233,52 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
     @Override
     public void exitWhile_stmt(tinyPythonParser.While_stmtContext ctx) {
         String str = "while " + result.get(ctx.test()) + ":";
-        num_indent++;
-        str += "\n" + indent_string(num_indent) + result.get(ctx.suite());
-        num_indent--;
+        str += "\n" + result.get(ctx.suite());
 
         // store string into result tree
         result.put(ctx, str);
-        num_indent = 0;
     }
 
     @Override
     public void exitDef_stmt(tinyPythonParser.Def_stmtContext ctx) {
         String str = "def " + ctx.NAME().getText() + ctx.OPEN_PAREN().getText();
         str += result.get(ctx.args()) + ctx.CLOSE_PAREN().getText() + ":";
-        num_indent++;
-        str += "\n" + indent_string(num_indent) + result.get(ctx.suite());
-        num_indent--;
+        str += "\n" + result.get(ctx.suite());
 
         // store string into result tree
         result.put(ctx, str);
-        num_indent = 0;
+    }
+
+    @Override
+    public void enterSuite(tinyPythonParser.SuiteContext ctx) {
+        num_indent++;
     }
 
     @Override
     public void exitSuite(tinyPythonParser.SuiteContext ctx) {
-        String str = null;
+        String str = "";
 
         // handled 2 cases
 
         // case1 : simple_stmt
         if( ctx.simple_stmt() != null) {
-            str = result.get(ctx.simple_stmt());
+            str += result.get(ctx.simple_stmt());
         }
 
         // case2 : NEWLINE stmt+ : ignore NEWLINE for indentation
         else {
-            str = result.get(ctx.stmt(0));
+            for(int i = 0; i < ctx.stmt().size(); i++) {
+                if(result.get(ctx.stmt(i)) != null) {
+                    str += result.get(ctx.stmt(i));
+                }
+            }
         }
 
         // store string into result tree
         result.put(ctx, str);
 
+        num_indent--;
+        else_indent = num_indent;
     }
 
     @Override
