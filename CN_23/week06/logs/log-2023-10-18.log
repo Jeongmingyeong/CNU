@@ -1,0 +1,93 @@
+23-10-18 18:43:03 [INFO] server.cc starting...
+23-10-18 18:43:14 [INFO] server.cc starting...
+23-10-18 19:32:51 [INFO] server.cc starting...
+23-10-18 19:35:18 [INFO] server.cc starting...
+23-10-18 19:35:21 [INFO] New client connected from 192.168.0.47: 60879
+23-10-18 19:35:27 [INFO] [60879] hi
+23-10-18 19:36:09 [INFO] [60879] sdf
+23-10-18 19:36:24 [INFO] New client connected from 192.168.0.47: 60883
+23-10-18 19:36:29 [INFO] [60883] sdf
+23-10-18 19:36:45 [INFO] [60883] hi im 60879
+23-10-18 19:36:57 [INFO] [60883] 883
+23-10-18 19:42:02 [INFO] server.cc starting...
+23-10-18 19:42:05 [INFO] New client connected from 192.168.0.47: 60927
+23-10-18 19:42:08 [INFO] New client connected from 192.168.0.47: 60928
+23-10-18 19:42:16 [INFO] [4] sdf
+23-10-18 19:42:18 [INFO] [5] sdf
+23-10-18 19:42:32 [INFO] New client connected from 192.168.0.47: 60932
+23-10-18 19:42:33 [INFO] [6] sdf
+23-10-18 19:42:43 [INFO] New client connected from 192.168.0.47: 60934
+23-10-18 19:42:44 [INFO] [6] sf
+23-10-18 19:46:04 [INFO] server.cc starting...
+23-10-18 19:46:10 [INFO] New client connected from 192.168.0.47: 60952
+23-10-18 19:46:13 [INFO] New client connected from 192.168.0.47: 60953
+23-10-18 19:46:16 [INFO] New client connected from 192.168.0.47: 60954
+23-10-18 19:46:18 [INFO] [60954] sdf
+23-10-18 19:46:20 [INFO] [60952] sdf
+23-10-18 19:46:22 [INFO] [60953] sdf
+23-10-18 19:46:24 [INFO] [60953] sdf
+23-10-18 19:46:30 [INFO] [60953] im 60953
+23-10-18 19:46:39 [INFO] [60952] im 60952
+23-10-18 19:46:48 [INFO] [60954] im 60954
+23-10-18 19:48:02 [INFO] server.cc starting...
+23-10-18 19:48:08 [INFO] New client connected from 192.168.0.47: 60956
+23-10-18 19:48:15 [INFO] New client connected from 192.168.0.47: 60957
+23-10-18 19:48:17 [INFO] [60957] sdf
+23-10-18 19:48:17 [INFO] [60957] gsd
+23-10-18 19:48:19 [INFO] [60956] gsdg
+23-10-18 19:48:20 [INFO] Client disconnected from 60956
+23-10-18 19:48:24 [INFO] Client disconnected from 60957
+23-10-18 19:48:45 [INFO] server.cc starting...
+23-10-18 19:48:54 [INFO] server.cc starting...
+23-10-18 19:50:28 [INFO] server.cc starting...
+23-10-18 19:50:30 [INFO] server.cc starting...
+23-10-18 19:50:36 [INFO] server.cc starting...
+23-10-18 19:51:04 [INFO] server.cc starting...
+23-10-18 19:51:07 [INFO] server.cc starting...
+23-10-18 19:51:07 [Err] Error binding socket
+23-10-18 19:51:07 [Err] Error init_socket()
+23-10-18 19:51:11 [INFO] server.cc starting...
+23-10-18 19:51:11 [Err] Error binding socket
+23-10-18 19:51:11 [Err] Error init_socket()
+23-10-18 19:56:59 [INFO] server.cc starting...
+23-10-18 19:57:02 [INFO] New client connected from 192.168.0.47: 60962
+23-10-18 19:57:07 [INFO] [60962] sdf
+23-10-18 19:57:07 [INFO] [60962] gsd
+23-10-18 19:57:08 [INFO] [60962] weg
+23-10-18 19:57:08 [INFO] [60962] sdg
+23-10-18 19:57:09 [INFO] Message receive failed for client 60962
+23-10-18 19:58:56 [INFO] server.cc starting...
+23-10-18 19:59:01 [INFO] New client connected from 192.168.0.47: 60969
+23-10-18 19:59:03 [INFO] [60969] sf
+23-10-18 19:59:03 [INFO] [60969] gds
+23-10-18 19:59:04 [INFO] [60969] weg
+23-10-18 19:59:05 [INFO] [60969] sdg
+23-10-18 19:59:06 [INFO] Message receive failed for client 60969
+23-10-18 20:04:19 [INFO] server.cc starting...
+23-10-18 20:04:25 [INFO] server.cc starting...
+23-10-18 20:04:25 [INFO] Server listening on port 8082 --> Server start
+23-10-18 20:04:31 [INFO] New client connected from 192.168.0.47: 60974
+23-10-18 20:04:36 [INFO] [60974] hello
+23-10-18 20:04:39 [INFO] [60974] im 60974
+23-10-18 20:04:41 [INFO] [60974] gg
+23-10-18 20:04:42 [INFO] [60974] gi
+23-10-18 20:04:43 [INFO] Message receive failed for client 60974
+23-10-18 20:04:44 [INFO] [60974] gk
+23-10-18 20:04:45 [INFO] [60974] gk
+23-10-18 20:04:46 [INFO] [60974] dsglkj
+23-10-18 20:04:48 [INFO] [60974] gji
+23-10-18 20:04:48 [INFO] [60974] gwji
+23-10-18 20:04:49 [INFO] Message receive failed for client 60974
+23-10-18 20:04:50 [INFO] [60974] wgjei
+23-10-18 20:04:51 [INFO] [60974] sdgjio
+23-10-18 20:04:52 [INFO] [60974] gjio
+23-10-18 20:04:54 [INFO] [60974] gijo
+23-10-18 20:04:55 [INFO] [60974] jgio
+23-10-18 20:04:56 [INFO] [60974] gjiew
+23-10-18 20:04:57 [INFO] [60974] jgiow
+23-10-18 20:04:58 [INFO] Message receive failed for client 60974
+23-10-18 20:04:58 [INFO] [60974] gjiwe
+23-10-18 20:04:59 [INFO] [60974] gjiw
+23-10-18 20:04:59 [INFO] [60974] egjwio
+23-10-18 20:05:00 [INFO] [60974] jgiwoe
+23-10-18 20:05:01 [INFO] Client disconnected from 60974

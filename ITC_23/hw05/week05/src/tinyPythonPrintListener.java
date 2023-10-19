@@ -198,6 +198,7 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
         int idx_test = 0;
         int idx_suite = 0;
         int if_indent_level = 0;
+        System.out.println("if_child_count: " + ctx.getChildCount());
 
         String str = "if " + result.get(ctx.test(idx_test++)) + ":";
         str += "\n" + result.get(ctx.suite(idx_suite++));
@@ -213,7 +214,7 @@ public class tinyPythonPrintListener extends tinyPythonBaseListener {
             if(ctx.getChild(index) != null) {
                 // match "elif"
                 if(ctx.getChild(index).getText().equals("elif")) {
-                    str += indent_string(else_indent) + "elif" + result.get(ctx.test(idx_test++)) + ":";
+                    str += indent_string(else_indent) + "elif " + result.get(ctx.test(idx_test++)) + ":";
                     str += "\n" + result.get(ctx.suite(idx_suite++));
                     index += 4;
                 }

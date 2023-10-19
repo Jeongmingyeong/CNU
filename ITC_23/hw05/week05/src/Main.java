@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        tinyPythonLexer lexer = new tinyPythonLexer(CharStreams.fromFileName("test.tpy"));
+        tinyPythonLexer lexer = new tinyPythonLexer(CharStreams.fromFileName("nested_ifelse.tpy"));
         CommonTokenStream tokens = new CommonTokenStream( lexer );
         tinyPythonParser parser = new tinyPythonParser ( tokens );
         ParseTree tree = parser.program();
