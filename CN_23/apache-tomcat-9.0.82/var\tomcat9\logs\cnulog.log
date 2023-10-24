@@ -1,0 +1,143 @@
+INFO : [10-24 13:19:53] : [ContextLoader.java:270] - Root WebApplicationContext: initialization started
+INFO : [10-24 13:19:53] : [AbstractApplicationContext.java:590] - Refreshing Root WebApplicationContext: startup date [Tue Oct 24 13:19:53 KST 2023]; root of context hierarchy
+INFO : [10-24 13:19:53] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from file [/Users/jeongmingyeong/CNU/CN_23/apache-tomcat-9.0.82/webapps/ROOT/WEB-INF/classes/config/spring/context-datasource.xml]
+DEBUG: [10-24 13:19:53] : [PropertiesLoaderSupport.java:178] - Loading properties file from class path resource [config/properties/jdbc.properties]
+DEBUG: [10-24 13:19:53] : [UiApplicationContextUtils.java:85] - Unable to locate ThemeSource with name 'themeSource': using default [org.springframework.ui.context.support.ResourceBundleThemeSource@3dfc59c5]
+DEBUG: [10-24 13:19:53] : [Slf4jImpl.java:47] - Logging initialized using 'org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+DEBUG: [10-24 13:19:53] : [Slf4jImpl.java:47] - Property 'configLocation' not specified, using default MyBatis Configuration
+DEBUG: [10-24 13:19:53] : [Slf4jImpl.java:47] - Parsed mapper file: 'ServletContext resource [/WEB-INF/classes/com/test/cnu/dao/TEST_SQL.xml]'
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:53] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.liveBeansView.mbeanDomain] not found - trying original name [spring.liveBeansView.mbeanDomain]. javax.naming.NameNotFoundException: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:53] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.liveBeansView.mbeanDomain] threw NamingException with message: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:53] : [ContextLoader.java:310] - Root WebApplicationContext: initialization completed in 221 ms
+INFO : [10-24 13:19:53] : [FrameworkServlet.java:494] - FrameworkServlet 'appServlet': initialization started
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.profiles.active]
+DEBUG: [10-24 13:19:53] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.profiles.active] not found - trying original name [spring.profiles.active]. javax.naming.NameNotFoundException: Name [spring.profiles.active]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.active]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.profiles.active]
+DEBUG: [10-24 13:19:53] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.profiles.active] threw NamingException with message: Name [spring.profiles.active]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.active]을(를) 찾을 수 없습니다.. Returning null.
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.profiles.default]
+DEBUG: [10-24 13:19:53] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.profiles.default] not found - trying original name [spring.profiles.default]. javax.naming.NameNotFoundException: Name [spring.profiles.default]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.default]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:53] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.profiles.default]
+DEBUG: [10-24 13:19:53] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.profiles.default] threw NamingException with message: Name [spring.profiles.default]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.default]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:53] : [AbstractApplicationContext.java:590] - Refreshing WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:53 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:53] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/servlet-context.xml]
+INFO : [10-24 13:19:53] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/root-context.xml]
+INFO : [10-24 13:19:53] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from file [/Users/jeongmingyeong/CNU/CN_23/apache-tomcat-9.0.82/webapps/ROOT/WEB-INF/classes/config/spring/context-datasource.xml]
+DEBUG: [10-24 13:19:53] : [PropertiesLoaderSupport.java:178] - Loading properties file from class path resource [config/properties/jdbc.properties]
+INFO : [10-24 13:19:53] : [AutowiredAnnotationBeanPostProcessor.java:154] - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+DEBUG: [10-24 13:19:53] : [UiApplicationContextUtils.java:85] - Unable to locate ThemeSource with name 'themeSource': using default [org.springframework.ui.context.support.DelegatingThemeSource@682d9f21]
+INFO : [10-24 13:19:53] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/],methods=[GET || POST]}" onto public java.lang.String com.test.cnu.controller.MainController.home(java.util.Locale,org.springframework.ui.Model)
+INFO : [10-24 13:19:53] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/main.do],methods=[GET || POST]}" onto public java.lang.String com.test.cnu.controller.MainController.testMain(org.springframework.ui.Model,javax.servlet.http.HttpServletRequest)
+INFO : [10-24 13:19:53] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/logging.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView com.test.cnu.controller.MainController.loggingAdd(org.springframework.ui.Model,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.util.Map<java.lang.String, java.lang.Object>) throws java.io.IOException
+INFO : [10-24 13:19:53] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/checkHakbun.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView com.test.cnu.controller.MainController.checkHakbun(org.springframework.ui.Model,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.util.Map<java.lang.String, java.lang.Object>) throws java.io.IOException
+INFO : [10-24 13:19:53] : [RequestMappingHandlerAdapter.java:574] - Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:53 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:53] : [RequestMappingHandlerAdapter.java:574] - Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:53 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:53] : [AbstractUrlHandlerMapping.java:373] - Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+DEBUG: [10-24 13:19:53] : [Slf4jImpl.java:47] - Property 'configLocation' not specified, using default MyBatis Configuration
+DEBUG: [10-24 13:19:53] : [Slf4jImpl.java:47] - Parsed mapper file: 'ServletContext resource [/WEB-INF/classes/com/test/cnu/dao/TEST_SQL.xml]'
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.liveBeansView.mbeanDomain] not found - trying original name [spring.liveBeansView.mbeanDomain]. javax.naming.NameNotFoundException: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.liveBeansView.mbeanDomain] threw NamingException with message: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:54] : [FrameworkServlet.java:509] - FrameworkServlet 'appServlet': initialization completed in 632 ms
+INFO : [10-24 13:19:54] : [ContextLoader.java:270] - Root WebApplicationContext: initialization started
+INFO : [10-24 13:19:54] : [AbstractApplicationContext.java:590] - Refreshing Root WebApplicationContext: startup date [Tue Oct 24 13:19:54 KST 2023]; root of context hierarchy
+INFO : [10-24 13:19:54] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from file [/Users/jeongmingyeong/CNU/CN_23/apache-tomcat-9.0.82/webapps/CNU/WEB-INF/classes/config/spring/context-datasource.xml]
+DEBUG: [10-24 13:19:54] : [PropertiesLoaderSupport.java:178] - Loading properties file from class path resource [config/properties/jdbc.properties]
+DEBUG: [10-24 13:19:54] : [UiApplicationContextUtils.java:85] - Unable to locate ThemeSource with name 'themeSource': using default [org.springframework.ui.context.support.ResourceBundleThemeSource@2bf5f4]
+DEBUG: [10-24 13:19:54] : [Slf4jImpl.java:47] - Logging initialized using 'org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+DEBUG: [10-24 13:19:54] : [Slf4jImpl.java:47] - Property 'configLocation' not specified, using default MyBatis Configuration
+DEBUG: [10-24 13:19:54] : [Slf4jImpl.java:47] - Parsed mapper file: 'ServletContext resource [/WEB-INF/classes/com/test/cnu/dao/TEST_SQL.xml]'
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.liveBeansView.mbeanDomain] not found - trying original name [spring.liveBeansView.mbeanDomain]. javax.naming.NameNotFoundException: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.liveBeansView.mbeanDomain] threw NamingException with message: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:54] : [ContextLoader.java:310] - Root WebApplicationContext: initialization completed in 140 ms
+INFO : [10-24 13:19:54] : [FrameworkServlet.java:494] - FrameworkServlet 'appServlet': initialization started
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.profiles.active]
+DEBUG: [10-24 13:19:54] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.profiles.active] not found - trying original name [spring.profiles.active]. javax.naming.NameNotFoundException: Name [spring.profiles.active]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.active]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.profiles.active]
+DEBUG: [10-24 13:19:54] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.profiles.active] threw NamingException with message: Name [spring.profiles.active]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.active]을(를) 찾을 수 없습니다.. Returning null.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.profiles.default]
+DEBUG: [10-24 13:19:54] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.profiles.default] not found - trying original name [spring.profiles.default]. javax.naming.NameNotFoundException: Name [spring.profiles.default]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.default]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.profiles.default]
+DEBUG: [10-24 13:19:54] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.profiles.default] threw NamingException with message: Name [spring.profiles.default]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.profiles.default]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:54] : [AbstractApplicationContext.java:590] - Refreshing WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:54 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:54] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/servlet-context.xml]
+INFO : [10-24 13:19:54] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/root-context.xml]
+INFO : [10-24 13:19:54] : [XmlBeanDefinitionReader.java:316] - Loading XML bean definitions from file [/Users/jeongmingyeong/CNU/CN_23/apache-tomcat-9.0.82/webapps/CNU/WEB-INF/classes/config/spring/context-datasource.xml]
+DEBUG: [10-24 13:19:54] : [PropertiesLoaderSupport.java:178] - Loading properties file from class path resource [config/properties/jdbc.properties]
+INFO : [10-24 13:19:54] : [AutowiredAnnotationBeanPostProcessor.java:154] - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+DEBUG: [10-24 13:19:54] : [UiApplicationContextUtils.java:85] - Unable to locate ThemeSource with name 'themeSource': using default [org.springframework.ui.context.support.DelegatingThemeSource@1b856d2a]
+INFO : [10-24 13:19:54] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/],methods=[GET || POST]}" onto public java.lang.String com.test.cnu.controller.MainController.home(java.util.Locale,org.springframework.ui.Model)
+INFO : [10-24 13:19:54] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/main.do],methods=[GET || POST]}" onto public java.lang.String com.test.cnu.controller.MainController.testMain(org.springframework.ui.Model,javax.servlet.http.HttpServletRequest)
+INFO : [10-24 13:19:54] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/logging.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView com.test.cnu.controller.MainController.loggingAdd(org.springframework.ui.Model,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.util.Map<java.lang.String, java.lang.Object>) throws java.io.IOException
+INFO : [10-24 13:19:54] : [AbstractHandlerMethodMapping.java:547] - Mapped "{[/checkHakbun.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView com.test.cnu.controller.MainController.checkHakbun(org.springframework.ui.Model,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.util.Map<java.lang.String, java.lang.Object>) throws java.io.IOException
+INFO : [10-24 13:19:54] : [RequestMappingHandlerAdapter.java:574] - Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:54 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:54] : [RequestMappingHandlerAdapter.java:574] - Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:54 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:19:54] : [AbstractUrlHandlerMapping.java:373] - Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+DEBUG: [10-24 13:19:54] : [Slf4jImpl.java:47] - Property 'configLocation' not specified, using default MyBatis Configuration
+DEBUG: [10-24 13:19:54] : [Slf4jImpl.java:47] - Parsed mapper file: 'ServletContext resource [/WEB-INF/classes/com/test/cnu/dao/TEST_SQL.xml]'
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [java:comp/env/spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiLocatorSupport.java:102] - Converted JNDI name [java:comp/env/spring.liveBeansView.mbeanDomain] not found - trying original name [spring.liveBeansView.mbeanDomain]. javax.naming.NameNotFoundException: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.
+DEBUG: [10-24 13:19:54] : [JndiTemplate.java:154] - Looking up JNDI object with name [spring.liveBeansView.mbeanDomain]
+DEBUG: [10-24 13:19:54] : [JndiPropertySource.java:101] - JNDI lookup for name [spring.liveBeansView.mbeanDomain] threw NamingException with message: Name [spring.liveBeansView.mbeanDomain]은(는) 이 컨텍스트에 바인딩되지 않았습니다. [spring.liveBeansView.mbeanDomain]을(를) 찾을 수 없습니다.. Returning null.
+INFO : [10-24 13:19:54] : [FrameworkServlet.java:509] - FrameworkServlet 'appServlet': initialization completed in 300 ms
+INFO : [10-24 13:21:49] : [MainController.java:66] - ===== checkHakbun START =====
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - Creating a new SqlSession
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@63210b23] was not registered for synchronization because synchronization is not active
+DEBUG: [10-24 13:21:49] : [DataSourceUtils.java:114] - Fetching JDBC Connection from DataSource
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - ... log4jdbc initializing ...
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] -   log4jdbc.properties not found on classpath
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.debug.stack.prefix is not defined
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.sqltiming.warn.threshold is not defined
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.sqltiming.error.threshold is not defined
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.booleanastruefalse is not defined (using default value false)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.maxlinelength is not defined (using default of 90)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.fulldebugstacktrace is not defined (using default value false)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.statement.warn is not defined (using default value false)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.select is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.insert is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.update is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.delete is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.create is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.dump.sql.addsemicolon is not defined (using default value false)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.auto.load.popular.drivers is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.trim.sql is not defined (using default value true)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.suppress.generated.keys.exception is not defined (using default value false)
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - x log4jdbc.drivers is not defined
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] -   FOUND DRIVER com.microsoft.sqlserver.jdbc.SQLServerDriver
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - ... log4jdbc initialized! ...
+DEBUG: [10-24 13:21:49] : [Slf4jSpyLogDelegator.java:506] - driver name is Microsoft JDBC Driver 12.2 for SQL Server
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - JDBC Connection [net.sf.log4jdbc.ConnectionSpy@73ec5c4e] will not be managed by Spring
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - ooo Using Connection [net.sf.log4jdbc.ConnectionSpy@73ec5c4e]
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - ==>  Preparing: {call UP_STUDENT( ? )} 
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - ==> Parameters: 202102699(String)
+DEBUG: [10-24 13:21:49] : [Slf4jImpl.java:47] - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@63210b23]
+DEBUG: [10-24 13:21:49] : [DataSourceUtils.java:340] - Returning JDBC Connection to DataSource
+INFO : [10-24 13:21:49] : [TestService.java:20] - ===== checkHakbun Call DB =====
+INFO : [10-24 13:22:04] : [MainController.java:81] - ===== logging START =====
+INFO : [10-24 13:22:04] : [MainController.java:84] - My(정민경) choice ------> [Skinny 클릭]
+INFO : [10-24 13:22:10] : [MainController.java:81] - ===== logging START =====
+INFO : [10-24 13:22:10] : [MainController.java:84] - My(정민경) choice ------> [무릎만 찢어진 청바지]
+INFO : [10-24 13:26:46] : [MainController.java:66] - ===== checkHakbun START =====
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - Creating a new SqlSession
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d75ba09] was not registered for synchronization because synchronization is not active
+DEBUG: [10-24 13:26:46] : [DataSourceUtils.java:114] - Fetching JDBC Connection from DataSource
+DEBUG: [10-24 13:26:46] : [Slf4jSpyLogDelegator.java:506] - driver name is Microsoft JDBC Driver 12.2 for SQL Server
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - JDBC Connection [net.sf.log4jdbc.ConnectionSpy@19f5b43a] will not be managed by Spring
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - ooo Using Connection [net.sf.log4jdbc.ConnectionSpy@19f5b43a]
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - ==>  Preparing: {call UP_STUDENT( ? )} 
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - ==> Parameters: 202102699(String)
+DEBUG: [10-24 13:26:46] : [Slf4jImpl.java:47] - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d75ba09]
+DEBUG: [10-24 13:26:46] : [DataSourceUtils.java:340] - Returning JDBC Connection to DataSource
+INFO : [10-24 13:26:46] : [TestService.java:20] - ===== checkHakbun Call DB =====
+INFO : [10-24 13:26:53] : [MainController.java:81] - ===== logging START =====
+INFO : [10-24 13:26:53] : [MainController.java:84] - My(정민경) choice ------> [무릎만 찢어진 청바지]
+INFO : [10-24 13:26:55] : [MainController.java:81] - ===== logging START =====
+INFO : [10-24 13:26:55] : [MainController.java:84] - My(정민경) choice ------> [Skinny 클릭]
+INFO : [10-24 13:29:23] : [AbstractApplicationContext.java:993] - Closing WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:53 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:29:23] : [AbstractApplicationContext.java:993] - Closing Root WebApplicationContext: startup date [Tue Oct 24 13:19:53 KST 2023]; root of context hierarchy
+INFO : [10-24 13:29:23] : [AbstractApplicationContext.java:993] - Closing WebApplicationContext for namespace 'appServlet-servlet': startup date [Tue Oct 24 13:19:54 KST 2023]; parent: Root WebApplicationContext
+INFO : [10-24 13:29:23] : [AbstractApplicationContext.java:993] - Closing Root WebApplicationContext: startup date [Tue Oct 24 13:19:54 KST 2023]; root of context hierarchy

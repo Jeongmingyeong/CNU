@@ -18,7 +18,7 @@ logger_manager::logger_manager() {}
 logger_manager::~logger_manager() {}
 logger_manager logManager;
 
-// global variable for print log
+// todo: global variable for print log
 int c_Port[100000];
 
 // get Date data
@@ -89,7 +89,7 @@ void handleClient(int clientSocket) {
         memset(buffer, 0, sizeof(buffer));
         int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
 
-		// random failed to receive message from client
+		// todo: random failed to receive message from client
 		if(std::rand() % 10 == 0) {
 			logManager.write(__FILE__, "[INFO] Message receive failed for client " + std::to_string(c_Port[clientSocket]));
 			std::cerr << "Message receive failed for client." << std::endl;
@@ -97,6 +97,7 @@ void handleClient(int clientSocket) {
 		}
 
         if (bytesRead == -1) {
+			logManager.write(__FILE__, "[Err] Error receiveing data from client: " + std::to_string(c_Port[clientSocket]));
             std::cerr << "Error receiving data from client" << std::endl;
             break;
         } else if (bytesRead == 0) {
@@ -151,12 +152,12 @@ int init_sock(){
 }
 
 int main() {
-	// Logging
+	// todo: Logging
 	logManager.write(__FILE__, "[INFO] server.cc starting...");
 	logManager.write(__FILE__, "[INFO] Server listening on port 8082 --> Server start" );
 	char clientAddress[INET_ADDRSTRLEN]; // client Address
 
-	// print error of init_socket()
+	// todo: print error of init_socket()
 	if( init_sock() == -1){
 		logManager.write(__FILE__, "[Err] Error init_socket()");
 		std::cerr << "Error init_socket()\n" << std::endl;
@@ -170,12 +171,16 @@ int main() {
         } else {
 			if(inet_ntop(AF_INET, &serverAddress.sin_addr, clientAddress, INET_ADDRSTRLEN) != NULL) {
 				int clientPort = ntohs(serverAddress.sin_port);
-				c_Port[csock] = ntohs(serverAddress.sin_port); // global client port number for print log
+
+				// todo: store client port number to global variable for print log
+				c_Port[csock] = clientPort; 
+
 				std::cout << "New client connected from " << clientAddress << ": " << clientPort << std::endl;
 				logManager.write(__FILE__, "[INFO] New client connected from " + std::string(clientAddress) + ": " + std::to_string(clientPort));
 			}
 
             // recv msg
+			// csock is handleClient's argument ( = int clientSocket )
             std::thread(handleClient, csock).detach();
         }
     }

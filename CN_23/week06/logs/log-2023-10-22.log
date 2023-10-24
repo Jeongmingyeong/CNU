@@ -1,0 +1,38 @@
+23-10-22 13:29:41 [INFO] server.cc starting...
+23-10-22 13:29:41 [INFO] Server listening on port 8082 --> Server start
+23-10-22 13:29:48 [INFO] New client connected from 192.168.0.47: 54110
+23-10-22 13:29:50 [INFO] New client connected from 192.168.0.47: 54111
+23-10-22 13:35:19 [INFO] [54110] im first client, 54110
+23-10-22 13:35:29 [INFO] [54111] im second clinet, 54111
+23-10-22 13:36:12 [INFO] [54110] a
+23-10-22 13:36:13 [INFO] [54110] b
+23-10-22 13:36:14 [INFO] Message receive failed for client 54110
+23-10-22 13:36:17 [INFO] [54110] d
+23-10-22 13:36:19 [INFO] [54111] e
+23-10-22 13:36:20 [INFO] [54111] f
+23-10-22 13:36:20 [INFO] [54111] g
+23-10-22 13:36:22 [INFO] [54111] h
+23-10-22 13:36:23 [INFO] Message receive failed for client 54111
+23-10-22 13:36:24 [INFO] [54111] j
+23-10-22 13:37:50 [INFO] Client disconnected from 54110
+23-10-22 13:37:50 [INFO] Client disconnected from 54111
+23-10-22 13:37:56 [INFO] New client connected from 192.168.0.47: 54141
+23-10-22 13:37:59 [INFO] New client connected from 192.168.0.47: 54142
+23-10-22 13:38:15 [INFO] Client disconnected from 54141
+23-10-22 13:38:17 [INFO] server.cc starting...
+23-10-22 13:38:17 [INFO] Server listening on port 8082 --> Server start
+23-10-22 13:38:17 [Err] Error binding socket
+23-10-22 13:38:17 [Err] Error init_socket()
+23-10-22 13:38:59 [INFO] Client disconnected from 54142
+23-10-22 13:51:33 [INFO] server.cc starting...
+23-10-22 13:51:33 [INFO] Server listening on port 8082 --> Server start
+23-10-22 13:51:35 [INFO] New client connected from 192.168.0.47: 54151
+23-10-22 13:51:38 [INFO] [54151] sdf
+23-10-22 13:51:39 [INFO] [54151] sdgaa
+23-10-22 13:51:39 [INFO] [54151] wb
+23-10-22 13:51:39 [INFO] [54151] asaw
+23-10-22 13:51:40 [INFO] Message receive failed for client 54151
+23-10-22 13:51:40 [INFO] [54151] vxcz
+23-10-22 13:51:40 [INFO] [54151] aw
+23-10-22 13:51:40 [INFO] [54151] gdsa
+23-10-22 13:51:53 [INFO] Client disconnected from 54151

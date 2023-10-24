@@ -1,0 +1,28 @@
+23-10-21 18:23:17 [INFO] server.cc starting...
+23-10-21 18:23:17 [INFO] Server listening on port 8082 --> Server start
+23-10-21 18:24:16 [INFO] server.cc starting...
+23-10-21 18:24:16 [INFO] Server listening on port 8082 --> Server start
+23-10-21 18:24:21 [INFO] New client connected from 192.168.0.18: 52679
+23-10-21 18:24:22 [INFO] New client connected from 192.168.0.18: 52680
+23-10-21 18:24:30 [INFO] [52679] gg
+23-10-21 18:24:33 [INFO] [52680] dsg
+23-10-21 18:24:39 [INFO] [52679] gds
+23-10-21 18:24:39 [INFO] [52679] dsg
+23-10-21 18:24:39 [INFO] Message receive failed for client 52679
+23-10-21 18:24:40 [INFO] [52679] ewg
+23-10-21 18:24:40 [INFO] [52679] sdg
+23-10-21 18:24:40 [INFO] [52679] b
+23-10-21 18:24:40 [INFO] [52679] bcxwe
+23-10-21 18:24:41 [INFO] [52679] bsd
+23-10-21 18:24:41 [INFO] Message receive failed for client 52679
+23-10-21 18:24:41 [INFO] [52679] bd
+23-10-21 18:24:42 [INFO] [52679] w
+23-10-21 18:24:50 [INFO] [52680] wg
+23-10-21 18:24:50 [INFO] [52680] sdgwb
+23-10-21 18:24:50 [INFO] [52680] bs
+23-10-21 18:24:51 [INFO] [52680] bs
+23-10-21 18:24:51 [INFO] [52680] w
+23-10-21 18:24:51 [INFO] Message receive failed for client 52680
+23-10-21 18:24:56 [INFO] [52680] bsd
+23-10-21 18:24:57 [INFO] Client disconnected from 52680
+23-10-21 18:25:01 [INFO] Client disconnected from 52679
