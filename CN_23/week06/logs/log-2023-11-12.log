@@ -1,0 +1,7 @@
+23-11-12 10:59:15 [INFO] server.cc starting...
+23-11-12 10:59:15 [INFO] Server listening on port 8082 --> Server start
+23-11-12 11:00:17 [INFO] server.cc starting...
+23-11-12 11:00:17 [INFO] Server listening on port 8082 --> Server start
+23-11-12 11:00:43 [INFO] New client connected from 192.168.0.18: 55456
+23-11-12 11:00:54 [INFO] [55456] 
+23-11-12 11:01:44 [INFO] Client disconnected from 55456
