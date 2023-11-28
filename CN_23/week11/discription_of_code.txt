@@ -1,0 +1,11 @@
+- 새로운 버전 클라이언트 서버 코드
+server_new.cpp, client_new.cpp
+
+- TLS/SSL 클라이언트, 서버 코드
+server_ssl.cpp, client_ssl.cpp
+
+- TLS/SSL + 암호화 클라이언트, 서버 코드
+server_ssl_enc.cpp, client_ssl_enc.cpp
+
+- 암호화 예제
+AES.cpp
