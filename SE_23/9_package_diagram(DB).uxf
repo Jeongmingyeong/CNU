@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>440</y>
+      <w>270</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>User DB
+--
+- userID : Integer
+- userName : String
+- Role : String
+- password : String
+- email : String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>130</y>
+      <w>270</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Payment DB
+--
+- paymentID : Integer
+- amount : Integer
+- PayerID : String
+- data : Date
+- description : String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>150</y>
+      <w>270</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Settlement DB
+--
+- settlementID : Integer
+- payerID : String
+- amount : Integer
+- states : bool
+- date : Date
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>440</y>
+      <w>270</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Chatting room DB
+--
+- roomID : Integer
+- roomName : String
+- message : String
+- paticipants : Integer
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

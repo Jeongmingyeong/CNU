@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>168</x>
+      <y>308</y>
+      <w>154</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>Payer
+--
+- name : String
+- amount : Integer
+- group_name : String
+--
++ create()
++ delete()
++ find()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>336</y>
+      <w>189</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Payment
+--
+- amount : Integer
+- date : Date
+- payer : String
+- category : String
+- memo : String
+--
++ register()
++ delete()
++ modify()
++ find()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>679</x>
+      <y>336</y>
+      <w>189</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Settlement details
+--
+- settlementID : String
+- amount : Integer
+- date : Date
+- payer : String
+- category : String
+- method : String
+- settlementstate : boolean
+- memo : String
+--
++ create()
++ delete()
++ modify()
++ find()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>539</x>
+      <y>105</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Chatting room
+--
+- name : String
+- list_of_participants : String List
+- messages : String
+--
++ create()
++ delete()
++ modify()
++ find()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>189</x>
+      <y>511</y>
+      <w>182</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Notification
+--
+- amount : Integer
+- settlement_deadline : Date
+- list_of_participants : String List
+- settlement_recipient : String
+--
++ notification_deliery()
++ create()
++ delete()
++ modify()
++ find()
++ setDeadline()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>105</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>User
+--
+- name : String
+- UserID : String
+- Role : String
+--
++ create()
++ delete()
++ modify()
++ find()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>203</y>
+      <w>21</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>154</y>
+      <w>168</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=*
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;220.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>553</x>
+      <y>203</y>
+      <w>42</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+  has</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>203</y>
+      <w>42</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+  has</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>392</y>
+      <w>56</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=*
+  receive</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

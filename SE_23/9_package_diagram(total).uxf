@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>90</x>
+      <y>90</y>
+      <w>300</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>GUI Package
+--
++ Main window
+
++ Chatting room maintenance window
+
++ Payment maintenance window
+
++ Settlement maintenance window
+
++ Selecting payer window
+
++ Intro window
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>600</x>
+      <y>90</y>
+      <w>230</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>Buisness Package
+--
++ Payment
+
++ Settlement details
+
++ Chatting room
+
++ Notification
+
++ User
+
++ Payer
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>600</x>
+      <y>470</y>
+      <w>210</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Database Package
+--
++ Payment DB
+
++ Settlement DB
+
++ Chatting room DB
+
++ User DB
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>190</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;access&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>300</y>
+      <w>90</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+ &lt;&lt;access&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+</diagram>

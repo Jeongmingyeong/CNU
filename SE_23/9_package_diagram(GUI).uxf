@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>88</y>
+      <w>224</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Chatting room Maintenance Window
+--
+
+--
+createChattingRoom()
+
+deleteChattingRoom()
+
+modifyChattingRoom()
+
+searchChattingRoom()
+
+selectingChattingRoom()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>216</y>
+      <w>216</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Main Window
+--
+
+--
+MainWindow()
+
+ChattingroomMaintenance_Action()
+
+PaymentMaintenance_Action()
+
+SettlementMaintenance_Action()
+
+SelectingPayer_Action()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>688</x>
+      <y>528</y>
+      <w>216</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Settlement Maintenance Window
+--
+
+--
+selectSettlementMethod()
+
+selectSettlementperson()
+
+notifySettlement()
+
+modifySettlementStates()
+
+searchSettlementStates()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>320</y>
+      <w>224</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Payment Maintenance Window
+--
+
+--
+addPayment()
+
+deletePayment()
+
+modifyPayment()
+
+searchPayment()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>248</y>
+      <w>216</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Intro Window
+--
+
+--
+login()
+
+logout()
+
+signup()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>216</y>
+      <w>136</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>328</y>
+      <w>136</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>376</y>
+      <w>24</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>376</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>448</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>616</x>
+      <y>456</y>
+      <w>24</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>616</x>
+      <y>576</y>
+      <w>88</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>344</x>
+      <y>544</y>
+      <w>216</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Selecting Payer Window
+--
+
+--
+chooseSeletcingMethod()
+
+playRamdomGame()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>304</y>
+      <w>144</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>
