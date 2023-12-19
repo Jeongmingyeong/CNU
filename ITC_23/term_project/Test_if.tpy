@@ -1,0 +1,18 @@
+def a(aa):
+    if aa == 0:
+        return 0
+    elif aa == 1:
+        return 1
+    else:
+        return 2
+
+def b(aa):
+    if aa == 0:
+        return 3
+    elif aa == 1:
+        return 4
+    else:
+        return 5
+
+print(a(0))
+print(b(4))

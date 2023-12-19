@@ -10,24 +10,6 @@ import java.util.Optional;
 public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     ParseTreeProperty<String> result = new ParseTreeProperty<>();
     static SymbolTable symbolTable = new SymbolTable();
-    int num_indent = 0; // use for check indent
-    int else_indent = 0; // use for check "else" or "elif" indent
-
-    // Use for add an indentation
-    public String indent_string(int number) {
-        return " ".repeat(number*4);
-    }
-
-//    @Override
-//    public void exitProgram(tinyPythonParser.ProgramContext ctx) {
-//
-//        // handled file_input case
-//        String program = result.get(ctx.file_input());
-//
-//        // print all program
-//        System.out.println(program);
-//    }
-
 
     @Override
     public void enterProgram(tinyPythonParser.ProgramContext ctx) {
@@ -42,7 +24,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
                 + "aload_0\n"
                 + "invokenonvirtual java/lang/Object/<init>()V\n"
                 + "return\n"
-                + ".end method\n");
+                + ".end method\n\n");
     }
     @Override
     public void exitProgram(tinyPythonParser.ProgramContext ctx) {
@@ -54,13 +36,10 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
             FileWriter writer = new FileWriter("./Test.j");
 
             // append result to writer object
-            writer.append(class_code + program);
+            writer.append(class_code + program + "return\n" + ".end method\n");
 
             // create "Test.j" file
             writer.flush();
-            System.out.println("finish write. please check");
-            System.out.println("write program : \n");
-            System.out.println(program);
 
         } catch (IOException e) { // handling IOException
             System.out.println("can't find file");
@@ -73,13 +52,15 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void exitFile_input(tinyPythonParser.File_inputContext ctx) {
-        String str = "";
         int idx_newline = 0;
         int idx_stmt = 0;
 
+        // step1. handled "defs"
+        String str = result.get(ctx.defs());
+
         // handled  [ (NEWLINE | stmt)* EOF ]
-        // first, handled front list and then handled EOF
-        for(int i = 0; i < ctx.getChildCount()-1; i++) { // because EOF is handled separately
+        // step2. handled front list and then handled EOF
+        for(int i = 1; i < ctx.getChildCount()-1; i++) { // because EOF is handled separately
             // case1 : NEWLINE
             if(ctx.getChild(i) == ctx.NEWLINE(idx_newline)) {
                 str += ctx.NEWLINE(idx_newline++);
@@ -95,6 +76,37 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
         // store string into result tree
         result.put(ctx, str);
+    }
+
+    @Override
+    public void exitDefs(tinyPythonParser.DefsContext ctx) {
+        String str = "";
+
+        // handling def_stmt*
+        int def_idx = 0;
+        int idx_newline = 0;
+        for(int i = 0; i < ctx.getChildCount(); i++) {
+
+            if(ctx.getChild(i) != null) {
+                // case1 : NEWLINE
+                if(ctx.getChild(i) == ctx.NEWLINE(idx_newline)) {
+                    str += "\n";
+                    idx_newline++;
+                }
+
+                // case2 : def_stmt
+                else {
+                    str += result.get(ctx.def_stmt(def_idx++));
+                }
+            }
+        }
+
+        String main_header =
+                ".method public static " + symbolTable.getFuncSigniture("main") + "\n"
+                        + ".limit stack 32" + "\n"
+                        + ".limit locals 32" + "\n";
+
+        result.put(ctx, str + main_header);
     }
 
 
@@ -169,8 +181,11 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         String var_name = ctx.NAME().getText(); // variable name
         String expr_value = result.get(ctx.expr());
 
+        symbolTable.putVar(var_name, expr_value);
+
         // generate JVM code
-        String str = "astore " + symbolTable.getVarName(var_name);
+        String str = expr_value + "\n";
+        str += "istore " + symbolTable.getVarID(var_name);
 
         // store string into result tree
         result.put(ctx, str);
@@ -231,40 +246,109 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         result.put(ctx, str);
     }
 
-    // todo:
+
     @Override
     public void exitIf_stmt(tinyPythonParser.If_stmtContext ctx) {
-        int idx_test = 0;
-        int idx_suite = 0;
-        int if_indent_level = 0;
-        System.out.println("if_child_count: " + ctx.getChildCount());
+        String str = "";
 
-        String str = "if " + result.get(ctx.test(idx_test++)) + ":";
-        str += "\n" + result.get(ctx.suite(idx_suite++));
+        int cond_idx = 0;
+        int body_idx = 0;
+        String if_cond = result.get(ctx.test(cond_idx));
+        String if_body= result.get(ctx.suite(body_idx));
 
-        // index : use for check exist "elif" or "else"
-        int index = 4;
-        while(true) {
-            // break case
-            if(index == ctx.getChildCount()) {
-                break;
+        String lend = symbolTable.newLabelID();
+
+        // check exists "elif" or "else
+        if(ctx.getChildCount() < 5) {
+            // only exist if_stmt
+            str += if_cond + lend + "\n"
+                    + if_body + "\n"
+                    + lend + ": " + "\n";
+
+        }
+
+        // check exist "else" stmt with only "if" stmt
+        else if (ctx.getChildCount() == 7) {
+            // exist "else" stmt with only "if" stmt
+            String lelse = symbolTable.newLabelID();
+            String else_body = result.get(ctx.suite(++body_idx));
+
+            str += if_cond + lelse + "\n"
+                    + if_body + "\n"
+                    + "goto " + lend + "\n"
+                    + lelse + ": " + else_body + "\n"
+                    + lend + ": " + "\n";
+        }
+
+        // only "elif" exist without "else"
+        else if (ctx.getChildCount() % 4 == 0) {
+            // at least one "elif" exist
+            String lelif = symbolTable.newLabelID();
+
+            str += if_cond + lelif + "\n"
+                    + if_body
+                    + "goto " + lend + "\n";
+
+            int index = 4;
+
+            while((ctx.getChildCount() - index > 0)) {
+                // exist another "elif"
+                String elif_cond = result.get(ctx.test(++cond_idx));
+                String elif_body = result.get(ctx.suite(++body_idx));
+
+                str += lelif + ": " + elif_cond;
+
+                lelif = symbolTable.newLabelID(); // create new elif label
+
+                str += lelif + "\n"
+                        + elif_body
+                        + "goto " + lend + "\n";
+
+                index += 4;
             }
 
-            if(ctx.getChild(index) != null) {
-                // match "elif"
-                if(ctx.getChild(index).getText().equals("elif")) {
-                    str += indent_string(else_indent) + "elif " + result.get(ctx.test(idx_test++)) + ":";
-                    str += "\n" + result.get(ctx.suite(idx_suite++));
-                    index += 4;
-                }
+            String elif_cond = result.get(ctx.test(++cond_idx));
+            String elif_body = result.get(ctx.suite(++body_idx));
+            str += lelif + ": " + elif_cond + lend + "\n"
+                    + elif_body
+                    + lend + ": " + "\n";
+        }
 
-                // match "else"
-                else {
-                    str += indent_string(else_indent) + "else:";
-                    str += "\n" + result.get(ctx.suite(idx_suite++));
-                    index += 3;
-                }
+        // exist "elif" and "else"
+        else {
+            String lelif = symbolTable.newLabelID();
+
+            str += if_cond + lelif + "\n"
+                    + if_body
+                    + "goto " + lend + "\n";
+
+            int index = 4;
+
+            while((ctx.getChildCount() - (index * 2) > 0)) {
+                // exist another "elif"
+                String elif_cond = result.get(ctx.test(++cond_idx));
+                String elif_body = result.get(ctx.suite(++body_idx));
+
+                str += lelif + ": " + "\n" + elif_cond;
+
+                lelif = symbolTable.newLabelID(); // create new elif label
+
+                str += lelif + "\n"
+                        + elif_body
+                        + "goto " + lend + "\n";
+
+                index += 4;
             }
+
+            // this part is "else" stmt
+//            String elif_cond = result.get(ctx.test(++cond_idx));
+
+            String else_body = result.get(ctx.suite(++body_idx));
+
+            String lelse = lelif;
+
+            str += lelse + ": " + "\n" + else_body
+                    + lend + ": " + "\n";
         }
 
         // store string into result tree
@@ -273,8 +357,21 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void exitWhile_stmt(tinyPythonParser.While_stmtContext ctx) {
-        String str = "while " + result.get(ctx.test()) + ":";
-        str += "\n" + result.get(ctx.suite());
+        String str = "";
+
+        String cond = result.get(ctx.test());
+        String body = result.get(ctx.suite());
+
+        String lloop = symbolTable.newLabelID(); // for "Loop:" label
+        String lloopend = symbolTable.newLabelID(); // for "LoopEnd:" label
+
+        // step1. check condition code
+        // step2. execute body and goto loop
+        str += lloop + ": " + "\n"
+                + cond + lloopend + "\n"
+                + body
+                + "goto " + lloop + "\n"
+                + lloopend + ": " + "\n";
 
         // store string into result tree
         result.put(ctx, str);
@@ -282,14 +379,16 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void enterDef_stmt(tinyPythonParser.Def_stmtContext ctx) {
-        String fname = ctx.NAME().getText(); // function name
+        symbolTable.initFunDecl();
+
+        symbolTable.putFuncSigniture(ctx);
 
     }
 
     private static String getFuncHeader(tinyPythonParser.Def_stmtContext ctx, String func_name) {
         // FIXME :
         String func_header =
-                ".method public static " + /*symbolTable.getFuncSigniture(func_name)*/ "Sum" + "\n"
+                ".method public static " + symbolTable.getFuncSigniture(func_name) + "\n"
                 + ".limit stack 32" + "\n"
                 + ".limit locals 32" + "\n";
         return func_header;
@@ -304,20 +403,10 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
         String str = fheader + fsuite + ffooter;
 
-        // FIXME: remove the print
-        System.out.println("into def stmt : " + str);
-
         // store string into result tree
         result.put(ctx, str);
     }
 
-    @Override
-    public void enterSuite(tinyPythonParser.SuiteContext ctx) {
-        // this function is change indent level
-        // suite uses only compound stmt (if, def, while)
-        // indent level + 1 when entering suite
-        num_indent++;
-    }
 
     @Override
     public void exitSuite(tinyPythonParser.SuiteContext ctx) {
@@ -341,13 +430,6 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
         // store string into result tree
         result.put(ctx, str);
-
-        // indent level + 1 when entering suite
-        num_indent--;
-
-        // else_indent variable is used to handle the indent of [ else: ]
-        // [ else: ] handled in "exitIf_stmt" using else_indent
-        else_indent = num_indent;
     }
 
     @Override
@@ -357,9 +439,9 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         // handled 2 cases
         // case1 : [ NAME ("," NAME)* ]
         if(ctx.getChildCount() >= 1) {
-            str = ctx.NAME(0).getText();
+            symbolTable.putVar(ctx.NAME(0).getText(), "args");
             for(int i = 1; i < (ctx.getChildCount()/2 + 1); i++) { // except ","
-                str += ", " + ctx.NAME(i).getText();
+                symbolTable.putVar(ctx.NAME(i).getText(), "args");
             }
         }
 
@@ -375,11 +457,18 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     @Override
     public void exitReturn_stmt(tinyPythonParser.Return_stmtContext ctx) {
         // handled [ 'return' ] or [ 'return' expr ]
-        String str = "return";
+        String str = "";
 
         // case: return expr
         if(ctx.expr() != null) {
-            str += " " + result.get(ctx.expr());
+            String temp = result.get(ctx.expr());
+            str += temp + "\n";
+            str += "ireturn";
+        }
+
+        // case: return
+        else {
+            str += "return";
         }
 
         // store string into result tree
@@ -388,9 +477,9 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void exitTest(tinyPythonParser.TestContext ctx) {
-        String str = result.get(ctx.expr(0));
+        String str = result.get(ctx.expr(0)) + "\n";
+        str += result.get(ctx.expr(1)) + "\n";
         str += result.get(ctx.comp_op());
-        str += result.get(ctx.expr(1));
 
         // store string into result tree
         result.put(ctx, str);
@@ -398,7 +487,18 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void exitPrint_stmt(tinyPythonParser.Print_stmtContext ctx) {
-        String str = "print " + result.get(ctx.print_arg());
+        String str = "getstatic java/lang/System/out Ljava/io/PrintStream;" + "\n";
+        str += result.get(ctx.print_arg()) + "\n";
+
+        // case1. print arg == string
+        if(ctx.print_arg().STRING() != null) {
+            str += "invokevirtual " + symbolTable.getFuncSigniture("print_S");
+        }
+
+        // case2. print arg == expr
+        else {
+            str += "invokevirtual " + symbolTable.getFuncSigniture("print_I");
+        }
 
         // store string into result tree
         result.put(ctx, str);
@@ -409,7 +509,8 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         // handled 2 cases
         // case1 : STRING
         if(ctx.STRING() != null) {
-            result.put(ctx, ctx.STRING().getText());
+            String temp = "ldc " + ctx.STRING().getText();
+            result.put(ctx, temp);
         }
 
         // case2 : expr
@@ -423,51 +524,60 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         // handled 6 cases with whitespace
         // case1 : "<"
         if(ctx.getChild(0).getText().equals("<")) {
-            result.put(ctx, " < ");
+            result.put(ctx, "if_icmpge ");
         }
 
         // case2 : ">"
         else if(ctx.getChild(0).getText().equals(">")) {
-            result.put(ctx, " > ");
+            result.put(ctx, "if_icmple ");
         }
 
-        // case3 : ">"
+        // case3 : "=="
         else if(ctx.getChild(0).getText().equals("==")) {
-            result.put(ctx, " == ");
+            result.put(ctx, "if_icmpne ");
         }
 
-        // case4 : ">"
+        // case4 : ">="
         else if(ctx.getChild(0).getText().equals(">=")) {
-            result.put(ctx, " >= ");
+            result.put(ctx, "if_icmplt ");
         }
 
-        // case5 : ">"
+        // case5 : "<="
         else if(ctx.getChild(0).getText().equals("<=")) {
-            result.put(ctx, " <= ");
+            result.put(ctx, "if_icmpgt ");
         }
 
-        // case6 : ">"
+        // case6 : "!="
         else {
-            result.put(ctx, " != ");
+            result.put(ctx, "if_icmpeq ");
         }
     }
 
     @Override
     public void exitExpr(tinyPythonParser.ExprContext ctx) {
-        String str = null;
+        String str = "";
 
         // handled 4 cases
         // case1 : [ NAME opt_paren ] is getchildCount == 2 <- function call
         if(ctx.getChildCount() == 2) {
-            str = ctx.NAME().getText();
-            if(result.get(ctx.opt_paren()) != null) {
+            String value = ctx.NAME().getText();
+
+            // case1. opt_paren() == null => NAME is var name
+            if(result.get(ctx.opt_paren()).equals("")) {
+                str += "iload " + symbolTable.getVarID(value);
+            }
+
+            // case2. opt_paren() != null => function call
+            else {
                 str += result.get(ctx.opt_paren());
+                str += "Test/" + symbolTable.getFuncSigniture(value);
             }
         }
 
         // case2 : [ NUMBER ] is getchildCount == 1 <- integer value
         else if(ctx.getChildCount() == 1) {
-            str = ctx.NUMBER().getText();
+            String value = ctx.NUMBER().getText();
+            str += "ldc " + value;
         }
 
         // case3 : [ '(' expr ')' ] is getchildCount == 3
@@ -476,22 +586,43 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         else {
             // case4 : binary operation
             if(ctx.getChild(1).getText().equals("+") | ctx.getChild(1).getText().equals("-")) {
-                str = result.get(ctx.expr(0));
+                int op_idx = 1;
+                int expr_idx = 0;
+                String expr1 = result.get(ctx.expr(expr_idx));
+                String expr2 = "";
 
-                if (ctx.getChild(1).getText().equals("+")) {
-                    str += " + ";
-                } else {
-                    str += " - ";
-                }
+                while(ctx.getChild(op_idx) != null) {
+                    if(ctx.getChild(op_idx).getText().equals("+")) {
+                        // op is "+"
+                        expr2 = result.get(ctx.expr(++expr_idx));
 
-                if(ctx.expr(1) != null) {
-                    str += result.get(ctx.expr(1));
+                        str += expr1 + "\n";
+                        str += expr2 + "\n";
+                        str += "iadd";
+
+                        op_idx += 2;
+                    }
+
+                    else if(ctx.getChild(op_idx).getText().equals("-")) {
+                        // op is "-"
+                        expr2 = result.get(ctx.expr(++expr_idx));
+
+                        str += expr1 + "\n";
+                        str += expr2 + "\n";
+                        str += "isub";
+
+                        op_idx += 2;
+                    }
+
+                    else {
+                        break;
+                    }
                 }
             }
 
             // case3
             else {
-                str = "(" + result.get(ctx.expr(0)) + ")";
+                str = result.get(ctx.expr(0));
             }
         }
 
@@ -501,25 +632,25 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
     @Override
     public void exitOpt_paren(tinyPythonParser.Opt_parenContext ctx) {
-        String str = null;
+        String str = "";
 
         // handled 3 cases
         // case1 : [ '(' ')' ] is getchildCount == 2
         if(ctx.getChildCount() == 2) {
-            str = "(" + ")";
+            str = "invokestatic ";
         }
 
         // case2 : [ '(' expr (',' expr)* ')' ]
         else if(ctx.getChildCount() >= 3) {
-            str = "(" + result.get(ctx.expr(0));
+            str = result.get(ctx.expr(0));
             int index = 1;
 
             for(int i = 2; i < ctx.getChildCount()-1; i+=2) {
-                str += ", " + result.get(ctx.expr(index));
+                str += "\n" + result.get(ctx.expr(index));
                 index++;
             }
 
-            str += ")";
+            str += "\ninvokestatic ";
         }
 
         // case3 : whitespace (공백)

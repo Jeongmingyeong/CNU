@@ -1,2 +1,7 @@
-def sum(a):
-return a
+a = 3
+b = 100
+
+if a > 0:
+    b = 1
+
+print b
