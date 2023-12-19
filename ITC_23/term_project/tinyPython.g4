@@ -11,8 +11,7 @@ program:
 
 //single_input: NEWLINE | simple_stmt | compound_stmt NEWLINE;
 file_input:
-	defs
-    (NEWLINE | stmt)* EOF
+	defs (NEWLINE | stmt)* EOF
     ;
 
 defs:
