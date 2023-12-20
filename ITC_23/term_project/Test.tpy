@@ -1,7 +1,38 @@
-a = 3
-b = 100
+a = 0
+b = 0
+i = 1
 
-if a > 0:
-    b = 1
+while 1==1:
+    if i == 1:
+        a = a + i
+        i = i + 1
+    elif i == 2:
+        b = b + i
+        i = i + 1
+    elif i == 3:
+        a = a + i
+        i = i + 1
+    elif i == 4:
+        b = b + i
+        i = i + 1
+    elif i == 5:
+        a = a + i
+        i = i + 1
+    elif i == 6:
+        b = b + i
+        i = i + 1
+    elif i == 7:
+        a = a + i
+        i = i + 1
+    elif i == 8:
+        b = b + i
+        i = i + 1
+    elif i == 9:
+        a = a + i
+        i = i + 1
+    else:
+        b = b + i
+        break
 
+print a
 print b

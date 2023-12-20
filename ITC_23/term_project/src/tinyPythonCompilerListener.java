@@ -216,17 +216,15 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     @Override
     public void exitBreak_stmt(tinyPythonParser.Break_stmtContext ctx) {
         // store "break" string into result tree
-        result.put(ctx, "break");
+        result.put(ctx, "goto");
     }
 
     @Override
     public void exitContinue_stmt(tinyPythonParser.Continue_stmtContext ctx) {
         // store "continue" string into result tree
-        result.put(ctx, "continue");
+        result.put(ctx, "goto");
     }
-
-    @Override
-    public void enterCompound_stmt(tinyPythonParser.Compound_stmtContext ctx) {}
+    
     @Override
     public void exitCompound_stmt(tinyPythonParser.Compound_stmtContext ctx) {
         String str = "";
@@ -262,8 +260,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
         if(ctx.getChildCount() < 5) {
             // only exist if_stmt
             str += if_cond + lend + "\n"
-                    + if_body + "\n"
-                    + lend + ": " + "\n";
+                    + if_body + "\n";
 
         }
 
@@ -275,9 +272,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
             str += if_cond + lelse + "\n"
                     + if_body + "\n"
-                    + "goto " + lend + "\n"
-                    + lelse + ": " + else_body + "\n"
-                    + lend + ": " + "\n";
+                    + lelse + ": " + "\n" + else_body + "\n";
         }
 
         // only "elif" exist without "else"
@@ -286,8 +281,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
             String lelif = symbolTable.newLabelID();
 
             str += if_cond + lelif + "\n"
-                    + if_body
-                    + "goto " + lend + "\n";
+                    + if_body + "\n";
 
             int index = 4;
 
@@ -301,8 +295,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
                 lelif = symbolTable.newLabelID(); // create new elif label
 
                 str += lelif + "\n"
-                        + elif_body
-                        + "goto " + lend + "\n";
+                        + elif_body + "\n";
 
                 index += 4;
             }
@@ -310,8 +303,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
             String elif_cond = result.get(ctx.test(++cond_idx));
             String elif_body = result.get(ctx.suite(++body_idx));
             str += lelif + ": " + elif_cond + lend + "\n"
-                    + elif_body
-                    + lend + ": " + "\n";
+                    + elif_body + "\n";
         }
 
         // exist "elif" and "else"
@@ -319,8 +311,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
             String lelif = symbolTable.newLabelID();
 
             str += if_cond + lelif + "\n"
-                    + if_body
-                    + "goto " + lend + "\n";
+                    + if_body;
 
             int index = 4;
 
@@ -334,8 +325,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
                 lelif = symbolTable.newLabelID(); // create new elif label
 
                 str += lelif + "\n"
-                        + elif_body
-                        + "goto " + lend + "\n";
+                        + elif_body;
 
                 index += 4;
             }
@@ -347,8 +337,7 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
             String lelse = lelif;
 
-            str += lelse + ": " + "\n" + else_body
-                    + lend + ": " + "\n";
+            str += lelse + ": " + "\n" + else_body + "\n";
         }
 
         // store string into result tree
