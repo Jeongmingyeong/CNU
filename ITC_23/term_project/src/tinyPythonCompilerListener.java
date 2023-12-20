@@ -11,6 +11,10 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     ParseTreeProperty<String> result = new ParseTreeProperty<>();
     static SymbolTable symbolTable = new SymbolTable();
 
+    // for "break" && "continue"
+    String cur_loop_label = "";
+    String cur_loopend_label = "";
+
     @Override
     public void enterProgram(tinyPythonParser.ProgramContext ctx) {
         symbolTable.initFuntable();
@@ -216,15 +220,15 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     @Override
     public void exitBreak_stmt(tinyPythonParser.Break_stmtContext ctx) {
         // store "break" string into result tree
-        result.put(ctx, "goto");
+        result.put(ctx, "goto " + cur_loopend_label);
     }
 
     @Override
     public void exitContinue_stmt(tinyPythonParser.Continue_stmtContext ctx) {
         // store "continue" string into result tree
-        result.put(ctx, "goto");
+        result.put(ctx, "goto " + cur_loop_label);
     }
-    
+
     @Override
     public void exitCompound_stmt(tinyPythonParser.Compound_stmtContext ctx) {
         String str = "";
@@ -256,11 +260,12 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
 
         String lend = symbolTable.newLabelID();
 
-        // check exists "elif" or "else
+        // check only exist if stmt
         if(ctx.getChildCount() < 5) {
             // only exist if_stmt
             str += if_cond + lend + "\n"
-                    + if_body + "\n";
+                    + if_body + "\n"
+                    + lend + ": " + "\n";
 
         }
 
@@ -345,14 +350,19 @@ public class tinyPythonCompilerListener extends tinyPythonBaseListener {
     }
 
     @Override
+    public void enterWhile_stmt(tinyPythonParser.While_stmtContext ctx) {
+        cur_loop_label = symbolTable.newLabelID(); // for "Loop:" label
+        cur_loopend_label = symbolTable.newLabelID(); // for "LoopEnd:" label
+    }
+    @Override
     public void exitWhile_stmt(tinyPythonParser.While_stmtContext ctx) {
         String str = "";
 
         String cond = result.get(ctx.test());
         String body = result.get(ctx.suite());
 
-        String lloop = symbolTable.newLabelID(); // for "Loop:" label
-        String lloopend = symbolTable.newLabelID(); // for "LoopEnd:" label
+        String lloop = cur_loop_label;
+        String lloopend = cur_loopend_label;
 
         // step1. check condition code
         // step2. execute body and goto loop
