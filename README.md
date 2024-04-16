@@ -32,3 +32,8 @@
 1. CN_23 : Computer Network
 2. ITC_23 : Introduce To Compiler
 3. ML_23 : Machine Learning
+<br></br>
+2024-1.
+1. DB_24 : DataBase
+2. DL_24 : Deep Learning
+3. DS_24 : Data Science
