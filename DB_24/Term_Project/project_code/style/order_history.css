@@ -1,0 +1,40 @@
+.title_box {
+    text-align: center;
+}
+.title_box h1 {
+    margin: 0;
+}
+.order-history {
+    padding: 20px;
+}
+
+.order-date {
+    margin-bottom: 20px;
+}
+
+.order-date h2 {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-item span {
+    margin: 0 10px;
+}
+
+.foodname {
+    flex: 2;
+}
+
+.quantity, .price, .totalprice {
+    flex: 1;
+}
+
+

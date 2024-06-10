@@ -38,150 +38,7 @@ $image_map = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CON</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .top-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 100px;
-            background-color: #d3d3d3;
-            padding: 0 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-						position: fixed;
-        }
-        .top-container img {
-            height: 80px;
-            width: 270px;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            margin: 0 20px;
-				}
-				.search-bar form {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-        .search-bar input {
-            width: 80%;
-            flex-grow: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .search-bar button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .user-info {
-            align-items: center;
-            margin: 0 30px 0 0;
-        }
-        .user-info p {
-            margin: 0 10px;
-        }
-        .main-container {
-            display: flex;
-            flex-grow: 1;
-        }
-        .left-container {
-            width: 250px;
-						height: 100%;
-            background-color: #f0f0f0;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            /* display: flex; */
-						position: fixed;
-            flex-direction: column;
-            justify-content: space-between;
-						margin-top: 100px;
-        }
-        .left-container h3 {
-            margin-top: 0;
-        }
-        .left-container input {
-            width: 100%;
-            padding: 5px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        .left-container .category-section {
-            margin-bottom: 20px;
-        }
-        .left-container button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .left-container button:hover {
-            background-color: #45a049;
-        }
-        .left-container ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .left-container ul li {
-            padding: 5px 0;
-        }
-        .left-container ul li a {
-            text-decoration: none;
-            color: #000;
-            cursor: pointer;
-        }
-        .left-container ul li a:hover {
-            text-decoration: underline;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-						margin-left: 290px;
-						margin-top: 100px;
-        }
-				.food-list {
-				    display: flex;
-				    flex-wrap: wrap;
-				    gap: 20px;
-				}
-				.food-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .food-card img {
-            width: 100px;
-            height: 100px;
-            margin-right: 15px;
-        }
-        .food-card .food-details {
-            display: flex;
-            flex-direction: column;
-        }
-        .food-card .food-details .food-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .food-card .food-details .food-price {
-            font-size: 16px;
-            color: #888;
-        }
-    </style>
+		<link rel="stylesheet" href="../style/mainpage.css">
 </head>
 <body>
     <div class="top-container">
@@ -229,8 +86,8 @@ $image_map = [
                 </ul>
             </div>
             <div>
-                <button>장바구니 조회</button>
-                <button>주문내역 조회</button>
+                <button onClick="location.href='./cart.php'">장바구니 조회</button>
+                <button onClick="location.href='./order_history.php'">주문내역 조회</button>
             </div>
         </div>
         <div class="main-content">
@@ -257,13 +114,13 @@ $image_map = [
 													$foodprice = $food['price'];
 													$foodimage = isset($image_map[$foodname]) ? $image_map[$foodname] : 'default.png';
 
-													echo "<div class='food-card'>";
+													echo "<a href=# class='food-card'>";
                           echo "<img src='../images/$foodimage' alt='$foodname'>";
 													echo "<div class='food-details'>";
                           echo "<div class='food-name'>$foodname</div>";
                           echo "<div class='food-price'>$foodprice 원</div>";
                           echo "</div>";
-                          echo "</div>";
+                          echo "</a>";
                         }
                         echo "</div>";
 
@@ -277,13 +134,72 @@ $image_map = [
             ?>
         </div>
     </div>
+		
+		<!-- 모달 창 -->
+		<div id="foodModal" class="modal">
+		    <div class="modal-content">
+		        <span class="close">&times;</span>
+		        <h2 id="modalFoodName"></h2>
+		        <img id="modalFoodImage" src="" alt="음식 이미지">
+		        <p id="modalFoodPrice"></p>
+		        <form id="cartForm" method="post" action="../add_food_to_cart.php">
+		            <input type="hidden" id="hiddenFoodName" name="foodname" value="">
+		            <input type="hidden" id="hiddenFoodPrice" name="foodprice" value="">
+		            <label for="quantity">수량:</label>
+		            <input type="number" id="quantity" name="quantity" min="1" value="1">
+		            <button type="submit">장바구니에 추가</button>
+		        </form>
+		    </div>
+		</div>
+
 		<!-- javascript code -->
+		<script>
+				document.addEventListener('DOMContentLoaded', function() {
+		    // 모든 food-card 요소에 클릭 이벤트 리스너 추가
+		    document.querySelectorAll('.food-card').forEach(function(card) {
+		        card.addEventListener('click', function(event) {
+		            event.preventDefault();
+		            
+		            // 클릭한 음식 데이터 가져오기
+		            const foodName = card.querySelector('.food-name').textContent;
+		            const foodPrice = card.querySelector('.food-price').textContent;
+		            const foodImageSrc = card.querySelector('img').src;
+		            
+		            // 모달 요소를 가져와서 데이터로 업데이트
+		            document.getElementById('modalFoodName').textContent = foodName;
+		            document.getElementById('modalFoodPrice').textContent = foodPrice;
+		            document.getElementById('modalFoodImage').src = foodImageSrc;
+								document.getElementById('hiddenFoodName').value = foodName;
+                document.getElementById('hiddenFoodPrice').value = foodPrice;
+		            
+		            // 모달 표시
+		            const modal = document.getElementById('foodModal');
+		            modal.style.display = 'block';
+		        });
+		    });
+		
+		    // 모달 닫는 기능
+		    document.querySelector('.close').addEventListener('click', function() {
+		        document.getElementById('foodModal').style.display = 'none';
+		    });
+		
+		    // 모달 외부 클릭 시 모달 닫기
+		    window.addEventListener('click', function(event) {
+		        const modal = document.getElementById('foodModal');
+		        if (event.target === modal) {
+		            modal.style.display = 'none';
+		        }
+		    });
+		});
+		</script>
+
     <script>
         function nevigateToCategory(category) {
 					// 선택한 카테고리 정보를 URL 파라미터로 추가하여 페이지 이동
 					window.location.href = '../get_foods.php?category=' + encodeURIComponent(category);
         }
     </script>
+
     <script>
         function nevigateToMainpage() {
 					window.location.href = '../page/main.php";

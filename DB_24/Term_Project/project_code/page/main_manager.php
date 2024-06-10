@@ -1,6 +1,6 @@
 <?php
 session_start();
-include './db_connect.php';
+include '../db_connect.php';
 
 // 카테고리 정보 조회
 $category_sql = "SELECT * FROM category;";
@@ -42,7 +42,7 @@ $image_map = [
 </head>
 <body>
     <div class="top-container">
-				<a href="./page/main.php">
+				<a href="./main.php">
 					<img src="../images/logo.png" alt="Profile Picture">
 				</a>
         <div class="search-bar">
@@ -57,7 +57,7 @@ $image_map = [
 						$userid = $_SESSION['user_id'];
 
             echo "<p>".$username."</p>";
-            echo "<p>".$userid."</p>"
+            echo "<p>".$userid."(관리자)</p>"
 					?>
         </div>
     </div>
@@ -86,23 +86,13 @@ $image_map = [
                 </ul>
             </div>
             <div>
-                <button>장바구니 조회</button>
-                <button>주문내역 조회</button>
+                <button onClick="location.href='./cart.php'">장바구니 조회</button>
+                <button onClick="location.href='./order_history.php'">주문내역 조회</button>
+                <button onClick="location.href='./admin_stats.php'">판매 통계 조회</button>
             </div>
         </div>
         <div class="main-content">
 						<?php
-						$min_price = $_GET['min_price'];
-						$max_price = $_GET['max_price'];
-						
-						// 사용자가 금액 설정 없이 확인만 누른경우 min : 0, max : 1,000,000원으로 설정
-						if (empty($min_price)) {
-							$min_price = "1";
-						}
-						if (empty($max_price)) {
-							$max_price = "1000000";
-						}
-
 						// 카테고리 정보 조회
 						$category_sql = "SELECT * FROM category;";
 						$result_categories = $conn->query($category_sql); // 카테고리 정보 저장
@@ -115,29 +105,27 @@ $image_map = [
                     // 음식 정보 조회
                     $food_sql = "SELECT food.foodname, food.price
                                  FROM food JOIN contain ON food.foodname = contain.foodname
-																 WHERE contain.categoryname = '$category_name'
-																 AND food.price >= $min_price
-																 AND food.price <= $max_price";
+                                 WHERE contain.categoryname = '$category_name'";
                     $result_foods = $conn->query($food_sql);
 
                     if ($result_foods->num_rows > 0) {
-          							echo "<div class='food-list'>";
+											  echo "<div class='food-list'>";
                         while ($food = $result_foods->fetch_assoc()) {
 													$foodname = $food['foodname'];
 													$foodprice = $food['price'];
 													$foodimage = isset($image_map[$foodname]) ? $image_map[$foodname] : 'default.png';
 
-													echo "<div class='food-card'>";
+													echo "<a href=# class='food-card'>";
                           echo "<img src='../images/$foodimage' alt='$foodname'>";
 													echo "<div class='food-details'>";
                           echo "<div class='food-name'>$foodname</div>";
                           echo "<div class='food-price'>$foodprice 원</div>";
                           echo "</div>";
-                          echo "</div>";
+                          echo "</a>";
                         }
                         echo "</div>";
 
-          } else {
+                    } else {
                         echo "<p>이 카테고리에 속한 음식이 없습니다.</p>";
                     }
                 }
@@ -147,11 +135,75 @@ $image_map = [
             ?>
         </div>
     </div>
+		
+		<!-- 모달 창 -->
+		<div id="foodModal" class="modal">
+		    <div class="modal-content">
+		        <span class="close">&times;</span>
+		        <h2 id="modalFoodName"></h2>
+		        <img id="modalFoodImage" src="" alt="음식 이미지">
+		        <p id="modalFoodPrice"></p>
+		        <form id="cartForm" method="post" action="../add_food_to_cart.php">
+		            <input type="hidden" id="hiddenFoodName" name="foodname" value="">
+		            <input type="hidden" id="hiddenFoodPrice" name="foodprice" value="">
+		            <label for="quantity">수량:</label>
+		            <input type="number" id="quantity" name="quantity" min="1" value="1">
+		            <button type="submit">장바구니에 추가</button>
+		        </form>
+		    </div>
+		</div>
+
 		<!-- javascript code -->
+		<script>
+				document.addEventListener('DOMContentLoaded', function() {
+		    // 모든 food-card 요소에 클릭 이벤트 리스너 추가
+		    document.querySelectorAll('.food-card').forEach(function(card) {
+		        card.addEventListener('click', function(event) {
+		            event.preventDefault();
+		            
+		            // 클릭한 음식 데이터 가져오기
+		            const foodName = card.querySelector('.food-name').textContent;
+		            const foodPrice = card.querySelector('.food-price').textContent;
+		            const foodImageSrc = card.querySelector('img').src;
+		            
+		            // 모달 요소를 가져와서 데이터로 업데이트
+		            document.getElementById('modalFoodName').textContent = foodName;
+		            document.getElementById('modalFoodPrice').textContent = foodPrice;
+		            document.getElementById('modalFoodImage').src = foodImageSrc;
+								document.getElementById('hiddenFoodName').value = foodName;
+                document.getElementById('hiddenFoodPrice').value = foodPrice;
+		            
+		            // 모달 표시
+		            const modal = document.getElementById('foodModal');
+		            modal.style.display = 'block';
+		        });
+		    });
+		
+		    // 모달 닫는 기능
+		    document.querySelector('.close').addEventListener('click', function() {
+		        document.getElementById('foodModal').style.display = 'none';
+		    });
+		
+		    // 모달 외부 클릭 시 모달 닫기
+		    window.addEventListener('click', function(event) {
+		        const modal = document.getElementById('foodModal');
+		        if (event.target === modal) {
+		            modal.style.display = 'none';
+		        }
+		    });
+		});
+		</script>
+
     <script>
         function nevigateToCategory(category) {
 					// 선택한 카테고리 정보를 URL 파라미터로 추가하여 페이지 이동
-					window.location.href = './get_foods.php?category=' + encodeURIComponent(category);
+					window.location.href = '../get_foods.php?category=' + encodeURIComponent(category);
+        }
+    </script>
+
+    <script>
+        function nevigateToMainpage() {
+					window.location.href = '../page/main.php";
         }
     </script>
 </body>
@@ -160,6 +212,4 @@ $image_map = [
 <?php
 $conn->close();
 ?>
-
-
 

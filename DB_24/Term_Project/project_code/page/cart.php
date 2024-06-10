@@ -1,114 +1,94 @@
+<?php
+session_start();
+include '../db_connect.php';
+
+// 사용자정보를 세션에서 가져오기 
+$username = $_SESSION['username'];
+$userid = $_SESSION['user_id'];
+
+// 장바구니 내역을 조회하는 SQL 쿼리
+$cart_sql = "SELECT 
+							 od.foodName AS foodname, 
+							 od.quantity AS quantity, 
+							 f.price AS price, 
+							 od.totalPrice AS totalprice
+						 FROM Cart c
+						 INNER JOIN OrderDetail od ON c.id = od.id
+						 INNER JOIN Food f ON od.foodName = f.foodName
+						 WHERE c.cno = '$userid' AND c.id = 0"; // cart id == 0 : 현재 주문중인 장바구니 (아직 결제 x)
+$result_cart = $conn->query($cart_sql); // 장바구니 정보 저장
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>장바구니 조회</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .top-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 100px;
-            background-color: #d3d3d3;
-            padding: 0 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .top-container img {
-            height: 80px;
-            width: 270px;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            margin: 0 20px;
-        }
-        .search-bar input {
-            width: 80%;
-            flex-grow: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .search-bar button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .user-info {
-            align-items: center;
-            margin: 0 30px 0 0;
-        }
-        .user-info p {
-            margin: 0 10px;
-        }
-        .main-container {
-            display: flex;
-            flex-grow: 1;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-        .total-section {
-            background-color: #f0f0f0;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .total-section p {
-            margin: 0;
-            margin-right: 100px;
-            font-size: 30px;
-        }
-        .total-section button {
-            padding: 15px 30px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            transition: background-color 0.3s;
-        }
-        .total-section button:hover {
-            background-color: #45a049;
-        }
-    </style>
+		<link rel="stylesheet" href="../style/mainpage.css">
+		<link rel="stylesheet" href="../style/cart.css">
 </head>
 <body>
     <div class="top-container">
-        <img src="../images/logo.png" alt="Profile Picture">
-        <div class="search-bar">
-            <input type="text" placeholder="음식 이름 검색">
-            <button>검색</button>
+        <a href="./main.php">
+            <img src="../images/logo.png" alt="Profile Picture">
+        </a>
+        <div class="title_box">
+					<h1>장바구니 조회</h1>
         </div>
+
         <div class="user-info">
-            <p>정민경</p>
-            <p>CN0</p>
+            <?php
+                echo "<p>".$username."</p>";
+                echo "<p>".$userid."</p>";
+            ?>
         </div>
     </div>
     <div class="main-container">
-        <div class="main-content">
+        <div class="cart-content">
             <h1>장바구니 조회</h1>
-            <!-- 여기에 장바구니 내역을 표시하는 부분을 추가하세요 -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>음식 이름</th>
+                        <th>수량</th>
+                        <th>1개당 가격</th>
+                        <th>총 가격</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $total_amount = 0;
+                    if ($result_cart->num_rows > 0) {
+                        while ($item = $result_cart->fetch_assoc()) {
+                            $foodname = $item['foodname'];
+                            $quantity = $item['quantity'];
+                            $price = $item['price'];
+                            $total_price = $item['totalprice'];
+                            $total_amount += $total_price;
+                            echo "<tr>
+                                    <td>$foodname</td>
+                                    <td>$quantity</td>
+                                    <td>$price 원</td>
+                                    <td>$total_price 원</td>
+                                  </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4'>장바구니가 비어 있습니다.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="total-section">
-        <p>총 금액: $100</p>
-        <button>결제하기</button>
+        <p>총 금액: <?php echo $total_amount; ?> 원</p>
+        <button onClick="location.href='../cart_to_history.php'">결제하기</button>
     </div>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
 
