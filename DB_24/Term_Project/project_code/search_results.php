@@ -38,15 +38,15 @@ $image_map = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CON</title>
-		<link rel="stylesheet" href="../style/mainpage.css">
+		<link rel="stylesheet" href="./style/mainpage.css">
 </head>
 <body>
     <div class="top-container">
 				<a href="./page/main.php">
-					<img src="../images/logo.png" alt="Profile Picture">
+					<img src="./images/logo.png" alt="Profile Picture">
 				</a>
         <div class="search-bar">
-						<form id="search-form" action="../search_results.php" method="get">
+						<form id="search-form" action="./search_results.php" method="get">
                 <input type="text" name="search" placeholder="음식 이름 검색">
                 <button type="submit">검색</button>
             </form>
@@ -65,7 +65,7 @@ $image_map = [
         <div class="left-container">
             <div>
                 <h3>금액 설정</h3>
-								<form id="select-price" action="../search_price.php" method="get">
+								<form id="select-price" action="./search_price.php" method="get">
 									<input type="number" name="min_price" placeholder="최소 금액">
 									<input type="number" name="max_price" placeholder="최대 금액">
 									<button>확인</button>
@@ -86,11 +86,16 @@ $image_map = [
                 </ul>
             </div>
             <div>
-                <button>장바구니 조회</button>
-                <button>주문내역 조회</button>
+                <button onClick="location.href='./page/cart.php'">장바구니 조회</button>
+                <button onClick="location.href='./page/order_history.php'">주문내역 조회</button>
+								<?php
+									if($_SESSION['user_id'] === 'C0') {
+										echo "<button onClick=\"location.href='../page/admin_stats.php'\">판매 통계 조회</button>";
+									}
+								?>
             </div>
         </div>
-        <div class="main-content">
+				<div class="main-content">
 						<?php
             $search_keyword = $_GET['search']; 
             
@@ -108,13 +113,13 @@ $image_map = [
 								$foodprice = $food['price'];
 								$foodimage = isset($image_map[$foodname]) ? $image_map[$foodname] : 'default.png';
 
-								echo "<div class='food-card'>";
+								echo "<a href=# class='food-card'>";
                 echo "<img src='../images/$foodimage' alt='$foodname'>";
 								echo "<div class='food-details'>";
                 echo "<div class='food-name'>$foodname</div>";
                 echo "<div class='food-price'>$foodprice 원</div>";
                 echo "</div>";
-                echo "</div>";
+                echo "</a>";
               }
               echo "</div>";
             } else {
@@ -123,13 +128,78 @@ $image_map = [
             ?>
         </div>
     </div>
+
+		<!-- 모달 창 -->
+		<div id="foodModal" class="modal">
+		    <div class="modal-content">
+		        <span class="close">&times;</span>
+		        <h2 id="modalFoodName"></h2>
+		        <img id="modalFoodImage" src="" alt="음식 이미지">
+		        <p id="modalFoodPrice"></p>
+		        <form id="cartForm" method="post" action="../add_food_to_cart.php">
+		            <input type="hidden" id="hiddenFoodName" name="foodname" value="">
+		            <input type="hidden" id="hiddenFoodPrice" name="foodprice" value="">
+		            <label for="quantity">수량:</label>
+		            <input type="number" id="quantity" name="quantity" min="1" value="1">
+		            <button type="submit">장바구니에 추가</button>
+		        </form>
+		    </div>
+		</div>
+
 		<!-- javascript code -->
+		<script>
+				document.addEventListener('DOMContentLoaded', function() {
+		    // 모든 food-card 요소에 클릭 이벤트 리스너 추가
+		    document.querySelectorAll('.food-card').forEach(function(card) {
+		        card.addEventListener('click', function(event) {
+		            event.preventDefault();
+		            
+		            // 클릭한 음식 데이터 가져오기
+		            const foodName = card.querySelector('.food-name').textContent;
+		            const foodPrice = card.querySelector('.food-price').textContent;
+		            const foodImageSrc = card.querySelector('img').src;
+		            
+		            // 모달 요소를 가져와서 데이터로 업데이트
+		            document.getElementById('modalFoodName').textContent = foodName;
+		            document.getElementById('modalFoodPrice').textContent = foodPrice;
+		            document.getElementById('modalFoodImage').src = foodImageSrc;
+								document.getElementById('hiddenFoodName').value = foodName;
+                document.getElementById('hiddenFoodPrice').value = foodPrice;
+		            
+		            // 모달 표시
+		            const modal = document.getElementById('foodModal');
+		            modal.style.display = 'block';
+		        });
+		    });
+		
+		    // 모달 닫는 기능
+		    document.querySelector('.close').addEventListener('click', function() {
+		        document.getElementById('foodModal').style.display = 'none';
+		    });
+		
+		    // 모달 외부 클릭 시 모달 닫기
+		    window.addEventListener('click', function(event) {
+		        const modal = document.getElementById('foodModal');
+		        if (event.target === modal) {
+		            modal.style.display = 'none';
+		        }
+		    });
+		});
+		</script>
+
     <script>
         function nevigateToCategory(category) {
 					// 선택한 카테고리 정보를 URL 파라미터로 추가하여 페이지 이동
-					window.location.href = './get_foods.php?category=' + encodeURIComponent(category);
+					window.location.href = './search_category.php?category=' + encodeURIComponent(category);
         }
     </script>
+
+    <script>
+        function nevigateToMainpage(usermode) {
+					window.location.href = './page/main.php';
+        }
+    </script>
+
 </body>
 </html>
 

@@ -34,7 +34,7 @@ CREATE TABLE Contain (
 );
 
 CREATE TABLE Cart (
-    id VARCHAR(5),
+    id INT,
     orderDateTime TIMESTAMP,
     cno VARCHAR(10),
     PRIMARY KEY (id),
@@ -43,7 +43,7 @@ CREATE TABLE Cart (
 
 CREATE TABLE OrderDetail (
     itemNo INT,
-    id VARCHAR(5),
+    id INT,
     quantity INT,
     totalPrice INT,
     foodName VARCHAR(100),

@@ -27,11 +27,7 @@
 		if($password === $userinfo['password']) {
 			$_SESSION['user_id'] = $userinfo['cno'];
 			$_SESSION['username'] = $userinfo['name'];
-			if($userinfo['cno'] === 'C0') {
-				header("Location: ./page/main_manager.php"); // login 성공시 관리자 전용 메인화면으로 이동
-			} else {
-				header("Location: ./page/main.php"); // login 성공시 메인화면으로 이동
-			}
+			header("Location: ./page/main.php"); // login 성공시 메인화면으로 이동
 			exit();
 		} 
 		

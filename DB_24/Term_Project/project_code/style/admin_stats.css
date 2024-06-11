@@ -1,0 +1,87 @@
+/* 판매 통계 영역 스타일 */
+.sales-stats {
+		width: 50%;
+    margin: 20px;
+		margin-top: 100px;
+    padding: 20px; /* 내부 여백 설정 */
+    background-color: #f0f0f0; /* 배경색 설정 */
+}
+
+/* 인기 메뉴 조회 영역 스타일 */
+.popular-menus {
+		width: 50%;
+    margin: 20px;
+		margin-top: 100px;
+    padding: 20px; /* 내부 여백 설정 */
+    background-color: #f0f0f0; /* 배경색 설정 */
+}
+.sales-stats h2 {
+		text-align: center;
+}
+.popular-menus h2 {
+		text-align: center;
+}
+.popular-menus h3 {
+		text-align: center;
+}
+.date-filter {
+    margin-bottom: 10px; /* 아래 여백 추가 */
+}
+.date-filter input[type="number"] {
+    width: 100%; /* 전체 너비로 설정 */
+    padding: 8px; /* 내부 여백 설정 */
+    font-size: 16px; /* 폰트 크기 설정 */
+    text-align: center; /* 가운데 정렬 설정 */
+    margin: 10 auto; /* 가운데 정렬을 위해 추가 */
+    display: block; /* 입력란을 블록 레벨 요소로 변경 */
+}
+
+.date-filter button {
+    width: 100%; /* 전체 너비로 설정 */
+    padding: 10px; /* 내부 여백 설정 */
+    font-size: 16px; /* 폰트 크기 설정 */
+    background-color: #4CAF50; /* 배경색 설정 */
+    color: white; /* 글자색 설정 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 커서 모양 설정 */
+    margin: 10 auto; /* 가운데 정렬을 위해 추가 */
+    display: block; /* 버튼을 블록 레벨 요소로 변경 */
+}
+
+
+.date-filter button:hover {
+    background-color: #45a049; /* 마우스 호버 시 배경색 변경 */
+}
+/* 총 판매금액 조회 부분 css */
+.sales-stats table {
+    margin: 20 auto; /* 가운데 정렬을 위해 추가 */
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계선 합치기 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.sales-stats th, .sales-stats td {
+    border: 1px solid #ddd; /* 테이블 경계선 스타일 지정 */
+    padding: 8px;
+}
+
+.sales-stats th {
+    background-color: #f2f2f2; /* 테이블 헤더 배경색 */
+}
+
+/* 카테고리 별 인기있는 음식 부분 css */
+.popular-menus table {
+    margin: 20 auto; /* 가운데 정렬을 위해 추가 */
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계선 합치기 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.popular-menus th, .popular-menus td {
+    border: 1px solid #ddd; /* 테이블 경계선 스타일 지정 */
+    padding: 8px;
+}
+
+.popular-menus th {
+    background-color: #f2f2f2; /* 테이블 헤더 배경색 */
+}

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../db_connect.php';
+include './db_connect.php';
 
 // 카테고리 정보 조회
 $category_sql = "SELECT * FROM category;";
@@ -38,15 +38,15 @@ $image_map = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CON</title>
-		<link rel="stylesheet" href="../style/mainpage.css">
+		<link rel="stylesheet" href="./style/mainpage.css">
 </head>
 <body>
     <div class="top-container">
-				<a href="./main.php">
-					<img src="../images/logo.png" alt="Profile Picture">
+				<a href="./page/main.php">
+					<img src="./images/logo.png" alt="Profile Picture">
 				</a>
         <div class="search-bar">
-						<form id="search-form" action="../search_results.php" method="get">
+						<form id="search-form" action="./search_results.php" method="get">
                 <input type="text" name="search" placeholder="음식 이름 검색">
                 <button type="submit">검색</button>
             </form>
@@ -57,7 +57,7 @@ $image_map = [
 						$userid = $_SESSION['user_id'];
 
             echo "<p>".$username."</p>";
-            echo "<p>".$userid."(관리자)</p>"
+            echo "<p>".$userid."</p>"
 					?>
         </div>
     </div>
@@ -65,7 +65,7 @@ $image_map = [
         <div class="left-container">
             <div>
                 <h3>금액 설정</h3>
-								<form id="select-price" action="../search_price.php" method="get">
+								<form id="select-price" action="./search_price.php" method="get">
 									<input type="number" name="min_price" placeholder="최소 금액">
 									<input type="number" name="max_price" placeholder="최대 금액">
 									<button>확인</button>
@@ -86,56 +86,49 @@ $image_map = [
                 </ul>
             </div>
             <div>
-                <button onClick="location.href='./cart.php'">장바구니 조회</button>
-                <button onClick="location.href='./order_history.php'">주문내역 조회</button>
-                <button onClick="location.href='./admin_stats.php'">판매 통계 조회</button>
+                <button onClick="location.href='./page/cart.php'">장바구니 조회</button>
+                <button onClick="location.href='./page/order_history.php'">주문내역 조회</button>
+								<?php
+									if($_SESSION['user_id'] === 'C0') {
+										echo "<button onClick=\"location.href='../page/admin_stats.php'\">판매 통계 조회</button>";
+									}
+								?>
             </div>
-        </div>
-        <div class="main-content">
+        </div> 
+				<div class="main-content">
 						<?php
-						// 카테고리 정보 조회
-						$category_sql = "SELECT * FROM category;";
-						$result_categories = $conn->query($category_sql); // 카테고리 정보 저장
+            $category_name = $_GET['category']; 
+            echo "<h2>" . $category_name . "</h2>";
+            
+            // 음식 정보 조회
+            $food_sql = "SELECT food.foodname, food.price
+                         FROM food JOIN contain ON food.foodname = contain.foodname
+                         WHERE contain.categoryname = '$category_name'";
+            $result_foods = $conn->query($food_sql);
 
-            if ($result_categories->num_rows > 0) {
-                while ($category = $result_categories->fetch_assoc()) {
-                    $category_name = $category['categoryName'];
-                    echo "<h2>" . $category_name . "</h2>";
-                    
-                    // 음식 정보 조회
-                    $food_sql = "SELECT food.foodname, food.price
-                                 FROM food JOIN contain ON food.foodname = contain.foodname
-                                 WHERE contain.categoryname = '$category_name'";
-                    $result_foods = $conn->query($food_sql);
+            if ($result_foods->num_rows > 0) {
+							echo "<div class='food-list'>";
+              while ($food = $result_foods->fetch_assoc()) {
+								$foodname = $food['foodname'];
+								$foodprice = $food['price'];
+								$foodimage = isset($image_map[$foodname]) ? $image_map[$foodname] : 'default.png';
 
-                    if ($result_foods->num_rows > 0) {
-											  echo "<div class='food-list'>";
-                        while ($food = $result_foods->fetch_assoc()) {
-													$foodname = $food['foodname'];
-													$foodprice = $food['price'];
-													$foodimage = isset($image_map[$foodname]) ? $image_map[$foodname] : 'default.png';
-
-													echo "<a href=# class='food-card'>";
-                          echo "<img src='../images/$foodimage' alt='$foodname'>";
-													echo "<div class='food-details'>";
-                          echo "<div class='food-name'>$foodname</div>";
-                          echo "<div class='food-price'>$foodprice 원</div>";
-                          echo "</div>";
-                          echo "</a>";
-                        }
-                        echo "</div>";
-
-                    } else {
-                        echo "<p>이 카테고리에 속한 음식이 없습니다.</p>";
-                    }
-                }
+								echo "<a href=# class='food-card'>";
+                echo "<img src='../images/$foodimage' alt='$foodname'>";
+								echo "<div class='food-details'>";
+                echo "<div class='food-name'>$foodname</div>";
+                echo "<div class='food-price'>$foodprice 원</div>";
+                echo "</div>";
+                echo "</a>";
+              }
+              echo "</div>";
             } else {
-                echo "<p>설정된 카테고리가 없습니다.</p>";
+                echo "<p>이 카테고리에 속한 음식이 없습니다.</p>";
             }
             ?>
         </div>
     </div>
-		
+
 		<!-- 모달 창 -->
 		<div id="foodModal" class="modal">
 		    <div class="modal-content">
@@ -197,19 +190,22 @@ $image_map = [
     <script>
         function nevigateToCategory(category) {
 					// 선택한 카테고리 정보를 URL 파라미터로 추가하여 페이지 이동
-					window.location.href = '../get_foods.php?category=' + encodeURIComponent(category);
+					window.location.href = './search_category.php?category=' + encodeURIComponent(category);
         }
     </script>
 
     <script>
-        function nevigateToMainpage() {
-					window.location.href = '../page/main.php";
+        function nevigateToMainpage(usermode) {
+					window.location.href = './page/main.php';
         }
     </script>
+
 </body>
 </html>
 
 <?php
 $conn->close();
 ?>
+
+
 

@@ -88,6 +88,11 @@ $image_map = [
             <div>
                 <button onClick="location.href='./cart.php'">장바구니 조회</button>
                 <button onClick="location.href='./order_history.php'">주문내역 조회</button>
+								<?php
+									if($_SESSION['user_id'] === 'C0') {
+										echo "<button onClick=\"location.href='../page/admin_stats.php'\">판매 통계 조회</button>";
+									}
+								?>
             </div>
         </div>
         <div class="main-content">
@@ -196,13 +201,13 @@ $image_map = [
     <script>
         function nevigateToCategory(category) {
 					// 선택한 카테고리 정보를 URL 파라미터로 추가하여 페이지 이동
-					window.location.href = '../get_foods.php?category=' + encodeURIComponent(category);
+					window.location.href = '../search_category.php?category=' + encodeURIComponent(category);
         }
     </script>
 
     <script>
-        function nevigateToMainpage() {
-					window.location.href = '../page/main.php";
+        function nevigateToMainpage(usermode) {
+					window.location.href = './main.php';
         }
     </script>
 </body>

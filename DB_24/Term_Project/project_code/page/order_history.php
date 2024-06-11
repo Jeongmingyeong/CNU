@@ -35,9 +35,9 @@ $result_order = $conn->query($order_sql); // 장바구니 정보 저장
 </head>
 <body>
     <div class="top-container">
-        <a href="./main.php">
-            <img src="../images/logo.png" alt="Profile Picture">
-        </a>
+				<a href="./main.php">
+					<img src="../images/logo.png" alt="Profile Picture">
+				</a>
         <div class="title_box">
             <h1>주문내역 조회</h1>
         </div>
@@ -54,7 +54,7 @@ $result_order = $conn->query($order_sql); // 장바구니 정보 저장
             $current_date = null;
             if ($result_order->num_rows > 0) {
                 while ($item = $result_order->fetch_assoc()) {
-                    $orderdate = $item['orderdate'];
+                    $orderdate = $item['ordertime'];
                     $foodname = $item['foodname'];
                     $quantity = $item['quantity'];
                     $price = $item['price'];
@@ -98,6 +98,13 @@ $result_order = $conn->query($order_sql); // 장바구니 정보 저장
             ?>
         </div>
     </div>
+				
+				<script>
+        function nevigateToMainpage(usermode) {
+					window.location.href = './main.php;
+        }
+    </script>
+
 </body>
 </html>
 

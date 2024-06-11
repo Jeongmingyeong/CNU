@@ -30,9 +30,9 @@ $result_cart = $conn->query($cart_sql); // 장바구니 정보 저장
 </head>
 <body>
     <div class="top-container">
-        <a href="./main.php">
-            <img src="../images/logo.png" alt="Profile Picture">
-        </a>
+				<a href="./main.php">
+					<img src="../images/logo.png" alt="Profile Picture">
+				</a>
         <div class="title_box">
 					<h1>장바구니 조회</h1>
         </div>
@@ -85,6 +85,13 @@ $result_cart = $conn->query($cart_sql); // 장바구니 정보 저장
         <p>총 금액: <?php echo $total_amount; ?> 원</p>
         <button onClick="location.href='../cart_to_history.php'">결제하기</button>
     </div>
+								
+		<script>
+        function nevigateToMainpage(usermode) {
+					window.location.href = './main.php';
+        }
+    </script>
+
 </body>
 </html>
 
