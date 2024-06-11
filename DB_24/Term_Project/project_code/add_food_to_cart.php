@@ -19,12 +19,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // 장바구니에 추가하는 SQL 쿼리 (주문 한번에 대한 정보 저장 -> 결제 버튼 클릭 시에는 Cart table에 저장)
 		$create_cart_sql = "INSERT INTO CART (cno, id, orderDateTime) VALUES ('$userid', 0, NOW())";
-		$create_orderDetail_sql = "INSERT INTO OrderDetail (itemno, id, quantity, totalPrice, foodName) VALUES 
-															('$new_itemno',
-															 0, 
-															 '$quantity', 
-															 (SELECT price FROM Food WHERE foodName = '$foodname') * '$quantity', 
-															 '$foodname')";
+
+		// 장바구니에 추가하고자 하는 음식이 이미 존재한다면, 새로 정보를 추가하는 것이 아닌 그 음식의 수량을 update
+		$isExistFood_sql = "SELECT COUNT(*) AS cnt 
+												FROM OrderDetail od
+												WHERE od.foodname = '$foodname' AND od.id = 0;";
+		
+		$res_q = $conn->query($isExistFood_sql);
+		$isExistFood = ($res_q && $res_q->num_rows > 0 && $res_q->fetch_assoc()['cnt'] > 0) ? 1 : 0; // cnt로 접근시의 값이 0이면 존재x, 0이 아니면 존재o
+		if($isExistFood === 0) {
+			// 장바구니에 존재하지 않는 음식이므로 insert
+			$create_orderDetail_sql = "INSERT INTO OrderDetail (itemno, id, quantity, totalPrice, foodName) VALUES 
+																('$new_itemno',
+																 0, 
+																 '$quantity', 
+																 (SELECT price FROM Food WHERE foodName = '$foodname') * '$quantity', 
+																 '$foodname')";
+		} else {
+			// 장바구니에 존재하는 음식이므로 quantity만 update
+			$create_orderDetail_sql = "UPDATE OrderDetail 
+																 SET quantity = quantity + '$quantity',
+																 totalPrice = totalPrice + ((SELECT price FROM Food WHERE foodName = '$foodname') * '$quantity')
+																 WHERE foodname = '$foodname' AND id = 0";
+		}
 
 		// 장바구니에 음식이 있어 0번 cart(결제 전 장바구니)가 활성되어있는지 확인
 		$check_sql = "SELECT COUNT(*) AS cnt FROM CART c WHERE c.id = 0";
