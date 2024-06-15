@@ -6,6 +6,10 @@ include '../db_connect.php';
 $username = $_SESSION['username'];
 $userid = $_SESSION['user_id'];
 
+// 날짜 필터링을 위한 기본값 설정
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+
 // 주문 내역을 조회하는 SQL 쿼리
 $order_sql = "SELECT 
     c.id AS ordernum,
@@ -18,8 +22,27 @@ $order_sql = "SELECT
     FROM Cart c
     INNER JOIN OrderDetail od ON c.id = od.id
     INNER JOIN Food f ON od.foodName = f.foodName
-    WHERE c.cno = '$userid' AND c.id <> 0
-    ORDER BY c.orderDateTime DESC";
+    WHERE c.cno = '$userid' AND c.id <> 0";
+
+if (!empty($start_date) && !empty($end_date)) {
+    $order_sql .= " AND DATE(c.orderDateTime) BETWEEN '$start_date' AND '$end_date'";
+} else {
+	if (empty($start_date)) {
+		$sdate = '1900-01-01';
+	} else {
+		$sdate = $start_date;
+	}
+	
+	if(empty($end_date)) {
+		$edate = date('Y-m-d');
+	} else {	
+		$edate = $end_date;
+	}
+  $order_sql .= " AND DATE(c.orderDateTime) BETWEEN '$sdate' AND '$edate'";
+}
+
+$order_sql .= " ORDER BY c.orderDateTime DESC";
+
 $result_order = $conn->query($order_sql); // 장바구니 정보 저장
 ?>
 
@@ -47,9 +70,21 @@ $result_order = $conn->query($order_sql); // 장바구니 정보 저장
                 echo "<p>".$userid."</p>";
             ?>
         </div>
+		</div>
+
+		<div class="date-filter-container">
+        <form action="" method="get">
+            <label for="start_date">시작 날짜:</label>
+            <input type="date" id="start_date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
+            <label for="end_date">종료 날짜:</label>
+            <input type="date" id="end_date" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
+            <button type="submit">검색</button>
+            <button type="submit" id="reset_dates">초기화</button>
+        </form>
     </div>
+
     <div class="main-container">
-        <div class="cart-content">
+        <div class="order-history-content">
             <?php
             $current_date = null;
             if ($result_order->num_rows > 0) {
@@ -99,10 +134,17 @@ $result_order = $conn->query($order_sql); // 장바구니 정보 저장
         </div>
     </div>
 				
-				<script>
+		<script>
         function nevigateToMainpage(usermode) {
 					window.location.href = './main.php;
         }
+		</script>
+
+		<script>
+        document.getElementById('reset_dates').addEventListener('click', function() {
+            document.getElementById('start_date').value = '';
+            document.getElementById('end_date').value = '';
+        });
     </script>
 
 </body>

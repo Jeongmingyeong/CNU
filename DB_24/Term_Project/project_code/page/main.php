@@ -55,7 +55,7 @@ $image_map = [
 					<?php
 						$username = $_SESSION['username'];
 						$userid = $_SESSION['user_id'];
-
+						// 세션에 저장되어있는 사용자 정보를 받아와 오른쪽 상단에 출력.
             echo "<p>".$username."</p>";
             echo "<p>".$userid."</p>"
 					?>
@@ -74,7 +74,8 @@ $image_map = [
             <div class="category-section">
                 <h3>카테고리</h3>
                 <ul>
-                    <?php
+										<?php
+										// 각 카테고리 별로 클릭 가능한 태그 만들고, 각 카테고리 별 조회 정보를 제공하기 위한 함수 호출
                     if ($result_categories->num_rows > 0) {
                         while ($category = $result_categories->fetch_assoc()) {
                             echo '<li><a href="#" onclick="nevigateToCategory(\'' . $category['categoryName'] . '\')">' . $category['categoryName'] . '</a></li>';
@@ -89,6 +90,7 @@ $image_map = [
                 <button onClick="location.href='./cart.php'">장바구니 조회</button>
                 <button onClick="location.href='./order_history.php'">주문내역 조회</button>
 								<?php
+									// 만약 로그인한 사용자가 관리자이면, 판매 통계조회 버튼 display
 									if($_SESSION['user_id'] === 'C0') {
 										echo "<button onClick=\"location.href='../page/admin_stats.php'\">판매 통계 조회</button>";
 									}

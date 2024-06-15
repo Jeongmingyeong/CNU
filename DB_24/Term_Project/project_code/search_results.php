@@ -68,6 +68,14 @@ $image_map = [
 								<form id="select-price" action="./search_price.php" method="get">
 									<input type="number" name="min_price" placeholder="최소 금액">
 									<input type="number" name="max_price" placeholder="최대 금액">
+									<?php
+							    // 현재 URL의 쿼리 파라미터를 숨겨진 입력 필드로 추가하여 키워드와 가격 모두로 검색 가능하도록
+							    foreach ($_GET as $key => $value) {
+							        if ($key != 'min_price' && $key != 'max_price') { // 이미 있는 min_price와 max_price는 제외
+							            echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+							        }
+							    }
+							    ?>
 									<button>확인</button>
 								</form>
             </div>
@@ -98,13 +106,17 @@ $image_map = [
 				<div class="main-content">
 						<?php
             $search_keyword = $_GET['search']; 
+						$min_price = isset($_GET['min_price']) ? $_GET['min_price'] : "1";
+						$max_price = isset($_GET['max_price']) ? $_GET['max_price'] : "1000000";
             
             // 음식 정보 조회
             $search_sql = "SELECT food.foodname, food.price
 													 FROM food 
-													 WHERE food.foodname LIKE '%$search_keyword%'"; 
+													 WHERE food.foodname LIKE '%$search_keyword%'
+													 AND food.price >= '$min_price'
+													 AND food.price <= '$max_price'"; 
             $result_search = $conn->query($search_sql);
-            echo "<h2>검색 결과</h2>";
+            echo "<h2>\"$search_keyword\" 검색 결과</h2>";
 
             if ($result_search->num_rows > 0) {
 							echo "<div class='food-list'>";

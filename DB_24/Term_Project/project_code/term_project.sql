@@ -1,3 +1,5 @@
+use term_project;
+
 DROP TABLE IF EXISTS OrderDetail;
 DROP TABLE IF EXISTS Cart;
 DROP TABLE IF EXISTS Customer;

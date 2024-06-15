@@ -48,6 +48,14 @@ $image_map = [
         <div class="search-bar">
 						<form id="search-form" action="./search_results.php" method="get">
                 <input type="text" name="search" placeholder="음식 이름 검색">
+									<?php
+							    // 현재 URL의 쿼리 파라미터를 숨겨진 입력 필드로 추가하여 키워드와 가격 모두로 검색 가능하도록
+							    foreach ($_GET as $key => $value) {
+							        if ($key != 'search') {
+							            echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+							        }
+							    }
+									?>	
                 <button type="submit">검색</button>
             </form>
 				</div>
@@ -100,14 +108,12 @@ $image_map = [
 						<?php
 						$min_price = $_GET['min_price'];
 						$max_price = $_GET['max_price'];
+						// 특정 상황에서만 키워드가 있으니 존재여부 확인 후 가져오기
+						$search_keyword = isset($_GET['search']) ? $_GET['search'] : null;
 						
 						// 사용자가 금액 설정 없이 확인만 누른경우 min : 0, max : 1,000,000원으로 설정
-						if (empty($min_price)) {
-							$min_price = "1";
-						}
-						if (empty($max_price)) {
-							$max_price = "1000000";
-						}
+						$min_price = empty($min_price) ? "1" : $min_price;
+						$max_price = empty($max_price) ? "1000000" : $max_price;
 
 						// 카테고리 정보 조회
 						$category_sql = "SELECT * FROM category;";
@@ -123,7 +129,8 @@ $image_map = [
                                  FROM food JOIN contain ON food.foodname = contain.foodname
 																 WHERE contain.categoryname = '$category_name'
 																 AND food.price >= $min_price
-																 AND food.price <= $max_price";
+																 AND food.price <= $max_price
+																 AND food.foodname LIKE '%$search_keyword%'";
                     $result_foods = $conn->query($food_sql);
 
                     if ($result_foods->num_rows > 0) {
