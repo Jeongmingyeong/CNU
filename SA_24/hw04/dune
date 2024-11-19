@@ -1,0 +1,17 @@
+(library
+  (name generate_prefix)
+  (modules generate_prefix))
+
+(library
+  (name crash_fuzzer)
+  (modules crash_fuzzer)
+  (libraries generate_prefix))
+
+(library
+  (name fuzzer)
+  (modules fuzzer))
+
+(executable
+  (name main)
+  (modules main)
+  (libraries fuzzer unix crash_fuzzer))
