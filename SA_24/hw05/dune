@@ -1,0 +1,13 @@
+(library
+  (name grammer)
+  (modules grammer))
+
+(library
+  (name fuzzer)
+  (modules fuzzer)
+  (libraries grammer str))
+
+(executable
+  (name main)
+  (modules main)
+  (libraries fuzzer unix))
