@@ -30,13 +30,15 @@ let () =
   let rec run () =
     let _ = Grammer.init_eh () in
     let input_string = Fuzzer.fuzzer start_symbol in
-    let msg = run_command "./a.out" input_string in 
-    let result = get_print_info msg in
-    if result = "Crash!:" then 
-      let _ = Format.printf "%s@." msg in (* print message *)
-      let cp = Grammer.EhPairSet.cardinal (Grammer.get_eh()) in
-      let tp = Grammer.total_pair in
-      let _ = Format.printf "choose pair: %d | total pair: %d@." cp tp in
-      Format.printf "Grammer coverage: %.2f@." ((float_of_int cp) /. (float_of_int tp))
-    else run ()
+    if String.length input_string >= 100 then failwith "input is too long(must less than 100)"
+    else
+      let msg = run_command "./a.out" input_string in 
+      let result = get_print_info msg in
+      if result = "Crash!:" then 
+        let _ = Format.printf "%s@." msg in (* print message *)
+        let cp = Grammer.EhPairSet.cardinal (Grammer.get_eh()) in
+        let tp = Grammer.total_pair in
+        let _ = Format.printf "choose pair: %d | total pair: %d@." cp tp in
+        Format.printf "Grammer coverage: %.2f@." ((float_of_int cp) /. (float_of_int tp))
+      else run ()
   in run ()
