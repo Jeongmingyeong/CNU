@@ -1,0 +1,19 @@
+(library
+  (name re)
+  (modules re)
+  (libraries str))
+
+(library
+  (name grammer)
+  (modules grammer)
+  (libraries re))
+
+(library
+  (name fuzzer)
+  (modules fuzzer)
+  (libraries grammer re))
+
+(executable
+  (name main)
+  (modules main)
+  (libraries fuzzer unix))
