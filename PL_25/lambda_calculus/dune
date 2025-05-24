@@ -1,0 +1,32 @@
+(include_subdirs unqualified)
+
+(library
+  (name ast)
+  (modules ast))
+
+(library
+  (name parserMain)
+  (modules parserMain parser lexer)
+  (libraries ast))
+
+(library
+  (name print_step)
+  (modules print_step)
+  (libraries ast parserMain))
+
+(library
+  (name derivation_call_by_value)
+  (modules derivation_call_by_value)
+  (libraries ast parserMain))
+
+(library
+  (name derivation_call_by_name)
+  (modules derivation_call_by_name)
+  (libraries ast parserMain))
+
+(executable
+  (name main)
+  (modules main)
+  (libraries derivation_call_by_value
+             derivation_call_by_name
+             ast parserMain print_step))
