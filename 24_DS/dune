@@ -1,0 +1,2 @@
+(executable
+  (name term_project_scoring))

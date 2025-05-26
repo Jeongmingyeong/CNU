@@ -1,0 +1,16 @@
+type token =
+    RIGHT_PAREN
+  | LEFT_PAREN
+  | KW_LAMBDA
+  | ID of string
+  | EOF
+  | CONST of string
+  | ARROW
+val menhir_begin_marker : int
+val xv_var_list : string list
+val xv_term : Ast.t
+val xv_parse : Ast.t
+val xv_atom_list : Ast.t list
+val xv_atom : Ast.t
+val xv_app_term : Ast.t
+val menhir_end_marker : int
