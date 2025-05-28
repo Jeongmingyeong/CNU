@@ -15,41 +15,36 @@
  -----
 
 ## repository name
-2022-1.
+### [ 2022-1 ]
 1. 22_CP : Computer Programming 3
 
-<br></br>
-2022-2.
+### [ 2022-2 ]
 1. 22_OOP : Object-Oriented Programming
 2. 22_SYSP : SYStem Programming
 
-<br></br>
-2023-1.
+### [ 2023-1 ]
 1. 23_BasicProjectLab
 1. 23_DC : Data Communication
 2. 23_IP : Image Processing
 3. 23_OS : Operating System
 4. 23_UPL : Undergrad Programming Language
 
-<br></br>
-2023-2.
+### [ 2023-2 ]
 1. 23_CN : Computer Network
 2. 23_ITC : Introduce To Compiler
 3. 23_ML : Machine Learning
 
-<br></br>
-2024-1.
+### [ 2024-1 ]
 1. 24_DB : DataBase
 2. 24_DL : Deep Learning
 3. 24_DS : Data Science
 4. 24_ES : Embedded Software 
 
-<br></br>
-2024-2.
+### [ 2024-2 ]
 1. 24_A-ML : Advanced-Machine Learning 
 2. 24_SA : Sofwware Analysis 
 
-<br></br>
-2025-1.
+### [ 2025-1 ]
 1. 25_AC : Advanced Compiler
 2. 25_PL : Programming Language 
+
