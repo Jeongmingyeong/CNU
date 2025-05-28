@@ -1,0 +1,40 @@
+
+;; Function main (main, funcdef_no=0, decl_uid=2761, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int d;
+  int c;
+  int b;
+  int a;
+  int D.2770;
+  int _8;
+
+  <bb 2> :
+  a_2 = 1;
+  b_3 = 2;
+  c_4 = 0;
+  if (a_2 > b_3)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 4>; [INV]
+
+  <bb 3> :
+  c_6 = 3;
+  goto <bb 5>; [INV]
+
+  <bb 4> :
+  c_5 = 3;
+
+  <bb 5> :
+  # c_1 = PHI <c_6(3), c_5(4)>
+  d_7 = 4;
+  _8 = 4;
+
+  <bb 6> :
+<L3>:
+  return _8;
+
+}
+
+

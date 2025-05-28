@@ -1,0 +1,79 @@
+
+;; Function square (_Z6squarei, funcdef_no=0, decl_uid=3343, cgraph_uid=1, symbol_order=0)
+
+int square (int x)
+{
+  int D.3359;
+  int _2;
+
+  <bb 2> :
+  _2 = x_1(D) * x_1(D);
+
+  <bb 3> :
+<L0>:
+  return _2;
+
+}
+
+
+
+;; Function main (main, funcdef_no=1, decl_uid=3345, cgraph_uid=2, symbol_order=1)
+
+int main ()
+{
+  int i;
+  int g;
+  int f;
+  int e;
+  int d;
+  int c;
+  int b;
+  int a;
+  int D.3364;
+  int _14;
+
+  <bb 2> :
+  a_3 = 10;
+  b_4 = 20;
+  c_5 = 30;
+  d_6 = 60;
+  e_7 = 0;
+  if (a_3 == 10)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 4>; [INV]
+
+  <bb 3> :
+  e_9 = 65;
+  goto <bb 5>; [INV]
+
+  <bb 4> :
+  e_8 = 55;
+
+  <bb 5> :
+  # e_1 = PHI <e_9(3), e_8(4)>
+  f_12 = square (3);
+  i_13 = 0;
+  goto <bb 7>; [INV]
+
+  <bb 6> :
+  g_15 = e_1 + i_2;
+  i_16 = i_2 + 1;
+
+  <bb 7> :
+  # i_2 = PHI <i_13(5), i_16(6)>
+  if (i_2 <= 2)
+    goto <bb 6>; [INV]
+  else
+    goto <bb 8>; [INV]
+
+  <bb 8> :
+  _14 = 0;
+
+  <bb 9> :
+<L6>:
+  return _14;
+
+}
+
+
