@@ -60,7 +60,9 @@ let rec subst (x : string) (v : Ast.t) (t : Ast.t) : Ast.t =
 and step (ast : Ast.t) : Ast.t =
   match ast with
   | Var "F" -> expand ast
-  | Var "sum" -> let _ = expand_step := true in Ast.(App ((Var "F"), (ChurchConst "sum")))
+  | Var "sum" -> 
+      let _ = expand_step := true in
+      Ast.(App ((Var "F"), (ChurchConst "sum")))
   | App (LambdaAbs (x, t1), ChurchConst "sum") -> subst x (Var "sum") t1
   | App (LambdaAbs (x, t1), t2) -> subst x t2 t1
   | App (t1, (ChurchConst _ as t2)) -> App (t1, (step t2))
