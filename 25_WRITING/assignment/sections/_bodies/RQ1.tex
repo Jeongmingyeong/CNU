@@ -1,0 +1,248 @@
+\subsection{\textbf{RQ1 : How can Python’s dynamic nature be preserved while ensuring
+  program stability through type checking?}}
+
+Because Python is a dynamically typed language, the actual structure and state
+of objects are determined at runtime.
+While this provides significant flexibility, it also reduces the precision of
+static analysis and increases the likelihood of runtime errors such as
+TypeError and AttributeError.
+Consequently, researchers have proposed a wide range of analysis techniques
+that aim to improve program reliability through static or quasi-static methods
+without compromising Python’s dynamic nature.
+
+
+\subsubsection{\textbf{Static Type Checking with Type Annotations}}
+Since the introduction of type annotations, it has become possible to enhance
+program reliability using explicit static type information.
+Static type checkers such as mypy and pyre were developed on this basis,
+enabling the detection of potential TypeErrors in variables, function
+parameters, and return values before execution.
+Moreover, Python adopts a gradual typing approach, allowing static verification
+even when only parts of the program are annotated. This enables developers to
+strengthen type safety incrementally.
+
+However, because the analysis is limited to annotated regions, it cannot
+provide the same level of safety guarantees as fully statically typed
+languages.
+Furthermore, Python’s type annotations rely primarily on nominal typing, which
+limits their ability to accurately capture Python’s structural and
+behavior-based typing semantics, such as duck typing based on the presence of
+specific methods or attributes.
+
+% -------------------------
+\begin{algorithm}[H]
+\caption{GradualTypeCheck}
+\begin{algorithmic}[1]
+\REQUIRE Python function $f$ with optional type annotations, arguments $args$
+\ENSURE TypeError if type mismatch detected
+\FOR{each argument $a_i$ in $args$}
+    \IF{$f$ has type annotation for $a_i$}
+        \IF{type($a_i$) $\neq$ annotation\_type($a_i$)}
+            \STATE raise TypeError
+        \ENDIF
+    \ENDIF
+\ENDFOR
+\STATE result = execute($f$, $args$)
+\IF{$f$ has return type annotation}
+    \IF{type(result) $\neq$ annotation\_type($f$.return)}
+        \STATE raise TypeError
+    \ENDIF
+\ENDIF
+\STATE \textbf{return} result
+\end{algorithmic}
+\end{algorithm}
+% -------------------------
+
+
+\subsubsection{\textbf{Dynamic Monitering and Runtime Enforcement}}
+Dynamic type monitoring and runtime enforcement observe type-related
+constraints during the actual execution of a program and report violations
+immediately.
+Although this approach cannot capture all errors prior to execution—as static
+analysis attempts to do—it provides high accuracy for type violations observed
+along concrete execution paths.
+In languages such as Python, where dynamic binding is pervasive, this approach
+is particularly practical because it can directly reproduce behavior-based
+runtime errors that static techniques often fail to detect.
+
+The most widely used mechanism for runtime enforcement is decorator-based
+wrapping.
+By attaching a type-checking decorator to a function, the checker verifies at
+every call whether the argument and return values conform to the declared type
+annotations.
+Libraries such as typeguard implement this strategy using
+typing.get\_type\_hints() and isinstance-based checks.
+This approach requires minimal modification to existing code and detects
+mis-typed values at the moment they occur, making it highly useful for
+debugging.
+However, because checks are performed on every call, runtime overhead is
+unavoidable, and complex type structures—such as generics or protocols—cannot
+always be fully verified at runtime.
+
+Dynamic verification also extends naturally to the realization of
+Design-by-Contract.
+Contract-based techniques specify preconditions, postconditions, and class
+invariants and enforce these conditions at runtime.
+Libraries such as icontract and deal support this style of verification,
+allowing developers to check logical constraints beyond types, including value
+ranges, relationships between arguments, and state invariants.
+While this improves clarity and expressiveness of program intent, it introduces
+additional annotation effort and can cause notable performance overhead when
+contracts are expensive to evaluate.
+Moreover, contract systems require careful design regarding blame assignment
+and error recovery.
+
+Another form of dynamic monitoring leverages runtime traces to support
+subsequent analyses.
+MonkeyType, for example, records observed argument and return types during test
+execution and generates Mypy-compatible type annotations automatically.
+Because this approach reflects actual usage patterns, it is useful for
+introducing type hints into existing codebases or understanding complex
+functions.
+However, it depends heavily on test coverage and cannot infer types for
+branches that are never executed.
+
+The strengths of dynamic type enforcement lie in its high precision for
+observed execution paths and the ease with which runtime errors can be
+reproduced.
+It can also be extended to verify a broad range of logical properties beyond
+types.
+Yet it also has inherent weaknesses: comprehensive safety requires sufficient
+test or execution coverage, runtime checking incurs performance overhead, and
+complex types such as generics or protocols may be difficult to validate from
+runtime information alone.
+Techniques such as conditional or sampling-based checks mitigate overhead but
+do not eliminate the fundamental coverage dependency.
+
+In practice, a diverse ecosystem of dynamic type enforcement tools exists in
+Python.
+typeguard and beartype provide decorator-based runtime type checking,
+MonkeyType generates type hints from runtime traces, icontract and deal support
+contract-based verification, and CrossHair combines dynamic execution with
+symbolic reasoning for hybrid verification.
+Collectively, these tools address classes of errors that are difficult to
+detect using purely static analysis in a highly dynamic language such as
+Python.
+
+% -------------------------
+\begin{algorithm}[H]
+\caption{RuntimeTypeMonitor}
+\begin{algorithmic}[1]
+\REQUIRE Python function $f$ with optional type annotations
+\ENSURE Detect type violations during execution
+\STATE Wrap $f$ with a type-checking decorator
+\STATE On each call to $f$:
+\FOR{each argument $a_i$}
+    \IF{type annotation exists for $a_i$}
+        \IF{type($a_i$) $\neq$ annotation\_type($a_i$)}
+            \STATE Log type violation
+        \ENDIF
+    \ENDIF
+\ENDFOR
+\STATE Execute original function $f$
+\IF{return type annotation exists}
+    \IF{type(return) $\neq$ annotation\_type(return)}
+        \STATE Log type violation
+    \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+% -------------------------
+
+
+\subsubsection{\textbf{Hybrid Approaches}}
+To address both Python’s highly dynamic semantics and the inherent limitations
+of static analysis, recent research has increasingly focused on hybrid
+analysis, which integrates static and dynamic techniques.
+This approach combines the global reasoning capabilities of static analysis
+with the execution-based precision of dynamic analysis, yielding more practical
+and robust guarantees for Python programs.
+
+A representative hybrid strategy is the combination of gradual typing with
+runtime checking.
+Static analyzers such as Mypy and Pyre perform static verification only on
+program regions with explicit type annotations, while leaving unannotated or
+imprecise regions to be validated dynamically at runtime.
+This reduces unnecessary false positives during static analysis and
+simultaneously ensures type safety at execution time, thereby improving
+soundness.
+Such an approach is particularly effective for Python, where dynamic
+behaviors—complex control flow, runtime object extension, or mutable and
+evolving data structures—often make purely static prediction infeasible.
+
+Another hybrid strategy leverages dynamic execution feedback to improve static
+analysis.
+Tools like MonkeyType generate type annotations from runtime-observed type
+traces, while more advanced approaches pass runtime-collected object structure,
+type flow, and branch-specific property information back to static analyzers.
+This not only reduces overly conservative warnings produced by static analysis
+but also allows the abstraction level of the analysis to be refined
+incrementally with concrete runtime evidence.
+In essence, such integration enables bi-modal analysis, where static and
+dynamic information complement each other to achieve practical accuracy and
+reliability.
+
+Hybrid techniques thus provide a compelling way to reflect both Python’s
+dynamic nature and its real-world usage patterns.
+By combining the global perspective of static analysis with the precision of
+dynamic observations, they offer a level of type safety and tool usability that
+neither approach can achieve alone.
+Challenges remain—such as dependence on execution coverage, the cost of merging
+static and dynamic information, and runtime overhead due to dynamic checks—but
+hybrid analysis is widely regarded as one of the most promising directions for
+Python type analysis, with recent research trends moving steadily toward deeper
+integration of the two paradigms.
+
+% -------------------------
+\begin{algorithm}[H]
+\caption{HybridTypeAnalysis}
+\begin{algorithmic}[1]
+\REQUIRE Python program $P$
+\ENSURE Type annotations and runtime violation report
+\STATE Perform static analysis on annotated parts of $P$
+\STATE Identify parts with missing or ambiguous types
+\STATE Inject runtime checks on these parts
+\STATE Execute $P$ with representative test cases
+\STATE Collect runtime type traces
+\STATE Update static analysis with collected runtime information
+\STATE Repeat runtime check and update process to improve precision
+\end{algorithmic}
+\end{algorithm}
+% -------------------------
+
+
+\subsubsection{\textbf{RQ1 Summary: Landscape of Type Analysis Techniques for Python}}
+Because Python is fundamentally a dynamically typed language, fully static type
+checking in the traditional sense is structurally impossible.
+Object attributes may be added or modified at runtime, and the return type of a
+function can vary depending on the execution path.
+Nevertheless, recent advances in type analysis techniques have made it possible
+to achieve a meaningful level of type safety even in Python.
+
+Broadly, these efforts can be categorized into three directions.
+First, annotation-based static analysis performs ahead-of-time verification of
+program structure and enables early detection of errors.
+Second, runtime monitoring and checking techniques detect type violations along
+actual execution paths and can validate dynamic behaviors that are difficult to
+capture with static annotations alone.
+Third, hybrid approaches that integrate static and dynamic techniques
+supplement statically unpredictable regions with runtime checks and feed
+runtime observations back into the static analyzer to improve its precision,
+establishing a cyclic and complementary analysis workflow.
+
+In summary, no single analysis technique can provide sufficient type safety for
+Python.
+However, by combining static type annotations, execution-based monitoring, and
+hybrid methodologies, it becomes possible to pursue both the flexibility of a
+dynamic language and the safety benefits of static reasoning.
+These complementary strategies form the modern landscape of type analysis for
+Python and serve as a foundation for future advances in this field.
+
+\begin{tcolorbox}[colback=white,colframe=blue!60,title=Answer to RQ1,fonttitle=\bfseries]
+  Recent work shows a clear shift from purely static analysis toward hybrid and
+  runtime-assisted approaches for Python type checking. Static analyzers still
+  play a central role in large-scale verification, but runtime monitoring
+  complements them by capturing behaviors that static methods miss. As a
+  result, hybrid systems have become the most practical way to balance Python’s
+  dynamic nature with meaningful type safety.
+\end{tcolorbox}

@@ -1,0 +1,77 @@
+\subsection{Evolution of Python Type System}
+The ability to omit explicit types in Python allows developers to write concise
+code and rapidly prototype programs.
+However, this high degree of flexibility can reduce code readability,
+complicate maintenance, and increase the likelihood of unintended type-related
+bugs.
+
+To mitigate these issues, Type Annotations were introduced in Python 3.5 for
+variables, functions, classes, and other constructs.
+Type Annotations are optional and do not affect the runtime behavior of a
+program, but they enable developers to explicitly state type information.
+This improves readability and developer productivity while serving as a form of
+contract that helps enhance program reliability, even though the annotations
+are not enforced at runtime.
+
+Following the introduction of Type Annotations, various static type checkers
+have been actively developed in the Python ecosystem.
+Before this change, static analysis tools had to rely entirely on type
+inference, which is notoriously difficult in dynamic languages and often leads
+to imprecise analyses.
+With explicit annotations, static analyzers can perform significantly more
+accurate checks by leveraging developer-provided type information rather than
+depending solely on inference.
+
+Python thus adopts a Gradual Typing paradigm that combines the advantages of
+both dynamic and static type systems.
+Under Gradual Typing, parts of the program where types can be determined
+statically are checked statically, while the rest continue to operate under the
+dynamic type system.
+This hybrid approach allows Python to achieve both flexibility and reliability
+in large-scale software development.
+
+The concept of Gradual Typing can be illustrated with the \autoref{lst:gradualTyping}
+
+\begin{listing}[t]
+\begin{minted}[linenos, numbers=left, frame=lines, framesep=2mm, xleftmargin=10pt, fontsize=\footnotesize]{python}
+def foo(a: int, b: int):
+    return a + b
+
+# No Error
+a = foo(1, 2) 
+
+# TypeError only in static type checker
+b = foo(2, 3.14)
+
+# TypeError in both static type checker and runtime
+c = foo(3, "hello")
+\end{minted}
+\caption{Example Python program demonstrating object compatibility determined by duck typing.}
+\label{lst:gradualTyping}
+\end{listing}
+
+In this example, the function foo explicitly specifies that both a and b should
+be of type int.
+This example highlights the following three key observations:
+
+\begin{itemize}
+  \item foo(1, 2) satisfies the type specification, so neither the static type
+    checker nor the runtime reports any errors.
+
+  \item foo(2, 3.14) causes a type error in the static type checker because a
+    float is passed where an int is expected. However, the Python runtime accepts
+    the call and executes it, demonstrating that annotations are not enforced at
+    runtime.
+
+  \item foo(3, "hello") produces a type error in the static type checker, and
+    additionally, it raises a runtime TypeError because Python cannot add an
+    integer and a string.
+\end{itemize}
+
+This example illustrates how Python's Gradual Typing performs static checking
+where type information is available, while maintaining dynamic typing behavior
+where static analysis is insufficient.
+This hybrid model provides the reliability of a static type system without
+sacrificing the flexibility of dynamic typing, making it suitable for
+large-scale software development.
+

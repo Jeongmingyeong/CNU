@@ -1,0 +1,48 @@
+\section{DISCUSSION}
+This paper systematically reviews the Python type analysis ecosystem and
+compares how static, dynamic, and AI-based approaches address specific
+challenges while highlighting their limitations.
+Through this, the impact of Python’s dynamic features on the design of analysis
+techniques becomes evident.
+
+As observed in RQ1, achieving program safety with a single static type system
+in Python is challenging.
+Consequently, static type checking, runtime enforcement, and hybrid approaches
+coexist, forming a unique technical landscape.
+This layered strategy represents a practical compromise, balancing developer
+productivity and dynamic flexibility while ensuring a certain level of
+reliability and error detection.
+
+The structural challenges highlighted in RQ2 introduce problems that cannot be
+fully addressed by traditional language theory.
+Specifically, structural typing, flow-sensitive type changes, heterogeneous
+containers, and dynamic code generation via reflection or eval fundamentally
+challenge assumptions of conventional static analysis (e.g., nominal hierarchy,
+stable object model, closed world assumption).
+These issues demand reconsideration of the analysis model itself.
+For instance, flow-sensitive analyses provide high precision but incur high
+computational costs, whereas flow-insensitive approaches scale better but with
+limited precision.
+This underscores the constant trade-offs Python analyzers must navigate among
+precision, scalability, and soundness.
+
+A similar trend emerges in the tool comparison of RQ3. Static analyzers remain
+essential for large-scale codebases, yet they cannot fully model Python’s
+dynamic features.
+Dynamic and hybrid tools improve accuracy using runtime information but cannot
+guarantee fundamental completeness due to coverage limitations.
+Research-oriented tools leveraging constraint solving or symbolic execution
+offer high precision but are limited in practical adoption due to computational
+cost and challenges in handling dynamic code.
+Recently, LLM-based analyses provide high inference coverage even in
+low-annotation settings but cannot ensure soundness due to non-determinism and
+hallucinations.
+
+Overall, the central challenge in Python type analysis is the discontinuity
+between the language’s dynamic, open-ended nature and the demands of static
+safety.
+Each approach provides strategies to bridge this gap, yet no single method
+offers a complete solution.
+Hybrid or feedback-driven approaches that integrate static, dynamic, and
+AI-based techniques are increasingly recognized as a promising direction for
+future development.

@@ -5,6 +5,7 @@
 
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -12,13 +13,28 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
+
+\usepackage{minted}
+\usepackage[minted]{tcolorbox}
+\tcbuselibrary{skins,breakable,raster}
+
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins}
+
+\usepackage{framed}
+\usepackage{caption}
+
+\usepackage{tabularx}   % 표 열 너비 조절용
+
+% setting of ref %
+\usepackage{hyperref}
+\newcommand{\listingname}{Listing}
+\def\lstlistingautorefname{\listingname}
+
 \begin{document}
 
-  \title{Conference Paper Title*\\
-  {\footnotesize \textsuperscript{*}Note: Sub-titles are not captured for https://ieeexplore.ieee.org  and
-  should not be used}
-  \thanks{Identify applicable funding agency here. If none, delete this.}
-  }
+  \title{A Survey of Python Type Analysis: Techniques, Challenges, and Emerging Directions}
 
   \author{\IEEEauthorblockN{1\textsuperscript{st} Mingyeong Jeong}
   \IEEEauthorblockA{\textit{Computer Science and Engineering} \\
@@ -36,18 +52,33 @@
   \maketitle
 
   \begin{abstract}
-    This document is a model and instructions for \LaTeX. This and the
-    IEEEtran.cls file define the components of your paper [title, text, heads,
-    etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, or
-    Math in Paper Title or Abstract.
+    Python’s dynamic typing and flexible execution model enhance developer
+    productivity but also highlight the need for systematic type analysis and
+    checking due to frequent runtime type errors.
+    This survey categorizes the Python type analysis ecosystem into four
+    approaches: static analysis, dynamic monitoring, hybrid methods combining
+    static and runtime information, and AI-driven inference based on large
+    language models. It provides a detailed review of the technical principles,
+    advantages, limitations, and challenges of each approach, with particular
+    focus on Python-specific issues such as duck typing, flow-sensitive type
+    changes, reflection, dynamic code generation, and heterogeneous containers.
+    The study finds that no single approach is sufficient to fully address
+    Python type analysis, and that combining static, dynamic, and AI-based
+    techniques in a complementary way is emerging as a promising direction for
+    future research. By synthesizing existing research and tools, this survey
+    clarifies the current landscape of Python type analysis and provides
+    guidance for both practitioners and researchers seeking robust, practical,
+    and forward-looking solutions.
   \end{abstract}
 
   \begin{IEEEkeywords}
-  component, formatting, style, styling, insert.
+    Python, Type Analysis, Static Analysis, Dynamic Analysis, Hybrid Analysis,
+    Large Language Models
   \end{IEEEkeywords}
 
   \input{sections/1_introduction}
-  \input{sections/2_body}
-  \input{sections/3_conclusion}
-  \input{sections/4_acknowledgment}
+  \input{sections/2_background}
+  \input{sections/3_body}
+  \input{sections/4_discussion}
+  \input{sections/5_conclusion}
 \end{document}

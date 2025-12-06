@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{Parrot}\PYG{p}{:}
+  \PYG{k}{def} \PYG{n+nf}{fly}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Parrot flying\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k}{class} \PYG{n+nc}{Airplane}\PYG{p}{:}
+  \PYG{k}{def} \PYG{n+nf}{fly}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Airplane flying\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k}{class} \PYG{n+nc}{Whale}\PYG{p}{:}
+  \PYG{k}{def} \PYG{n+nf}{swim}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Whale swimming\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{lift\PYGZus{}off}\PYG{p}{(}\PYG{n}{entity}\PYG{p}{):}
+  \PYG{n}{entity}\PYG{o}{.}\PYG{n}{fly}\PYG{p}{()}
+
+\PYG{n}{parrot} \PYG{o}{=} \PYG{n}{Parrot}\PYG{p}{()}
+\PYG{n}{airplane} \PYG{o}{=} \PYG{n}{Airplane}\PYG{p}{()}
+\PYG{n}{whale} \PYG{o}{=} \PYG{n}{Whale}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} prints `Parrot flying`}
+\PYG{n}{lift\PYGZus{}off}\PYG{p}{(}\PYG{n}{parrot}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} prints `Airplane flying`}
+\PYG{n}{lift\PYGZus{}off}\PYG{p}{(}\PYG{n}{airplane}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Error : `\PYGZsq{}Whale\PYGZsq{} object has no attribute \PYGZsq{}fly\PYGZsq{}`}
+\PYG{n}{lift\PYGZus{}off}\PYG{p}{(}\PYG{n}{whale}\PYG{p}{)}
+\end{Verbatim}

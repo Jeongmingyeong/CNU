@@ -1,39 +1,94 @@
 \section{INTRODUCTION}
-Python has experienced explosive growth since 2018 and has been ranked as the
-most popular programming language since 2022.
-This popularity stems from Python’s applicability across a wide range of
-domains—including networking, data analytics, and artificial intelligence—along
-with the rapid expansion of AI-related applications.
-Moreover, its concise, natural-language-like syntax has lowered the barrier to
-entry, enabling developers to learn and adopt the language with ease.
 
-However, because Python is an interpreted language, many errors surface only at
-runtime, making its overall stability lower than that of compiled languages.
-In particular, Python’s dynamic type system leads to frequent runtime type
-errors, which account for approximately 30\% of all reported errors.
-Consequently, type checking has become essential for improving the reliability
-of Python programs, and many dynamically typed language communities are
-increasingly adopting static type systems to enable earlier detection of
-type-related issues.
+Python has witnessed remarkable growth over the past decade and has become one
+of the most widely used programming languages worldwide.
+Since 2018, its popularity has surged, and it has been ranked as the most
+popular programming language according to multiple surveys since 2022.
+This rise can be attributed to Python’s versatility and applicability across a
+broad spectrum of domains, including web development, networking, data
+analytics, scientific computing, automation, and, most prominently, artificial
+intelligence and machine learning.
+In particular, the rapid proliferation of AI-related applications, such as deep
+learning frameworks (e.g., TensorFlow, PyTorch) and natural language processing
+libraries (e.g., Hugging Face Transformers), has further accelerated Python’s
+adoption among both industry professionals and researchers.
 
-Static type systems allow type rules to be verified before execution, thereby
-enhancing program correctness and reliability.
-Motivated by this need, the present study aims to evaluate existing type
-analysis tools and techniques for Python and to identify promising directions
-for future improvement.
+In addition to its broad applicability, Python’s concise and
+natural-language-like syntax lowers the barrier to entry for new developers.
+Features such as dynamic typing, high-level data structures, and rich standard
+libraries allow programmers to express complex ideas with minimal boilerplate
+code.
+As a result, Python has become a first-choice language for prototyping,
+experimentation, and educational purposes, fostering a vast ecosystem of
+open-source libraries and active developer communities.
 
-To achieve this, the paper addresses the following research questions (RQs):
+However, Python’s dynamic and interpreted nature introduces significant
+challenges for program reliability.
+Unlike compiled languages, where many errors can be caught at compile time,
+Python programs often surface errors only during execution.
+Among these runtime errors, type-related issues such as \texttt{TypeError} and
+\texttt{AttributeError} are particularly prevalent, accounting for a
+substantial portion of all reported bugs—studies suggest approximately 30\% of
+runtime errors in Python stem from type mismatches.
+This prevalence of type errors not only affects software reliability but also
+complicates maintenance and refactoring of large codebases, where inconsistent
+or unexpected type usage can propagate subtle bugs across modules.
+
+Consequently, type checking and type analysis have become critical for
+improving the reliability, maintainability, and robustness of Python programs.
+The introduction of optional type annotations in Python 3.5 provided a
+mechanism for developers to express expected types explicitly, enabling static
+verification while preserving the language’s inherent flexibility.
+Tools such as \texttt{mypy}, \texttt{Pyre}, and \texttt{Pyright} leverage these
+annotations to detect type inconsistencies before execution, reducing the
+likelihood of runtime failures.
+Beyond static checking, hybrid approaches combining static and runtime
+monitoring, as well as emerging AI-based techniques, have begun to address
+Python’s dynamic and flexible behavior more effectively.
+
+Despite these advancements, Python type analysis remains challenging due to
+several unique characteristics of the language.
+First, Python follows a form of structural typing, often referred to as “duck
+typing,” where object compatibility is determined by available attributes and
+methods rather than nominal type hierarchies.
+Second, variable types in Python can change dynamically depending on the
+control flow, requiring type inference mechanisms to be flow-sensitive to
+achieve accuracy.
+Third, Python supports advanced dynamic features, including reflection, runtime
+code generation through \texttt{eval} and \texttt{exec}, and dynamic module
+loading, all of which complicate static reasoning.
+Finally, Python data structures such as lists, dictionaries, and sets
+frequently contain heterogeneous elements whose types may vary over time,
+making traditional uniform-type assumptions insufficient.
+These language characteristics collectively create a significant gap between
+static type assumptions and the actual behavior of programs, motivating the
+development of specialized analysis techniques.
+
+In this context, the present study aims to provide a comprehensive survey of
+Python type analysis techniques and tools, categorizing them according to their
+underlying methodologies and examining their strengths and limitations.
+Specifically, this paper addresses the following research questions (RQs):
 
 \begin{itemize}
-  \item \textbf{RQ1} : How can Python’s dynamic nature be preserved while
-    ensuring program stability through type checking?
+  \item \textbf{RQ1} : How can Python’s dynamic nature be
+    preserved while ensuring program stability through type checking?
   \item \textbf{RQ2} : What are the main challenges in type inference and type
     analysis for Python programs?
   \item \textbf{RQ3} : What technical characteristics and limitations define
     existing Python type analysis tools?
 \end{itemize}
 
-Additionally, this study examines the current landscape of Python typing
-technologies, including static analysis tools developed following the
-introduction of type annotations, as well as emerging AI-based type inference
-techniques enabled by recent advances in large language models.
+To answer these questions, we analyze Python type analysis tools spanning
+several paradigms, including static analyzers leveraging type annotations,
+runtime and hybrid monitoring systems, constraint-solving and symbolic
+execution-based approaches, and recently developed AI-powered methods enabled
+by large language models.
+By systematically examining these tools and approaches, we aim to clarify the
+current landscape of Python type analysis, highlight open challenges, and
+identify promising directions for future research.
+
+In summary, this paper contributes a structured overview of Python type
+analysis, emphasizing the interplay between dynamic flexibility and the need
+for program reliability, and provides insights for both tool developers and
+researchers aiming to advance Python’s type-checking ecosystem.
+

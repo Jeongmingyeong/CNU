@@ -1,0 +1,62 @@
+\subsection{\textbf{RQ2 : What are the main challenges in type inference and
+  type analysis for Python programs?}}
+
+Type analysis in Python is fundamentally more challenging than in traditional
+statically typed languages due to the language’s structural and dynamic
+characteristics.
+In particular, (1) structural typing–based object compatibility, (2)
+flow-sensitive types that change according to control flow, (3) advanced
+dynamic features such as reflection and dynamic code generation, and (4) the
+presence of heterogeneous containers are frequently cited as the primary
+obstacles to precise type analysis.
+
+First, Python follows a duck-typing model that is closer to structural typing
+than nominal typing.
+The meaning of an object is determined by the methods and attributes it
+provides, making it difficult to characterize objects solely through static
+type names.
+Moreover, Python objects can freely add or remove attributes at runtime, and
+mechanisms such as monkey patching, descriptors, and dynamic attribute binding
+are common.
+These characteristics make it difficult to model object structure as a fixed
+static form and greatly increase uncertainty in static type inference.
+
+Second, the type of a Python variable may vary depending on the program’s
+control flow.
+A single variable may assume different types across different branches, which
+makes it difficult for traditional static analysis to infer a consistent type.
+Techniques such as SSA transformation, path-sensitive analysis, and
+constraint-based propagation have been introduced to address this, but
+increasing precision leads to rapidly rising computational costs.
+Thus, balancing precision and performance remains a central challenge in Python
+type analysis.
+
+Third, Python’s powerful dynamic features—reflection and dynamic code
+generation—fundamentally threaten the soundness of any static type analysis.
+Mechanisms such as dynamic attribute resolution via \_\_getattr\_\_ and
+\_\_getattribute\_\_, runtime code generation through eval() and exec(), dynamic
+module loading via importlib, and metaclass-driven class generation postpone
+the determination of program structure until runtime.
+Accurately analyzing these features would require nearly full program
+emulation, making precise static type determination difficult within
+traditional analytical frameworks.
+
+Finally, Python’s lists, sets, and dictionaries inherently allow heterogeneous
+elements.
+A single list may contain integers, strings, and user-defined objects, and the
+element types may evolve during execution.
+As a result, simple uniform type models are insufficient.
+More sophisticated type representations—such as union types, intersection
+types, or lattice-based type spaces—are required to describe these behaviors
+accurately.
+
+\begin{tcolorbox}[colback=white,colframe=blue!60,title=Answer to RQ2,fonttitle=\bfseries]
+  Python type analysis exhibits high complexity due to
+  (1) structural typing–based non-uniformity,
+  (2) types that change continually depending on control flow,
+  (3) the possibility of runtime code generation, and
+  (4) heterogeneous containers.
+  These characteristics make it difficult for traditional static analysis
+  frameworks to achieve accurate and sound modeling, highlighting the need for
+  new analysis paradigms tailored to Python’s inherently dynamic nature.
+\end{tcolorbox}

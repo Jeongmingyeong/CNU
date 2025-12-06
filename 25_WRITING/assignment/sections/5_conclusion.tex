@@ -1,0 +1,36 @@
+\section{CONCLUSION}
+
+This survey systematically reviewed the technical trends and research
+directions in Python type analysis.
+Python’s dynamic execution model fundamentally conflicts with the fixed and
+closed type structures assumed by traditional static analyses, making it
+challenging to build practical analyzers by simply adapting type analysis
+techniques from other languages.
+Consequently, the Python ecosystem has seen the parallel development of a wide
+range of strategies, including static analyzers, runtime monitoring systems,
+execution trace-based type inference, symbolic execution, constraint solving,
+and more recently, LLM-based approaches.
+
+From this analysis, several conclusions can be drawn:
+\begin{itemize}
+  \item Static analysis alone cannot fully capture Python’s dynamic features.
+    Structural typing, dynamic attributes, reflection, and heterogeneous
+    containers violate assumptions of conventional static type theory.
+
+  \item Dynamic and hybrid approaches provide high accuracy but cannot fully
+    resolve coverage and performance limitations.
+
+  \item LLM-based approaches offer new possibilities but still fail to
+    guarantee soundness.
+\end{itemize}
+
+Therefore, a hybrid, multi-layered approach that combines the scalability of
+static analysis, the precision of dynamic analysis, and the generalization
+capability of AI-based inference is essential in Python.
+Overall, Python type analysis remains an evolving domain, situated in the
+tension between the language’s dynamic design philosophy and the requirements
+of static safety, with each technique playing a complementary role in bridging
+this gap.
+Future research is expected to formalize the interaction between static,
+dynamic, and AI-based techniques, exploring new analysis models that balance
+soundness, precision, and scalability.
