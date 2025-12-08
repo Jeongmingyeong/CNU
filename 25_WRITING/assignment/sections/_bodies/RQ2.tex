@@ -1,54 +1,112 @@
 \subsection{\textbf{RQ2 : What are the main challenges in type inference and
   type analysis for Python programs?}}
 
+\begin{table*}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{4pt} % 열 간격 조정
+\caption{RQ2: Table showing whether existing Python type analysis papers and
+  tools support key Python features, including structural typing,
+  flow-sensitive types, dynamic features, and compound data types.
+  (\cmark~ is support, \xmark~ is not.)}
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X
+                               >{\centering\arraybackslash}X
+                               >{\centering\arraybackslash}X
+                               >{\centering\arraybackslash}X
+                               >{\centering\arraybackslash}X}
+  \toprule
+  \rowcolor{yellow!30}
+  \textbf{Paper/Tool} & \textbf{Structural Typing} & \textbf{Flow-sensitivity} & \textbf{Dynamic Features} & \textbf{Compound DataTypes} \\
+  \midrule
+    \rowcolor{green!10} \cite{static2014} & \xmark & \xmark & \xmark & \cmark \\
+    \rowcolor{white} \cite{static2015} & \xmark & \xmark & \xmark & \cmark \\
+    \rowcolor{green!10} \cite{MaxSMT2018} & \xmark & \cmark & \xmark & \cmark \\
+    \rowcolor{white} \cite{prob2016} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{DL2018} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{typewriter2020} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{lambdanet2020} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{pyter2022} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{static2021} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{hityper2022} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{type4py2022} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{pyinfer2021} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{static2023} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{pyty2024} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{dlinfer2023} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{tipical2023} & \xmark & \cmark & \xmark & \cmark \\
+    \rowcolor{green!10} \cite{typeT52023} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{pyinder2024} & \cmark & \cmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{quac2024} & \cmark & \cmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{monkeytype} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{crosshair} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{typeguard} & \xmark & \xmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{mopsa2020} & \cmark & \cmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{mypy} & \xmark & \xmark & \xmark & \cmark \\
+    \rowcolor{green!10} \cite{pyre} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{white} \cite{pytype} & \xmark & \cmark & \cmark & \cmark \\
+    \rowcolor{green!10} \cite{pyright} & \xmark & \cmark & \cmark & \cmark \\
+  \midrule
+  \rowcolor{pink!30} 27 & 3 & 13 & 22 & 27 \\
+  \bottomrule
+  \end{tabularx}
+  \label{tab:RQ2}
+\end{table*}
+
+
 Type analysis in Python is fundamentally more challenging than in traditional
-statically typed languages due to the language’s structural and dynamic
-characteristics.
+statically typed languages due to its structural and dynamic characteristics.
 In particular, (1) structural typing–based object compatibility, (2)
 flow-sensitive types that change according to control flow, (3) advanced
 dynamic features such as reflection and dynamic code generation, and (4) the
 presence of heterogeneous containers are frequently cited as the primary
 obstacles to precise type analysis.
+\autoref{tab:RQ2} shows whether existing research and tools support these four key
+Python features.
+Each column corresponds to one of the four challenges, and the entries indicate
+whether a particular paper or tool provides support.
+This provides a clear overview of the strengths and limitations of current
+Python type analysis approaches.
 
 First, Python follows a duck-typing model that is closer to structural typing
-than nominal typing.
-The meaning of an object is determined by the methods and attributes it
-provides, making it difficult to characterize objects solely through static
-type names.
-Moreover, Python objects can freely add or remove attributes at runtime, and
-mechanisms such as monkey patching, descriptors, and dynamic attribute binding
-are common.
-These characteristics make it difficult to model object structure as a fixed
-static form and greatly increase uncertainty in static type inference.
+than nominal typing. The meaning of an object is determined by the methods and
+attributes it provides, making it difficult to accurately model objects using
+only static type names. Most existing studies do not use structural typing;
+instead, they perform analysis based solely on type names (nominal typing). For
+this reason, current approaches cannot dynamically model Python’s types,
+leading to high uncertainty in static type inference.
 
 Second, the type of a Python variable may vary depending on the program’s
-control flow.
-A single variable may assume different types across different branches, which
-makes it difficult for traditional static analysis to infer a consistent type.
-Techniques such as SSA transformation, path-sensitive analysis, and
-constraint-based propagation have been introduced to address this, but
-increasing precision leads to rapidly rising computational costs.
-Thus, balancing precision and performance remains a central challenge in Python
-type analysis.
+control flow. A single variable may assume different types across different
+branches, making it difficult for traditional static analysis to infer a
+consistent type. To address this, recent studies perform flow-sensitive
+analysis, but only about 50\% of the works apply it; the rest rely on methods
+derived from static-typed languages that do not account for control flow.
+Flow-insensitive analysis sometimes uses techniques such as Static Single
+Assignment (SSA) to represent control flow. However, increasing precision using
+these methods rapidly raises computational costs. Therefore, flow-aware
+analysis is essential, and balancing accuracy with performance remains a
+central challenge in Python type analysis.
 
 Third, Python’s powerful dynamic features—reflection and dynamic code
 generation—fundamentally threaten the soundness of any static type analysis.
-Mechanisms such as dynamic attribute resolution via \_\_getattr\_\_ and
-\_\_getattribute\_\_, runtime code generation through eval() and exec(), dynamic
-module loading via importlib, and metaclass-driven class generation postpone
-the determination of program structure until runtime.
-Accurately analyzing these features would require nearly full program
-emulation, making precise static type determination difficult within
-traditional analytical frameworks.
+Dynamic attribute access via getattr and \_\_getattribute\_\_, runtime code
+generation using eval() and exec(), dynamic module loading via importlib, and
+metaclass-based class generation all defer program structure determination
+until runtime. Accurately analyzing these features would require nearly full
+program execution, making precise static type inference difficult within
+traditional frameworks. However, as shown in \autoref{tab:RQ2}, about 80\% of studies
+support some dynamic features; this is a generous count that includes partial
+support. Full support for all dynamic features is not achievable in static
+analysis except through execution-based approaches.
 
 Finally, Python’s lists, sets, and dictionaries inherently allow heterogeneous
-elements.
-A single list may contain integers, strings, and user-defined objects, and the
-element types may evolve during execution.
-As a result, simple uniform type models are insufficient.
-More sophisticated type representations—such as union types, intersection
-types, or lattice-based type spaces—are required to describe these behaviors
-accurately.
+elements. A single list may contain integers, strings, and user-defined
+objects, and element types may evolve during execution. Simple uniform type
+models are insufficient, and more sophisticated representations—such as union
+types, intersection types, or lattice-based type spaces—are required. All
+surveyed studies and tools account for this feature, highlighting that
+heterogeneous containers are a critically important aspect of Python type
+analysis.
 
 \begin{tcolorbox}[colback=white,colframe=blue!60,title=Answer to RQ2,fonttitle=\bfseries]
   Python type analysis exhibits high complexity due to

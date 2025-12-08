@@ -2,81 +2,73 @@
   existing Python type analysis tools?}}
 
 The Python ecosystem includes a wide range of type analysis tools, spanning
-static, dynamic, hybrid, and, more recently, LLM-based approaches.
-Each category adopts a distinct technical strategy to handle Python’s highly
-dynamic language characteristics, resulting in a mix of complementary strengths
-and inherent limitations.
-This section classifies major tools into four categories and analyzes their
-technical features and constraints.
+static, dynamic, hybrid, and, more recently, LLM-based approaches. Each
+category adopts a distinct technical strategy to handle Python’s highly
+dynamic language characteristics, resulting in a mix of complementary
+strengths and inherent limitations. This section classifies major tools into
+four categories and analyzes their technical features and constraints.
+
+\begin{figure*}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{graphs/rq3.pdf}
+  \caption{Number of Python type analysis papers and tools developed per year
+  (2013–2024) by methodology. This line chart illustrates the annual trends in
+  the development of research and tools across different type checking
+  approaches, including static, dynamic, hybrid, and AI-based methods. }
+  \label{fig:rq3}
+\end{figure*}
+
 
 Static type checkers such as Mypy, Pyright, and Pyre are the most widely used
-tools in practice.
-These systems construct a type environment primarily from user-provided type
-annotations and verify type consistency through constraint solving.
-They support advanced features of Python’s typing system—such as Protocols and
-TypedDicts—to enable structural subtyping, and they also provide partial type
-inference.
-This design yields fast analysis performance and reasonable precision for
-large-scale codebases, making static analysis highly practical.
+tools in practice. These systems construct a type environment primarily from
+user-provided type annotations and verify type consistency through constraint
+solving. They support advanced features of Python’s typing system—such as
+Protocols and TypedDicts—to enable structural subtyping and partial type
+inference. This design yields fast analysis performance and reasonable
+precision for large-scale codebases, making static analysis highly practical.
 However, their heavy reliance on annotations means that accuracy degrades
 sharply in real-world industrial code, where annotations are often missing or
-incomplete.
-Moreover, they cannot fully soundly model Python’s dynamic features such as
+incomplete. They also cannot fully model Python’s dynamic features such as
 reflection, monkey patching, and dynamic attribute creation, resulting in
-unavoidable false positives and false negatives.
-In short, static analysis is “fast and practical but fundamentally incomplete.”
+unavoidable false positives and negatives.
 
 In contrast, dynamic and hybrid analysis tools leverage runtime information to
-achieve higher accuracy.
-Tools such as Typeguard and contract-based libraries validate arguments, return
-values, and structural properties of objects at execution time, allowing them
-to detect type violations soundly during actual program runs.
-Tools like MonkeyType collect type hints from execution traces, enabling
-high-precision, test-driven type inference.
-These approaches require little to no annotation and can recover detailed type
-information with high accuracy.
-However, they structurally depend on test coverage: unexecuted paths cannot be
-analyzed, which becomes a critical limitation given Python’s diverse dynamic
-behaviors.
-Runtime instrumentation also introduces performance overhead, limiting
-applicability in large-scale or latency-sensitive systems.
-
-Recent academic work explores more advanced static techniques, including
-constraint-based analysis, symbolic execution, and SSA-based type analysis.
-These approaches employ refined type models such as union-type lattices,
-intersection types, and path-sensitive constraint solving to achieve higher
-precision.
-Symbolic execution allows simultaneous exploration of multiple execution paths,
-mitigating the limited coverage of traditional static analysis, while SSA-based
-approaches more accurately capture flow-sensitive type changes.
+achieve higher accuracy. Tools such as Typeguard and contract-based libraries
+validate arguments, return values, and structural properties of objects at
+execution time, allowing detection of type violations soundly during actual
+runs. Tools like MonkeyType collect type hints from execution traces, enabling
+high-precision, test-driven type inference. These approaches require little to
+no annotation but structurally depend on test coverage; unexecuted paths cannot
+be analyzed. Runtime instrumentation also introduces performance overhead.
+Recent academic work explores advanced static techniques, including
+constraint-based analysis, symbolic execution, and SSA-based type analysis,
+employing refined type models such as union-type lattices, intersection types,
+and path-sensitive constraint solving to achieve higher precision~\cite{quac2024}.
 However, these techniques are computationally expensive and difficult to apply
 to real-world codebases, especially in the presence of Python’s irregular
-dynamic features such as eval, dynamic imports, and metaclasses. Scaling issues
-(e.g., parameter explosion) further limit their practical deployment.
+dynamic features.
 
-Finally, LLM-based type analysis—using models like GPT or CodeLlama—has
-recently emerged as a new direction.
-LLMs can infer types with high coverage even for codebases with minimal
-annotations, and they can perform semantic-level reasoning by leveraging
-natural-language context and code meaning.
-This enables the detection of semantic type errors (e.g., API misuse, violation
-of implicit assumptions) that traditional static analyzers often miss.
-However, LLMs operate as black-box models; their reasoning processes are
-opaque, subject to hallucination, and fundamentally unable to guarantee
-soundness.
-Their outputs are non-deterministic, making formal safety properties and
-reproducibility—central requirements for static analysis—difficult to achieve.
+Finally, LLM-based type analysis—using models like GPT or CodeLlama—has emerged
+as a new direction. LLMs can infer types with high coverage even for minimally
+annotated codebases, and perform semantic-level reasoning to detect errors that
+traditional static analyzers miss. However, LLMs operate as black-box models;
+their reasoning processes are opaque, subject to hallucination, and
+fundamentally unable to guarantee soundness.
+
+The changing trends in Python type checking research can be observed in
+\autoref{fig:rq3}. Over the years, the use of LLM-based approaches has
+gradually increased, and notably, hybrid methodologies that combine static
+analysis with AI-based techniques to ensure type soundness are being actively
+explored.
 
 In summary, Python type analysis tools exhibit complementary strengths
 depending on their underlying analysis paradigm, but no single approach can
-fully capture the complexity of Python’s dynamic semantics.
-Static analysis is efficient yet incomplete, dynamic analysis is precise yet
-coverage- and cost-constrained, and AI-based methods are flexible but lack
-soundness.
+fully capture the complexity of Python’s dynamic semantics. Static analysis is
+efficient yet incomplete, dynamic analysis is precise yet coverage- and
+cost-constrained, and AI-based methods are flexible but lack soundness.
 Consequently, recent research trends increasingly favor hybrid approaches that
-combine static, dynamic, and AI-based techniques.
-This observation underscores that Python type analysis is not a problem
-solvable by any single method.
+combine static, dynamic, and AI-based techniques. This observation underscores
+that Python type analysis is not a problem solvable by any single method.
 
 \begin{tcolorbox}[colback=white,colframe=blue!60,title=Answer to RQ3,fonttitle=\bfseries]
   Python type analysis tools can be classified into static, dynamic,

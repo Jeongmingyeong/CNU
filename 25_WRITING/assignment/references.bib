@@ -1,0 +1,353 @@
+@inproceedings{static2014,
+  author={Dong, Tiancong and Chen, Lin and Xu, Zhaogui and Yu, Bin},
+  booktitle={2014 11th Web Information System and Application Conference}, 
+  title={Static Type Analysis for Python}, 
+  year={2014},
+  volume={},
+  number={},
+  pages={65--68},
+  keywords={Standards;Libraries;Transforms;Inference algorithms;Context;Algorithm design and analysis;Heuristic algorithms;type analysis;type annotation;type inference;Python},
+  doi={10.1109/WISA.2014.20}
+}
+
+@inproceedings{static2015,
+  title={Towards a static type checker for python},
+  author={Ortin, Francisco and Perez-Schofield, Jose Baltasar Garcia and Redondo, Jose Manuel},
+  booktitle={European Conference on Object-Oriented Programming (ECOOP), Scripts to Programs Workshop, STOP},
+  volume={15},
+  pages={1--2},
+  year={2015}
+}
+
+@inproceedings{prob2016,
+  author = {Xu, Zhaogui and Zhang, Xiangyu and Chen, Lin and Pei, Kexin and Xu, Baowen},
+  title = {Python probabilistic type inference with natural language support},
+  year = {2016},
+  isbn = {9781450342186},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/2950290.2950343},
+  doi = {10.1145/2950290.2950343},
+  abstract = {We propose a novel type inference technique for Python programs. Type inference is difficult for Python programs due to their heavy dependence on external APIs and the dynamic language features. We observe that Python source code often contains a lot of type hints such as attribute accesses and variable names. However, such type hints are not reliable. We hence propose to use probabilistic inference to allow the beliefs of individual type hints to be propagated, aggregated, and eventually converge on probabilities of variable types. Our results show that our technique substantially outperforms a state-of-the-art Python type inference engine based on abstract interpretation.},
+  booktitle = {Proceedings of the 2016 24th ACM SIGSOFT International Symposium on Foundations of Software Engineering},
+  pages = {607–618},
+  numpages = {12},
+  keywords = {Dynamic Languages, Probabilistic Inference, Python, Type Inference},
+  location = {Seattle, WA, USA},
+  series = {FSE 2016}
+}
+
+@inproceedings{DL2018,
+  author = {Hellendoorn, Vincent J. and Bird, Christian and Barr, Earl T. and Allamanis, Miltiadis},
+  title = {Deep learning type inference},
+  year = {2018},
+  isbn = {9781450355735},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3236024.3236051},
+  doi = {10.1145/3236024.3236051},
+  abstract = {Dynamically typed languages such as JavaScript and Python are increasingly popular, yet static typing has not been totally eclipsed: Python now supports type annotations and languages like TypeScript offer a middle-ground for JavaScript: a strict superset of JavaScript, to which it transpiles, coupled with a type system that permits partially typed programs. However, static typing has a cost: adding annotations, reading the added syntax, and wrestling with the type system to fix type errors. Type inference can ease the transition to more statically typed code and unlock the benefits of richer compile-time information, but is limited in languages like JavaScript as it cannot soundly handle duck-typing or runtime evaluation via eval. We propose DeepTyper, a deep learning model that understands which types naturally occur in certain contexts and relations and can provide type suggestions, which can often be verified by the type checker, even if it could not infer the type initially. DeepTyper, leverages an automatically aligned corpus of tokens and types to accurately predict thousands of variable and function type annotations. Furthermore, we demonstrate that context is key in accurately assigning these types and introduce a technique to reduce overfitting on local cues while highlighting the need for further improvements. Finally, we show that our model can interact with a compiler to provide more than 4,000 additional type annotations with over 95\% precision that could not be inferred without the aid of DeepTyper.},
+  booktitle = {Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+  pages = {152–162},
+  numpages = {11},
+  keywords = {Type Inference, Naturalness, Deep Learning},
+  location = {Lake Buena Vista, FL, USA},
+  series = {ESEC/FSE 2018}
+}
+
+@inproceedings{MaxSMT2018,
+  author = {Hassan, Mostafa and Urban, Caterina and Eilers, Marco and M{\"u}ller, Peter},
+  editor = {Chockler, Hana and Weissenbacher, Georg},
+  title = {MaxSMT-Based Type Inference for Python 3},
+  booktitle = {Computer Aided Verification},
+  year = {2018},
+  publisher = {Springer International Publishing},
+  address = {Cham},
+  pages = {12-19},
+  abstract="We present Typpete, a sound type inferencer that automatically infers Python 3 type annotations. Typpete encodes type constraints as a MaxSMT problem and uses optional constraints and specific quantifier instantiation patterns to make the constraint solving process efficient. Our experimental evaluation shows that Typpete scales to real world Python programs and outperforms state-of-the-art tools.",
+  isbn = {978-3-319-96142-2}
+}
+
+@inproceedings{typewriter2020,
+  author = {Pradel, Michael and Gousios, Georgios and Liu, Jason and Chandra, Satish},
+  title = {TypeWriter: neural type prediction with search-based validation},
+  year = {2020},
+  isbn = {9781450370431},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3368089.3409715},
+  doi = {10.1145/3368089.3409715},
+  abstract = {Maintaining large code bases written in dynamically typed languages, such as JavaScript or Python, can be challenging due to the absence of type annotations: simple data compatibility errors proliferate, IDE support is limited, and APIs are hard to comprehend. Recent work attempts to address those issues through either static type inference or probabilistic type prediction. Unfortunately, static type inference for dynamic languages is inherently limited, while probabilistic approaches suffer from imprecision. This paper presents TypeWriter, the first combination of probabilistic type prediction with search-based refinement of predicted types. TypeWriter’s predictor learns to infer the return and argument types for functions from partially annotated code bases by combining the natural language properties of code with programming language-level information. To validate predicted types, TypeWriter invokes a gradual type checker with different combinations of the predicted types, while navigating the space of possible type combinations in a feedback-directed manner. We implement the TypeWriter approach for Python and evaluate it on two code corpora: a multi-million line code base at Facebook and a collection of 1,137 popular open-source projects. We show that TypeWriter’s type predictor achieves an F1 score of 0.64 (0.79) in the top-1 (top-5) predictions for return types, and 0.57 (0.80) for argument types, which clearly outperforms prior type prediction models. By combining predictions with search-based validation, TypeWriter can fully annotate between 14\% to 44\% of the files in a randomly selected corpus, while ensuring type correctness. A comparison with a static type inference tool shows that TypeWriter adds many more non-trivial types. TypeWriter currently suggests types to developers at Facebook and several thousands of types have already been accepted with minimal changes.},
+  booktitle = {Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+  pages = {209–220},
+  numpages = {12},
+  keywords = {Machine learning models of code, type annotations},
+  location = {Virtual Event, USA},
+  series = {ESEC/FSE 2020}
+}
+
+@article{lambdanet2020,
+  author       = {Jiayi Wei and
+                  Maruth Goyal and
+                  Greg Durrett and
+                  Isil Dillig},
+  title        = {LambdaNet: Probabilistic Type Inference using Graph Neural Networks},
+  journal      = {CoRR},
+  volume       = {abs/2005.02161},
+  year         = {2020},
+  url          = {https://arxiv.org/abs/2005.02161},
+  eprinttype    = {arXiv},
+  eprint       = {2005.02161},
+  timestamp    = {Sat, 09 May 2020 15:06:08 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2005-02161.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{static2021,
+  author={Hu, Mingzhe and Zhang, Yu and Huang, Wenchao and Xiong, Yan},
+  booktitle={2021 IEEE 32nd International Symposium on Software Reliability Engineering (ISSRE)}, 
+  title={Static Type Inference for Foreign Functions of Python}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={423-433},
+  keywords={Analytical models;Annotations;Computer bugs;Software;Software reliability;Safety;Python;foreign function interface;static analysis;type system;static type inference;dynamically typed language},
+  doi={10.1109/ISSRE52982.2021.00051}
+}
+
+@article{pyinfer2021,
+  author       = {Siwei Cui and
+                  Gang Zhao and
+                  Zeyu Dai and
+                  Luochao Wang and
+                  Ruihong Huang and
+                  Jeff Huang},
+  title        = {PYInfer: Deep Learning Semantic Type Inference for Python Variables},
+  journal      = {CoRR},
+  volume       = {abs/2106.14316},
+  year         = {2021},
+  url          = {https://arxiv.org/abs/2106.14316},
+  eprinttype    = {arXiv},
+  eprint       = {2106.14316},
+  timestamp    = {Tue, 10 Sep 2024 20:33:25 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2106-14316.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{static2023,
+  author = {Sun, Ke and Zhao, Yifan and Hao, Dan and Zhang, Lu},
+  title = {Static Type Recommendation for Python},
+  year = {2023},
+  isbn = {9781450394758},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3551349.3561150},
+  doi = {10.1145/3551349.3561150},
+  abstract = {Recently, Python has adopted optional type annotation to support type checking and program documentation. However, to enjoy the benefits, developers have to manually write type annotations, which is recognized to be a time-consuming task. To alleviate human efforts on manual type annotation, machine-learning-based approaches have been proposed to recommend types based on code features. However, they suffer from the correctness problem, i.e., the recommended types cannot pass type checking. To address the correctness problem of the machine-learning-based approaches, in this paper, we present a static type recommendation approach, named Stray. Stray can recommend types correctly. We evaluate Stray by comparing it against four state-of-art type recommendation approaches, and find that Stray outperforms these baselines by over 30\% absolute improvement in both precision and recall.},
+  booktitle = {Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering},
+  articleno = {98},
+  numpages = {13},
+  keywords = {python, static analysis, type inference, type recommendation},
+  location = {Rochester, MI, USA},
+  series = {ASE '22}
+}
+
+@inproceedings{hityper2022,
+  author = {Peng, Yun and Gao, Cuiyun and Li, Zongjie and Gao, Bowei and Lo, David and Zhang, Qirun and Lyu, Michael},
+  title = {Static inference meets deep learning: a hybrid type inference approach for python},
+  year = {2022},
+  isbn = {9781450392211},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3510003.3510038},
+  doi = {10.1145/3510003.3510038},
+  abstract = {Type inference for dynamic programming languages such as Python is an important yet challenging task. Static type inference techniques can precisely infer variables with enough static constraints but are unable to handle variables with dynamic features. Deep learning (DL) based approaches are feature-agnostic, but they cannot guarantee the correctness of the predicted types. Their performance significantly depends on the quality of the training data (i.e., DL models perform poorly on some common types that rarely appear in the training dataset). It is interesting to note that the static and DL-based approaches offer complementary benefits. Unfortunately, to our knowledge, precise type inference based on both static inference and neural predictions has not been exploited and remains an open challenge. In particular, it is hard to integrate DL models into the framework of rule-based static approaches.This paper fills the gap and proposes a hybrid type inference approach named HiTyper based on both static inference and deep learning. Specifically, our key insight is to record type dependencies among variables in each function and encode the dependency information in type dependency graphs (TDGs). Based on TDGs, we can easily integrate type inference rules in the nodes to conduct static inference and type rejection rules to inspect the correctness of neural predictions. HiTyper iteratively conducts static inference and DL-based prediction until the TDG is fully inferred. Experiments on two benchmark datasets show that HiTyper outperforms state-of-the-art DL models by exactly matching 10\% more human annotations. HiTyper also achieves an increase of more than 30\% on inferring rare types. Considering only the static part of HiTyper, it infers 2\texttimes{} ~ 3\texttimes{} more types than existing static type inference tools. Moreover, HiTyper successfully corrected seven wrong human annotations in six GitHub projects, and two of them have already been approved by the repository owners.},
+  booktitle = {Proceedings of the 44th International Conference on Software Engineering},
+  pages = {2019–2030},
+  numpages = {12},
+  location = {Pittsburgh, Pennsylvania},
+  series = {ICSE '22}
+}
+
+@inproceedings{type4py2022,
+  author = {Mir, Amir M. and Lato\v{s}kinas, Evaldas and Proksch, Sebastian and Gousios, Georgios},
+  title = {Type4Py: practical deep similarity learning-based type inference for python},
+  year = {2022},
+  isbn = {9781450392211},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3510003.3510124},
+  doi = {10.1145/3510003.3510124},
+  abstract = {Dynamic languages, such as Python and Javascript, trade static typing for developer flexibility and productivity. Lack of static typing can cause run-time exceptions and is a major factor for weak IDE support. To alleviate these issues, PEP 484 introduced optional type annotations for Python. As retrofitting types to existing codebases is error-prone and laborious, machine learning (ML)-based approaches have been proposed to enable automatic type inference based on existing, partially annotated codebases. However, previous ML-based approaches are trained and evaluated on human-provided type annotations, which might not always be sound, and hence this may limit the practicality for real-world usage. In this paper, we present Type4Py, a deep similarity learning-based hierarchical neural network model. It learns to discriminate between similar and dissimilar types in a high-dimensional space, which results in clusters of types. Likely types for arguments, variables, and return values can then be inferred through the nearest neighbor search. Unlike previous work, we trained and evaluated our model on a type-checked dataset and used mean reciprocal rank (MRR) to reflect the performance perceived by users. The obtained results show that Type4Py achieves an MRR of 77.1\%, which is a substantial improvement of 8.1\% and 16.7\% over the state-of-the-art approaches Typilus and TypeWriter, respectively. Finally, to aid developers with retrofitting types, we released a Visual Studio Code extension, which uses Type4Py to provide ML-based type auto-completion for Python.},
+  booktitle = {Proceedings of the 44th International Conference on Software Engineering},
+  pages = {2241–2252},
+  numpages = {12},
+  keywords = {machine learning, mean reciprocal rank, python, similarity learning, type inference},
+  location = {Pittsburgh, Pennsylvania},
+  series = {ICSE '22}
+}
+
+@inproceedings{pyter2022,
+  author = {Oh, Wonseok and Oh, Hakjoo},
+  title = {PyTER: effective program repair for Python type errors},
+  year = {2022},
+  isbn = {9781450394130},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3540250.3549130},
+  doi = {10.1145/3540250.3549130},
+  abstract = {We present PyTER, an automated program repair (APR) technique for Python type errors. Python developers struggle with type error exceptions that are prevalent and difficult to fix. Despite the importance, however, automatically repairing type errors in dynamically typed languages such as Python has received little attention in the APR community and no existing techniques are readily available for practical use. PyTER is the first technique that is carefully designed to fix diverse type errors in real-world Python applications. To this end, we present a novel APR approach that uses dynamic and static analyses to infer correct and incorrect types of program variables, and leverage their difference to effectively identify faulty locations and patch candidates. We evaluated PyTER on 93 type errors collected from open-source projects. The result shows that PyTER is able to fix 48.4\% of them with a precision of 77.6\%.},
+  booktitle = {Proceedings of the 30th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+  pages = {922–934},
+  numpages = {13},
+  keywords = {Debugging, Program Analysis, Program Repair},
+  location = {Singapore, Singapore},
+  series = {ESEC/FSE 2022}
+}
+
+@inproceedings{dlinfer2023,
+  author={Yan, Yanyan and Feng, Yang and Fan, Hongcheng and Xu, Baowen},
+  booktitle={2023 IEEE/ACM 45th International Conference on Software Engineering (ICSE)}, 
+  title={DLInfer: Deep Learning with Static Slicing for Python Type Inference}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={2009-2021},
+  keywords={Deep learning;Training;Software maintenance;Quality assurance;Annotations;Static analysis;Manuals;type inference;Python;static slicing},
+  doi={10.1109/ICSE48619.2023.00170}
+}
+
+@inproceedings{tipical2023,
+  author={Elkobi, Jonathan and Gruner, Bernd and Sonnekalb, Tim and Brust, Clemens-Alexander},
+  booktitle={2023 IEEE/ACIS 21st International Conference on Software Engineering Research, Management and Applications (SERA)}, 
+  title={TIPICAL - Type Inference for Python In Critical Accuracy Level}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={16-21},
+  keywords={Training;Uncertainty;Filtering;Frequency-domain analysis;Software;Robustness;Real-time systems;type inference;novelty detection;machine learning;cross-domain},
+  doi={10.1109/SERA57763.2023.10197800}
+}
+
+@inproceedings{typeT52023,
+  title={TypeT5: Seq2seq Type Inference using Static Analysis},
+  author={Jiayi Wei and Greg Durrett and Isil Dillig},
+  booktitle={The Eleventh International Conference on Learning Representations },
+  year={2023},
+  url={https://openreview.net/forum?id=4TyNEhI2GdN}
+}
+
+@inproceedings{pyty2024,
+  author = {Chow, Yiu Wai and Di Grazia, Luca and Pradel, Michael},
+  title = {PyTy: Repairing Static Type Errors in Python},
+  year = {2024},
+  isbn = {9798400702174},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3597503.3639184},
+  doi = {10.1145/3597503.3639184},
+  abstract = {Gradual typing enables developers to annotate types of their own choosing, offering a flexible middle ground between no type annotations and a fully statically typed language. As more and more code bases get type-annotated, static type checkers detect an increasingly large number of type errors. Unfortunately, fixing these errors requires manual effort, hampering the adoption of gradual typing in practice. This paper presents PyTy, an automated program repair approach targeted at statically detectable type errors in Python. The problem of repairing type errors deserves specific attention because it exposes particular repair patterns, offers a warning message with hints about where and how to apply a fix, and because gradual type checking serves as an automatic way to validate fixes. We addresses this problem through three contributions: (i) an empirical study that investigates how developers fix Python type errors, showing a diverse set of fixing strategies with some recurring patterns; (ii) an approach to automatically extract type error fixes, which enables us to create a dataset of 2,766 error-fix pairs from 176 GitHub repositories, named PyTyDefects; (iii) the first learning-based repair technique for fixing type errors in Python. Motivated by the relative data scarcity of the problem, the neural model at the core of PyTy is trained via cross-lingual transfer learning. Our evaluation shows that PyTy offers fixes for ten frequent categories of type errors, successfully addressing 85.4\% of 281 real-world errors. This effectiveness outperforms state-of-the-art large language models asked to repair type errors (by 2.1x) and complements a previous technique aimed at type errors that manifest at runtime. Finally, 20 out of 30 pull requests with PyTy-suggested fixes have been merged by developers, showing the usefulness of PyTy in practice.},
+  booktitle = {Proceedings of the IEEE/ACM 46th International Conference on Software Engineering},
+  articleno = {87},
+  numpages = {13},
+  keywords = {automatic program repair, type annotation, transfer learning},
+  location = {Lisbon, Portugal},
+  series = {ICSE '24}
+}
+
+@inproceedings{pyinder2024,
+  author = {Oh, Wonseok and Oh, Hakjoo},
+  title = {Towards Effective Static Type-Error Detection for Python},
+  year = {2024},
+  isbn = {9798400712487},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3691620.3695545},
+  doi = {10.1145/3691620.3695545},
+  abstract = {In this experience paper, we design, implement, and evaluate a new static type-error detection tool for Python. To build a practical tool, we first collected and analyzed 68 real-world type errors gathered from 20 open-source projects. This empirical investigation revealed four key static-analysis features that are crucial for the effective detection of Python type errors in practice. Utilizing these insights, we present a tool called Pyinder, which can successfully detect 34 out of the 68 bugs, compared to existing type analysis tools that collectively detect only 16 bugs. We also discuss the remaining 34 bugs that Pyinder failed to detect, offering insights into future directions for Python type analysis tools. Lastly, we show that Pyinder can uncover previously unknown bugs in recent Python projects.},
+  booktitle = {Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering},
+  pages = {1808–1820},
+  numpages = {13},
+  location = {Sacramento, CA, USA},
+  series = {ASE '24}
+}
+
+@article{quac2024,
+  author = {Wu, Jifeng and Lemieux, Caroline},
+  title = {QuAC: Quick Attribute-Centric Type Inference for Python},
+  year = {2024},
+  issue_date = {October 2024},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {8},
+  number = {OOPSLA2},
+  url = {https://doi.org/10.1145/3689783},
+  doi = {10.1145/3689783},
+  abstract = {Python’s dynamic typing facilitates rapid prototyping and underlies its popularity in many domains. However, dynamic typing reduces the power of many static checking and bug-finding tools. Python type annotations can make these tools more useful. Type inference tools aim to reduce developers’ burden of adding them. However, existing type inference tools struggle to support dynamic features, infer correct types (especially container type parameters and non-builtin types), and run in reasonable time. Inspired by Python’s duck typing, where the attributes accessed on Python expressions characterize their implicit interfaces, we propose QuAC (Quick Attribute-Centric Type Inference for Python). At its core, QuAC collects attribute sets for Python expressions and leverages information retrieval techniques to predict classes from these attribute sets. It also recursively predicts container type parameters. We evaluate QuAC’s performance on popular Python projects. Compared to state-of-the-art non-LLM baselines, QuAC predicts types with high accuracy complementary to those predicted by the baselines while not sacrificing coverage. It also demonstrates clear advantages in predicting container type parameters and non-builtin types and reduces run times. Furthermore, QuAC is nearly two orders of magnitude faster than an LLM-based method while covering nearly half of its errorless non-trivial type predictions. It is also significantly more consistent at predicting container type parameters and non-builtin types than the LLM-based method, regardless of whether the project has ground-truth type annotations.},
+  journal = {Proc. ACM Program. Lang.},
+  month = oct,
+  articleno = {343},
+  numpages = {30},
+  keywords = {Gradual Typing, Python, Static Analysis, Type Inference}
+}
+
+@InProceedings{mopsa2020,
+  author =	{Monat, Rapha\"{e}l and Ouadjaout, Abdelraouf and Min\'{e}, Antoine},
+  title =	{{Static Type Analysis by Abstract Interpretation of Python Programs}},
+  booktitle =	{34th European Conference on Object-Oriented Programming (ECOOP 2020)},
+  pages =	{17:1--17:29},
+  series =	{Leibniz International Proceedings in Informatics (LIPIcs)},
+  ISBN =	{978-3-95977-154-2},
+  ISSN =	{1868-8969},
+  year =	{2020},
+  volume =	{166},
+  editor =	{Hirschfeld, Robert and Pape, Tobias},
+  publisher =	{Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
+  address =	{Dagstuhl, Germany},
+  URL =		{https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2020.17},
+  URN =		{urn:nbn:de:0030-drops-131748},
+  doi =		{10.4230/LIPIcs.ECOOP.2020.17},
+  annote =	{Keywords: Formal Methods, Static Analysis, Abstract Interpretation, Type Analysis, Dynamic Programming Language, Python Semantics}
+}
+
+@misc{mypy,
+  title        = {Mypy: Static Typing for Python},
+  howpublished = {\url{https://github.com/python/mypy}},
+  date = {2025-11-25},
+}
+
+@misc{pyre,
+  title        = {pyre-check: Performant type-checking for python},
+  howpublished = {\url{https://github.com/facebook/pyre-check}},
+  date = {2025-11-25},
+}
+
+@misc{pytype,
+  title        = {pytype: A static type analyzer for Python code},
+  howpublished = {\url{https://github.com/google/pytype}},
+  date = {2025-11-25},
+}
+
+@misc{pyright,
+  title        = {pyright: Static Type Checker for Python},
+  howpublished = {\url{https://github.com/microsoft/pyright}},
+  date = {2025-11-25},
+}
+
+@misc{monkeytype,
+  title        = {MonkeyType: A Python library that generates static type annotations by collecting runtime types},
+  howpublished = {\url{https://github.com/Instagram/MonkeyType}},
+  date = {2025-11-25},
+}
+
+@misc{crosshair,
+  title        = {CrossHair: An analysis tool for Python that blurs the line between testing and type systems.},
+  howpublished = {\url{https://github.com/pschanely/CrossHair}},
+  date = {2025-11-25},
+}
+
+@misc{typeguard,
+  title        = {typeguard: Run-time type checker for Python},
+  howpublished = {\url{https://github.com/agronholm/typeguard}},
+  date = {2025-11-25},
+}

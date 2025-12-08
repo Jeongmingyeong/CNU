@@ -25,7 +25,14 @@
 \usepackage{framed}
 \usepackage{caption}
 
-\usepackage{tabularx}   % 표 열 너비 조절용
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{tabularx}   % X 타입
+\usepackage{array}      % >{\raggedright\arraybackslash} 사용
+\usepackage[table]{xcolor} % 또는 \usepackage{colortbl}
+
+
+\newcommand{\cmark}{\textcolor{blue}{\checkmark}}
+\newcommand{\xmark}{\textcolor{red}{\texttimes}}
 
 % setting of ref %
 \usepackage{hyperref}
@@ -81,4 +88,8 @@
   \input{sections/3_body}
   \input{sections/4_discussion}
   \input{sections/5_conclusion}
+
+  \bibliographystyle{elsarticle-num}
+  \bibliography{references}
+
 \end{document}
