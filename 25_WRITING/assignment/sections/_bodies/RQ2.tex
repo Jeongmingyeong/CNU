@@ -54,50 +54,54 @@
 
 
 Type analysis in Python is fundamentally more challenging than in traditional
-statically typed languages due to its structural and dynamic characteristics.
+statically typed languages due to its structural and dynamic nature.
 In particular, (1) structural typing–based object compatibility, (2)
-flow-sensitive types that change according to control flow, (3) advanced
-dynamic features such as reflection and dynamic code generation, and (4) the
-presence of heterogeneous containers are frequently cited as the primary
-obstacles to precise type analysis.
-\autoref{tab:RQ2} shows whether existing research and tools support these four key
-Python features.
-Each column corresponds to one of the four challenges, and the entries indicate
-whether a particular paper or tool provides support.
+flow-sensitive types, (3) dynamic features such as reflection and dynamic code
+generation, and (4) heterogeneous containers are frequently cited as the main
+obstacles.
+\autoref{tab:RQ2} summarizes whether existing research and tools support these
+four Python-specific challenges.
 This provides a clear overview of the strengths and limitations of current
 Python type analysis approaches.
 
 First, Python follows a duck-typing model that is closer to structural typing
-than nominal typing. The meaning of an object is determined by the methods and
-attributes it provides, making it difficult to accurately model objects using
-only static type names. Most existing studies do not use structural typing;
-instead, they perform analysis based solely on type names (nominal typing). For
-this reason, current approaches cannot dynamically model Python’s types,
+than nominal typing.
+The meaning of an object is determined by the methods and attributes it
+provides, making it difficult to accurately model objects using only static
+type names.
+Most existing studies do not use structural typing; instead, they perform
+analysis based solely on type names (nominal typing).
+For this reason, current approaches cannot dynamically model Python’s types,
 leading to high uncertainty in static type inference.
 
-Second, the type of a Python variable may vary depending on the program’s
-control flow. A single variable may assume different types across different
-branches, making it difficult for traditional static analysis to infer a
-consistent type. To address this, recent studies perform flow-sensitive
-analysis, but only about 50\% of the works apply it; the rest rely on methods
-derived from static-typed languages that do not account for control flow.
+Second, Python variables may take different types depending on control flow. 
+A single variable may assume different types across different branches, making
+it difficult for traditional static analysis to infer a consistent type.
+To address this, recent studies perform flow-sensitive analysis, but only about
+50\% of the works apply it; the rest rely on methods derived from static-typed
+languages that do not account for control flow.
 Flow-insensitive analysis sometimes uses techniques such as Static Single
-Assignment (SSA) to represent control flow. However, increasing precision using
-these methods rapidly raises computational costs. Therefore, flow-aware
-analysis is essential, and balancing accuracy with performance remains a
-central challenge in Python type analysis.
+Assignment (SSA) to represent control flow.
+However, increasing precision using these methods rapidly raises computational
+costs.
+Therefore, flow-aware analysis is essential, and balancing accuracy with
+performance remains a central challenge in Python type analysis.
 
 Third, Python’s powerful dynamic features—reflection and dynamic code
 generation—fundamentally threaten the soundness of any static type analysis.
-Dynamic attribute access via getattr and \_\_getattribute\_\_, runtime code
-generation using eval() and exec(), dynamic module loading via importlib, and
-metaclass-based class generation all defer program structure determination
-until runtime. Accurately analyzing these features would require nearly full
-program execution, making precise static type inference difficult within
-traditional frameworks. However, as shown in \autoref{tab:RQ2}, about 80\% of studies
-support some dynamic features; this is a generous count that includes partial
-support. Full support for all dynamic features is not achievable in static
-analysis except through execution-based approaches.
+Dynamic attribute access via \textbf{\_\_getattr\_\_} and
+\textbf{\_\_getattribute\_\_}, runtime code generation using eval() and exec(),
+dynamic module loading through importlib, and metaclass-based class generation
+all defer program structure determination until runtime.
+Accurately analyzing these behaviors would require near-complete program
+execution, making precise static inference difficult within traditional
+frameworks.
+As shown in \autoref{tab:RQ2}, about 80\% of studies are marked as supporting
+dynamic features; however, this criterion is intentionally broad—any support
+for even a subset of Python’s diverse dynamic behaviors is counted.
+This is because no existing work fully handles all dynamic features, and
+achieving comprehensive support is effectively infeasible without
+execution-based techniques.
 
 Finally, Python’s lists, sets, and dictionaries inherently allow heterogeneous
 elements. A single list may contain integers, strings, and user-defined

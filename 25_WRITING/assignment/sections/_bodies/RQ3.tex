@@ -48,27 +48,32 @@ However, these techniques are computationally expensive and difficult to apply
 to real-world codebases, especially in the presence of Python’s irregular
 dynamic features.
 
-Finally, LLM-based type analysis—using models like GPT or CodeLlama—has emerged
-as a new direction. LLMs can infer types with high coverage even for minimally
-annotated codebases, and perform semantic-level reasoning to detect errors that
-traditional static analyzers miss. However, LLMs operate as black-box models;
-their reasoning processes are opaque, subject to hallucination, and
-fundamentally unable to guarantee soundness.
+Finally, AI-based type analysis—using models such as GPT variants, CodeLlama,
+or specialized type-inference models—has emerged as a new direction.
+AI-based methods can infer types with high coverage even for minimally
+annotated codebases and can perform semantic-level reasoning that detects
+inconsistencies overlooked by traditional static analyzers.
+However, AI models operate as black boxes; their reasoning is opaque, prone to
+hallucination, and fundamentally unable to guarantee soundness or completeness.
+Moreover, AI-driven type inference remains sensitive to training data quality
+and lacks explicit formal guarantees.
 
 The changing trends in Python type checking research can be observed in
-\autoref{fig:rq3}. Over the years, the use of LLM-based approaches has
-gradually increased, and notably, hybrid methodologies that combine static
-analysis with AI-based techniques to ensure type soundness are being actively
-explored.
+\autoref{fig:rq3}. 
+Over the years, the use of AI-based approaches has gradually increased, and
+notably, hybrid methodologies that combine static analysis with AI to ensure
+type soundness are being actively explored.
 
 In summary, Python type analysis tools exhibit complementary strengths
 depending on their underlying analysis paradigm, but no single approach can
-fully capture the complexity of Python’s dynamic semantics. Static analysis is
-efficient yet incomplete, dynamic analysis is precise yet coverage- and
-cost-constrained, and AI-based methods are flexible but lack soundness.
+fully capture the complexity of Python’s dynamic semantics.
+Static analysis is efficient yet raise a lot of false positive, dynamic
+analysis is precise yet coverage and cost-constrained, and AI-based methods are
+flexible but lack soundness.
 Consequently, recent research trends increasingly favor hybrid approaches that
-combine static, dynamic, and AI-based techniques. This observation underscores
-that Python type analysis is not a problem solvable by any single method.
+combine static, dynamic, and AI-based techniques.
+This observation underscores that Python type analysis is not a problem
+solvable by any single method.
 
 \begin{tcolorbox}[colback=white,colframe=blue!60,title=Answer to RQ3,fonttitle=\bfseries]
   Python type analysis tools can be classified into static, dynamic,

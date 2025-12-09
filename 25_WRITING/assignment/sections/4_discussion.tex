@@ -1,48 +1,93 @@
 \section{DISCUSSION}
-This paper systematically reviews the Python type analysis ecosystem and
-compares how static, dynamic, and AI-based approaches address specific
-challenges while highlighting their limitations.
-Through this, the impact of Python’s dynamic features on the design of analysis
-techniques becomes evident.
+This paper reviews the Python type analysis ecosystem and compares how static,
+dynamic, and AI-based approaches address core challenges while exposing their
+limitations.
+The analysis clarifies how Python’s dynamic features shape the design of these
+techniques.
+As shown in \textbf{RQ1}, achieving comprehensive safety with static methods
+alone is difficult due to Python’s dynamic object model, flexible typing, and
+runtime-dependent behavior.
+As a result, static checking, runtime monitoring, and hybrid or feedback-driven
+methods coexist, forming a layered landscape.
+This multi-paradigm ecosystem reflects a practical balance between developer
+productivity, Python’s dynamic flexibility, and the need for reliability and
+early error detection.
 
-As observed in RQ1, achieving program safety with a single static type system
-in Python is challenging.
-Consequently, static type checking, runtime enforcement, and hybrid approaches
-coexist, forming a unique technical landscape.
-This layered strategy represents a practical compromise, balancing developer
-productivity and dynamic flexibility while ensuring a certain level of
-reliability and error detection.
+The structural challenges identified in \textbf{RQ2} further illustrate why no
+single analysis method is sufficient.
+Structural typing, flow-sensitive type changes, heterogeneous containers, and
+dynamic code generation fundamentally diverge from assumptions embedded in
+conventional type theory—such as nominal hierarchies, globally stable object
+layouts, and the closed-world assumption.
+These characteristics require analyzers to reexamine foundational principles
+rather than simply adapting techniques from statically typed languages.
+For instance, flow-sensitive analysis significantly improves precision, yet
+incurs substantial computational cost; flow-insensitive approaches scale well
+but fail to capture control-flow–dependent behaviors.
+This trade-off highlights the persistent tension among precision, scalability,
+and soundness that all Python analyzers must navigate.
+Furthermore, the practical inability to statically approximate dynamic features
+such as reflection, runtime attribute creation, or eval-driven code generation
+reinforces the need for complementary techniques that operate across both
+compile-time and runtime contexts.
 
-The structural challenges highlighted in RQ2 introduce problems that cannot be
-fully addressed by traditional language theory.
-Specifically, structural typing, flow-sensitive type changes, heterogeneous
-containers, and dynamic code generation via reflection or eval fundamentally
-challenge assumptions of conventional static analysis (e.g., nominal hierarchy,
-stable object model, closed world assumption).
-These issues demand reconsideration of the analysis model itself.
-For instance, flow-sensitive analyses provide high precision but incur high
-computational costs, whereas flow-insensitive approaches scale better but with
-limited precision.
-This underscores the constant trade-offs Python analyzers must navigate among
-precision, scalability, and soundness.
+The tool comparison in \textbf{RQ3} reflects this broader landscape.
+Static analyzers remain indispensable for large-scale and industrial codebases
+due to their speed and integration with development workflows.
+However, their reliance on annotations and limited capacity to represent
+dynamic constructs restrict their precision and completeness.
+Dynamic and hybrid tools mitigate these limitations by incorporating runtime
+information, enabling high accuracy on executed paths and capturing behaviors
+that static analysis cannot predict.
+Yet these tools necessarily depend on execution coverage and incur runtime
+overhead.
+Advanced research tools based on constraint solving, symbolic execution, or
+SSA-based type modeling provide sophisticated reasoning capabilities, but face
+challenges in industrial adoption due to computational cost and difficulty
+handling unstructured dynamic behaviors.
+Meanwhile, AI-based techniques—particularly LLM-powered reasoning—demonstrate
+strong performance in low-annotation settings and enable type inference even
+for highly dynamic idioms.
+Nevertheless, their opaque reasoning processes, susceptibility to
+hallucination, and lack of soundness guarantee limit their standalone
+applicability in safety-critical contexts.
 
-A similar trend emerges in the tool comparison of RQ3. Static analyzers remain
-essential for large-scale codebases, yet they cannot fully model Python’s
-dynamic features.
-Dynamic and hybrid tools improve accuracy using runtime information but cannot
-guarantee fundamental completeness due to coverage limitations.
-Research-oriented tools leveraging constraint solving or symbolic execution
-offer high precision but are limited in practical adoption due to computational
-cost and challenges in handling dynamic code.
-Recently, LLM-based analyses provide high inference coverage even in
-low-annotation settings but cannot ensure soundness due to non-determinism and
-hallucinations.
+Across \textbf{RQ1–RQ3}, a clear pattern emerges.
+Python’s dynamic, open-ended semantics create a fundamental gap between what
+traditional static analysis can guarantee and what developers require in
+practice.
+Each paradigm—static, dynamic, hybrid, and AI-based—offers partial strategies
+to bridge this gap, yet none is complete on its own.
+Hybrid and feedback-driven approaches increasingly appear to provide the most
+promising pathway forward. These methods integrate compile-time reasoning,
+runtime observation, and AI-guided inference, enabling analyses that are both
+more precise than static techniques and more comprehensive than dynamic
+monitoring alone.
+Moreover, hybrid models can incorporate AI-derived insights while applying
+static constraints as guardrails, alleviating issues of soundness and
+hallucination.
 
-Overall, the central challenge in Python type analysis is the discontinuity
-between the language’s dynamic, open-ended nature and the demands of static
-safety.
-Each approach provides strategies to bridge this gap, yet no single method
-offers a complete solution.
-Hybrid or feedback-driven approaches that integrate static, dynamic, and
-AI-based techniques are increasingly recognized as a promising direction for
-future development.
+From a broader perspective, this survey highlights several implications for
+future tool and research design.
+First, Python type analysis requires models that explicitly embrace dynamicity
+rather than attempting to restrict or approximate it away.
+Second, the integration of runtime evidence—through tracing, selective
+instrumentation, or lightweight profiling—appears essential for achieving
+practical precision.
+Third, AI-based reasoning should not be treated merely as a replacement for
+static methods; instead, it may serve as a complementary inferential layer
+capable of synthesizing type information beyond the reach of rule-based
+systems.
+Finally, the long-term direction for Python type analysis likely lies in
+hybrid, cyclic, or feedback-driven architectures that iteratively refine static
+approximations with empirical runtime knowledge and AI-assisted inference.
+
+Overall, the central challenge in Python type analysis remains the
+discontinuity between the language’s dynamically evolving behavior and the
+goals of static safety and predictability.
+While no single method provides a complete solution, combining static
+reasoning, runtime observation, and AI-based inference creates a more holistic
+framework capable of addressing Python’s unique characteristics.
+This observation underscores a growing consensus in recent work: Python type
+analysis is not a problem solvable by any one paradigm, but rather a field that
+demands integrated, multi-modal approaches.

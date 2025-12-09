@@ -1,17 +1,16 @@
-\subsubsection{Python Type System}
-Python is a dynamically typed language in which variable types are determined
+\subsection{Python Type System}
+Python is a dynamically typed lan- guage in which variable types are determined
 at runtime rather than at the point of declaration.
 Because a variable’s type is defined by the value assigned during execution,
 its type can change at any point while the program runs.
-Moreover, Python adopts a pure object-oriented design in which “everything is
-an object,” making the notion of object compatibility a central issue in type
+Moreover, Python adopts a pure object-oriented design in which "everything is
+an object," making the notion of object compatibility a central issue in type
 analysis.
-
 In dynamic languages such as Python, object compatibility is governed by duck
-typing.
-Under duck typing, compatibility is determined not by an object’s nominal type
-(e.g., int, str, Parrot) but by whether it provides the required methods or
-attributes (such as fly() or len()).
+typing. Under duck typing, compatibility is determined not by an object’s
+nominal type (e.g., int, str, Parrot) but by whether it provides the required
+methods or attributes (such as fly() or len()), regardless of the class
+hierarchy or inheritance relation.
 
 \begin{listing}[t]
 \begin{minted}[linenos, numbers=left, frame=lines, framesep=2mm, xleftmargin=10pt, fontsize=\footnotesize]{python}
@@ -47,19 +46,39 @@ lift_off(whale)
 \label{lst:duckTyping}
 \end{listing}
 
-\autoref{lst:duckTyping} illustrates this principle. As shown in lines 20–21, instances of
-Parrot and Airplane—despite having no inheritance or structural
-relationship—can be passed to the same function lift\_off() without causing any
-errors.
+\autoref{lst:duckTyping} illustrates this principle.
+As shown in lines 21, 24, instances of Parrot and Airplane—despite having no
+inheritance or structural relationship—can be passed to the same function
+lift\_off() without causing any errors.
 This demonstrates that compatibility is determined by the presence of the fly()
-method rather than by the concrete classes Parrot or Airplane.
+method rather than by the concrete classes Parrot or Airplane. 
 In contrast, when a Whale object, which does not define fly(), is passed to the
-same function (line 22), a TypeError is raised due to the missing attribute.
+same function (line 27), a TypeError is raised due to the missing attribute.
+This shows that Python’s type system is based on behavior-what an object can
+do matters more than its formal type.
 
-Thus, type determination in Python cannot rely solely on nominal types; it must
-also incorporate structural types defined by the methods and attributes
+Consequently, type determination in Python cannot rely solely on nominal types;
+it must also incorporate structural types defined by the methods and attributes
 available on an object.
-However, because these methods and attributes can be dynamically added,
-removed, or modified during execution, performing precise type analysis
-statically—without running the program—becomes inherently challenging.
+This structural dimension becomes even more complex because Python allows these
+methods and attributes to be dynamically added, removed, or modified during
+execution.
+For example, objects can obtain new attributes through monkey patching, classes
+can be modified at runtime, and dynamic features such as \_\_getattr\_\_,
+\_\_getattribute\_\_, decorators, and metaclasses can alter the attribute
+lookup process itself.
+As a result, the effective "shape" of an object is not statically fixed but may
+evolve throughout the program’s lifetime.
 
+Such flexibility offers expressive power but poses inherent challenges for
+precise static type analysis.
+Since the availability of attributes and methods may depend on control-flow
+conditions, runtime configuration, external library behavior, or execution
+order, a static analyzer must either over-approximate the possible
+behaviors—leading to imprecise or overly conservative results—or risk missing
+valid error cases that manifest only under specific runtime conditions.
+Additionally, heterogeneous containers, dynamic code generation (e.g., eval,
+exec), and late-binding semantics further complicate the inference process.
+These factors collectively make Python’s type system difficult to analyze
+purely statically, motivating the development of hybrid and dynamic approaches
+that incorporate runtime observations to complement static reasoning.
