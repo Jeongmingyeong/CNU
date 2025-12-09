@@ -59,28 +59,38 @@
   \maketitle
 
   \begin{abstract}
-    Python’s dynamic typing and flexible execution model enhance developer
-    productivity but also highlight the need for systematic type analysis and
-    checking due to frequent runtime type errors.
-    This survey categorizes the Python type analysis ecosystem into four
-    approaches: static analysis, dynamic monitoring, hybrid methods combining
-    static and runtime information, and AI-driven inference based on large
-    language models. It provides a detailed review of the technical principles,
-    advantages, limitations, and challenges of each approach, with particular
-    focus on Python-specific issues such as duck typing, flow-sensitive type
-    changes, reflection, dynamic code generation, and heterogeneous containers.
-    The study finds that no single approach is sufficient to fully address
-    Python type analysis, and that combining static, dynamic, and AI-based
-    techniques in a complementary way is emerging as a promising direction for
-    future research. By synthesizing existing research and tools, this survey
-    clarifies the current landscape of Python type analysis and provides
-    guidance for both practitioners and researchers seeking robust, practical,
-    and forward-looking solutions.
+    The dynamic nature of Python poses fundamental challenges for accurate type
+    inference, driving extensive research on type inference, checking, and
+    recovery across static, dynamic, learning-based, and hybrid paradigms.
+    This survey provides a comprehensive analysis of major Python type analysis
+    efforts spanning static systems, dynamic monitoring frameworks, and
+    emerging machine-learning-based models.
+    We systematically identify and analyze representative studies collected
+    through a keyword-driven search within the programming languages and
+    software engineering domains, selecting those that explicitly address
+    Python or its dynamic typing characteristics.
+    This survey categorizes the Python type analysis landscape into four
+    approaches: static analysis, dynamic monitoring, hybrid methods that
+    combine static and runtime information, and AI-driven inference based on
+    large language models.
+    It provides a detailed review of the technical principles, advantages,
+    limitations, and open challenges of each approach, with particular
+    attention to Python-specific issues such as duck typing, flow-sensitive
+    type changes, reflection, dynamic code generation, and heterogeneous
+    containers.
+    Our analysis shows that no single approach is sufficient to fully address
+    Python type reasoning; instead, combining static, dynamic, and AI-based
+    techniques in complementary ways is emerging as a promising direction for
+    future research.
+    By synthesizing existing research and tools, this survey clarifies the
+    current landscape of Python type analysis and provides guidance for both
+    practitioners and researchers seeking robust, practical, and
+    forward-looking solutions.
   \end{abstract}
 
   \begin{IEEEkeywords}
-    Python, Type Analysis, Static Analysis, Dynamic Analysis, Hybrid Analysis,
-    Large Language Models
+    Python, Type analysis, Static typing, Dynamic typing, Hybrid, Machine
+    learning
   \end{IEEEkeywords}
 
   \input{sections/1_introduction}

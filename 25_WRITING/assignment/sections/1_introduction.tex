@@ -1,23 +1,22 @@
 \section{INTRODUCTION}
 
-Python has witnessed remarkable growth over the past decade and has become one
-of the most widely used programming languages worldwide.
-Since 2018, its popularity has surged, and it has been ranked as the most
-popular programming language according to multiple surveys since 2022.
-This rise can be attributed to Python’s versatility and applicability across a
-broad spectrum of domains, including web development, networking, data
-analytics, scientific computing, automation, and, most prominently, artificial
-intelligence and machine learning.
-In particular, the rapid proliferation of AI-related applications, such as deep
-learning frameworks (e.g., TensorFlow, PyTorch) and natural language processing
-libraries (e.g., Hugging Face Transformers), has further accelerated Python’s
-adoption among both industry professionals and researchers.
+Python has experienced significant growth over the past decade and is now one
+of the most widely used programming languages worldwide. Its popularity has
+sharply increased since 2018 and it has consistently ranked as the most popular
+language in multiple surveys since 2022~\cite{tiobe}.
+This rise stems from Python’s versatility across domains such as web
+development, data analytics, scientific computing, automation, and especially
+artificial intelligence and machine learning.
+The expansion of AI ecosystems—supported by deep learning frameworks (e.g.,
+TensorFlow~\cite{tensorflow}, PyTorch~\cite{pytorch}) and natural language
+processing libraries (e.g., Hugging Face Transformers~\cite{huggingface})—has
+further accelerated its adoption among both industry and research communities.
 
 In addition to its broad applicability, Python’s concise and
-natural-language-like syntax lowers the barrier to entry for new developers.
+natural-language-like syntax lowers the barrier to entry for new developers. 
 Features such as dynamic typing, high-level data structures, and rich standard
 libraries allow programmers to express complex ideas with minimal boilerplate
-code.
+code and it allows rapid prototyping.
 As a result, Python has become a first-choice language for prototyping,
 experimentation, and educational purposes, fostering a vast ecosystem of
 open-source libraries and active developer communities.
@@ -29,19 +28,20 @@ Python programs often surface errors only during execution.
 Among these runtime errors, type-related issues such as \texttt{TypeError} and
 \texttt{AttributeError} are particularly prevalent, accounting for a
 substantial portion of all reported bugs—studies suggest approximately 30\% of
-runtime errors in Python stem from type mismatches.
+runtime errors in Python stem from type mismatches~\cite{pyinder2024}.
 This prevalence of type errors not only affects software reliability but also
 complicates maintenance and refactoring of large codebases, where inconsistent
-or unexpected type usage can propagate subtle bugs across modules.
+or unexpected type usage can propagate subtle bugs across
+modules~\cite{constypeerror}.
 
 Consequently, type checking and type analysis have become critical for
 improving the reliability, maintainability, and robustness of Python programs.
 The introduction of optional type annotations in Python 3.5 provided a
 mechanism for developers to express expected types explicitly, enabling static
-verification while preserving the language’s inherent flexibility.
-Tools such as \texttt{mypy}, \texttt{Pyre}, and \texttt{Pyright} leverage these
-annotations to detect type inconsistencies before execution, reducing the
-likelihood of runtime failures.
+verification while preserving the language’s inherent flexibility~\cite{pep484}.
+Tools such as \texttt{mypy}~\cite{mypy}, \texttt{Pyre}~\cite{pyre}, and
+\texttt{Pyright}~\cite{pyright} leverage these annotations to detect type
+inconsistencies before execution, reducing the likelihood of runtime failures.
 Beyond static checking, hybrid approaches combining static and runtime
 monitoring, as well as emerging AI-based techniques, have begun to address
 Python’s dynamic and flexible behavior more effectively.
@@ -80,9 +80,8 @@ Specifically, this paper addresses the following research questions (RQs):
 
 To answer these questions, we analyze Python type analysis tools spanning
 several paradigms, including static analyzers leveraging type annotations,
-runtime and hybrid monitoring systems, constraint-solving and symbolic
-execution-based approaches, and recently developed AI-powered methods enabled
-by large language models.
+runtime and hybrid monitoring systems, and recently developed AI-powered
+methods enabled by large language models.
 By systematically examining these tools and approaches, we aim to clarify the
 current landscape of Python type analysis, highlight open challenges, and
 identify promising directions for future research.
